@@ -1,4 +1,4 @@
-package com.showworld.live;
+package com.showworld.live.base.ui;
 
 /**
  * Created by alex on 16/6/1.

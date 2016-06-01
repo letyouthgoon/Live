@@ -1,6 +1,9 @@
-package com.showworld.live;
+package com.showworld.live.main;
 
 import android.os.Bundle;
+
+import com.showworld.live.R;
+import com.showworld.live.base.ui.TActivity;
 
 public class MainActivity extends TActivity {
 

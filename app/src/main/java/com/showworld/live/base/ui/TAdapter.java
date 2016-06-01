@@ -1,4 +1,4 @@
-package com.showworld.live;
+package com.showworld.live.base.ui;
 
 import android.content.Context;
 import android.view.LayoutInflater;

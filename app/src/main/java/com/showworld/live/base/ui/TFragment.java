@@ -1,8 +1,7 @@
-package com.showworld.live;
+package com.showworld.live.base.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 
 /**
  * Created by alex on 16/6/1.
