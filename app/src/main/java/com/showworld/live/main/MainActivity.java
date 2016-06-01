@@ -1,5 +1,7 @@
 package com.showworld.live.main;
 
+import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.showworld.live.R;
@@ -16,5 +18,9 @@ public class MainActivity extends TActivity {
         setContentView(R.layout.activity_main);
     }
 
+
+    public void onTvClick() {
+        startActivity(new Intent(this, LiveListActivity.class));
+    }
 
 }
