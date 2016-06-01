@@ -2,7 +2,9 @@ package com.showworld.live.base.util.string;
 
 import java.io.IOException;
 import java.io.StringReader;
-
+/**
+ * Created by alex on 2016/6/1.
+ */
 public class HexDump {
     class HexTablifier {
         private int m_row = 8;

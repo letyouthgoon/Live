@@ -4,7 +4,9 @@ import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
-
+/**
+ * Created by alex on 2016/6/1.
+ */
 public class MD5 {
 	
 	public static String getStringMD5(String value) {

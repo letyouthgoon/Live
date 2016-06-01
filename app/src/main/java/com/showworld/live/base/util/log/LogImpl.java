@@ -12,7 +12,9 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
-
+/**
+ * Created by alex on 2016/6/1.
+ */
 final class LogImpl {
 	private static final String FILE_FORMAT = "yyyyMMdd";
 	private static final String MESSAGE_FORMAT = "MM-dd HH:mm:ss.ms";
