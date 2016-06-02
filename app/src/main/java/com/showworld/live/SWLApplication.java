@@ -2,7 +2,10 @@ package com.showworld.live;
 
 import android.app.Application;
 
+import com.showworld.live.main.Constants;
 import com.showworld.live.main.control.QavsdkControl;
+import com.showworld.live.main.module.UserInfo;
+import com.tencent.bugly.imsdk.crashreport.CrashReport;
 
 /**
  * Created by alex on 2016/6/1.
@@ -10,10 +13,15 @@ import com.showworld.live.main.control.QavsdkControl;
 public class SWLApplication extends Application {
 
     private QavsdkControl mQavsdkControl = null;
+    private UserInfo mSelfUserInfo;
+
     @Override
     public void onCreate() {
         super.onCreate();
         mQavsdkControl = new QavsdkControl(this);
+        mSelfUserInfo = new UserInfo("test", 10, R.drawable.user, 1000);
+        CrashReport.initCrashReport(this, "" + Constants.APPID, true);
+
 //        DemoCache.setContext(this);
 //
 //        NIMClient.init(this, getLoginInfo(), getOptions());
@@ -37,6 +45,10 @@ public class SWLApplication extends Application {
 
     public QavsdkControl getQavsdkControl() {
         return mQavsdkControl;
+    }
+
+    public UserInfo getMyselfUserInfo() {
+        return mSelfUserInfo;
     }
 //
 //    private LoginInfo getLoginInfo() {

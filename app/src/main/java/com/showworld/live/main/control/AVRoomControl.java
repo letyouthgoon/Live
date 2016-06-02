@@ -5,9 +5,17 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.showworld.live.SWLApplication;
+import com.showworld.live.main.Constants;
+import com.showworld.live.main.module.UserInfo;
 import com.tencent.av.sdk.AVContext;
+import com.tencent.av.sdk.AVEndpoint;
+import com.tencent.av.sdk.AVError;
 import com.tencent.av.sdk.AVRoom;
 import com.tencent.av.sdk.AVRoomMulti;
+import com.tencent.imcore.MemberInfo;
+import com.tencent.open.utils.Util;
+
+import java.util.ArrayList;
 
 class AVRoomControl {
     private static final int TYPE_MEMBER_CHANGE_IN = 0;
@@ -18,7 +26,7 @@ class AVRoomControl {
     private boolean mIsInCloseRoom = false;
     private Context mContext;
     private ArrayList<MemberInfo> mMemberList = new ArrayList<MemberInfo>();
-    private int audioCat = Util.AUDIO_VOICE_CHAT_MODE;
+    private int audioCat = Constants.AUDIO_VOICE_CHAT_MODE;
 
     public void setAudioCat(int audioCat) {
         this.audioCat = audioCat;
@@ -31,7 +39,7 @@ class AVRoomControl {
         public void onEnterRoomComplete(int result) {
             Log.d(TAG, "WL_DEBUG mRoomDelegate.onEnterRoomComplete result = " + result);
             mIsInCreateRoom = false;
-            mContext.sendBroadcast(new Intent(Util.ACTION_ROOM_CREATE_COMPLETE).putExtra(Util.EXTRA_AV_ERROR_RESULT, result));
+            mContext.sendBroadcast(new Intent(Constants.ACTION_ROOM_CREATE_COMPLETE).putExtra(Constants.EXTRA_AV_ERROR_RESULT, result));
         }
 
         // 离开房间成功回调
@@ -39,7 +47,7 @@ class AVRoomControl {
             Log.d(TAG, "WL_DEBUG mRoomDelegate.onExitRoomComplete result = " + result);
             mIsInCloseRoom = false;
             mMemberList.clear();
-            mContext.sendBroadcast(new Intent(Util.ACTION_CLOSE_ROOM_COMPLETE));
+            mContext.sendBroadcast(new Intent(Constants.ACTION_CLOSE_ROOM_COMPLETE));
         }
 
         @Override
@@ -97,7 +105,7 @@ class AVRoomControl {
 
     private void onMemberChange(int type, AVEndpoint endpointList[], int endpointCount) {
 
-        mContext.sendBroadcast(new Intent(Util.ACTION_MEMBER_CHANGE));
+        mContext.sendBroadcast(new Intent(Constants.ACTION_MEMBER_CHANGE));
     }
 
 
@@ -248,7 +256,7 @@ class AVRoomControl {
      */
     int exitRoom() {
         Log.d(TAG, "WL_DEBUG exitRoom");
-        QavsdkControl qavsdk = ((QavsdkApplication) mContext).getQavsdkControl();
+        QavsdkControl qavsdk = ((SWLApplication) mContext).getQavsdkControl();
         AVContext avContext = qavsdk.getAVContext();
         int result = avContext.exitRoom();
         mIsInCloseRoom = true;
@@ -282,7 +290,7 @@ class AVRoomControl {
     }
 
     public void setNetType(int netType) {
-        QavsdkControl qavsdk = ((QavsdkApplication) mContext).getQavsdkControl();
+        QavsdkControl qavsdk = ((SWLApplication) mContext).getQavsdkControl();
         AVContext avContext = qavsdk.getAVContext();
         AVRoomMulti room = (AVRoomMulti) avContext.getRoom();
     }
@@ -290,8 +298,8 @@ class AVRoomControl {
 
     private int retryStartContext() {
         Log.w(TAG, "retryStartContext mLoginErrorCode   ");
-        UserInfo mSelfUserInfo = ((QavsdkApplication) mContext).getMyselfUserInfo();
-        String phone = ((QavsdkApplication) mContext).getMyselfUserInfo().getUserPhone();
+        UserInfo mSelfUserInfo = ((SWLApplication) mContext).getMyselfUserInfo();
+        String phone = ((SWLApplication) mContext).getMyselfUserInfo().getUserPhone();
         //if (mSelfUserInfo.getLoginType() == Util.TRUSTEESHIP)
         phone = "86-" + phone;
         if (mSelfUserInfo.getUsersig().equals("")) {
@@ -299,7 +307,7 @@ class AVRoomControl {
             return -1;
         }
         Log.e(TAG, "import phone: " + phone + "  Usersig   " + mSelfUserInfo.getUsersig());
-        int mLoginErrorCode = ((QavsdkApplication) mContext).getQavsdkControl().startContext(
+        int mLoginErrorCode = ((SWLApplication) mContext).getQavsdkControl().startContext(
                 phone, mSelfUserInfo.getUsersig());
         if (mLoginErrorCode != AVError.AV_OK) {
             return -1;

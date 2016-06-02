@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.showworld.live.SWLApplication;
+import com.tencent.av.sdk.AVVideoCtrl;
+
 public class AVVideoControl {
     private static final String TAG = "AVVideoControl";
     private Context mContext = null;
@@ -170,7 +173,7 @@ public class AVVideoControl {
     };
 
     public boolean enableCustomerRendMode() {
-        QavsdkControl qavsdk = ((QavsdkApplication) mContext).getQavsdkControl();
+        QavsdkControl qavsdk = ((SWLApplication) mContext).getQavsdkControl();
         AVVideoCtrl avVideoCtrl = qavsdk.getAVContext().getVideoCtrl();
 
         return avVideoCtrl.setRemoteVideoPreviewCallback(remoteVideoPreviewCallback);

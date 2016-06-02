@@ -4,13 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.showworld.live.main.Constants;
 import com.tencent.TIMCallBack;
 import com.tencent.TIMManager;
 import com.tencent.TIMUser;
 import com.tencent.av.sdk.AVContext;
 import com.tencent.av.sdk.AVError;
-import com.tencent.avsdk.DemoConstants;
-import com.tencent.avsdk.Util;
 import com.tencent.openqq.IMSdkInt;
 
 class AVContextControl {
@@ -34,8 +33,8 @@ class AVContextControl {
                     "WL_DEBUG mStartContextCompleteCallback.OnComplete result = "
                             + result);
             mContext.sendBroadcast(new Intent(
-                    Util.ACTION_START_CONTEXT_COMPLETE).putExtra(
-                    Util.EXTRA_AV_ERROR_RESULT, result));
+                    Constants.ACTION_START_CONTEXT_COMPLETE).putExtra(
+                    Constants.EXTRA_AV_ERROR_RESULT, result));
 
             if (result != AVError.AV_OK) {
                 mAVContext = null;
@@ -67,25 +66,14 @@ class AVContextControl {
     int startContext(String identifier, String usersig) {
         int result = AVError.AV_OK;
         if (mAVContext == null) {
-            Log.w(TAG, "initAVSDKStep 1 : mAVContext == null need to login ");
-            Log.d(TAG, "WL_DEBUG startContext identifier = " + identifier);
-            Log.d(TAG, "WL_DEBUG startContext usersig = " + usersig);
-//			if (!TextUtils.isEmpty(Util.modifyAppid)) {
-//				DEMO_SDK_APP_ID = Integer.parseInt(Util.modifyAppid);
-//			}
-//			if (!TextUtils.isEmpty(Util.modifyUid)) {
-//				DEMO_ACCOUNT_TYPE = Util.modifyUid;
-//			}
             mConfig = new AVContext.Config();
-            mConfig.sdk_app_id = DemoConstants.APPID;
-            mConfig.account_type = DemoConstants.ACCOUNTTYPE;
-            mConfig.app_id_at3rd = Integer.toString(DemoConstants.APPID);
+            mConfig.sdk_app_id = Constants.APPID;
+            mConfig.account_type = Constants.ACCOUNTTYPE;
+            mConfig.app_id_at3rd = Integer.toString(Constants.APPID);
             mConfig.identifier = identifier;
             mUserSig = usersig;
-//
-//			mConfig = new AVContext.Config(Util.UID_TYPE, Util.APP_ID_TEXT, identifier, usersig, Util.APP_ID_TEXT);
             login();
-        }else{
+        } else {
             Log.i(TAG, "initAVSDKStep 1 : mAVContext != null no need to login ");
         }
 
@@ -139,16 +127,11 @@ class AVContextControl {
      * 消息系统登录
      */
     private void login() {
-        //login
-//		TIMManager.getInstance().setEnv(1);
-
         //请确保TIMManager.getInstance().init()一定执行在主线程
         Log.w(TAG, "initAVSDKStep 2 : IMLogin begin  ");
         TIMManager.getInstance().init(mContext);
-
-
         TIMUser userId = new TIMUser();
-        userId.setAccountType(DemoConstants.ACCOUNTTYPE);
+        userId.setAccountType(Constants.ACCOUNTTYPE);
         userId.setAppIdAt3rd(mConfig.app_id_at3rd);
         userId.setIdentifier(mConfig.identifier);
 
@@ -185,11 +168,11 @@ class AVContextControl {
     private void onLogin(boolean result, long tinyId, int errorCode) {
         if (result) {
             mAVContext = AVContext.createContext(mConfig);
-            Log.w(TAG, "initAVSDKStep 4 : AVContext createContext "+mAVContext);
+            Log.w(TAG, "initAVSDKStep 4 : AVContext createContext " + mAVContext);
             Log.d(TAG, "WL_DEBUG startContext mAVContext is null? " + (mAVContext == null));
             mSelfIdentifier = mConfig.identifier;
             int ret = mAVContext.startContext(mContext, mStartContextCompleteCallback);
-            Log.w(TAG, "initAVSDKStep 5 : AVContext createContext startContext "+ret);
+            Log.w(TAG, "initAVSDKStep 5 : AVContext createContext startContext " + ret);
             mIsInStartContext = true;
         } else {
             mStartContextCompleteCallback.OnComplete(errorCode);
@@ -209,6 +192,6 @@ class AVContextControl {
         Log.d(TAG, "WL_DEBUG mStopContextCompleteCallback mAVContext is null");
         mIsInStopContext = false;
         mContext.sendBroadcast(new Intent(
-                Util.ACTION_CLOSE_CONTEXT_COMPLETE));
+                Constants.ACTION_CLOSE_CONTEXT_COMPLETE));
     }
 }

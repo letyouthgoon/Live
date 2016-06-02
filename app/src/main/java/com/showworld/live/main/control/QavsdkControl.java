@@ -4,7 +4,13 @@ import android.content.Context;
 import android.util.Log;
 import android.view.View;
 
+import com.showworld.live.main.Constants;
 import com.tencent.av.sdk.AVContext;
+import com.tencent.av.sdk.AVRoom;
+import com.tencent.av.sdk.AVView;
+import com.tencent.imcore.MemberInfo;
+
+import java.util.ArrayList;
 
 public class QavsdkControl {
     private static final String TAG = "QavsdkControl";
@@ -30,7 +36,6 @@ public class QavsdkControl {
         mAVRoomControl = new AVRoomControl(context);
         mAVVideoControl = new AVVideoControl(context);
         mAVAudioControl = new AVAudioControl(context);
-        Log.d(TAG, "WL_DEBUG QavsdkControl");
     }
 
     /**
@@ -42,7 +47,7 @@ public class QavsdkControl {
     public int startContext(String identifier, String usersig) {
         Log.i(TAG, "initAVSDKStep 0 : mAVContextControl " + mAVContextControl);
         if (mAVContextControl == null)
-            return DemoConstants.DEMO_ERROR_NULL_POINTER;
+            return Constants.DEMO_ERROR_NULL_POINTER;
         return mAVContextControl.startContext(identifier, usersig);
     }
 
@@ -83,7 +88,7 @@ public class QavsdkControl {
      */
     public int exitRoom() {
         if (mAVRoomControl == null)
-            return DemoConstants.DEMO_ERROR_NULL_POINTER;
+            return Constants.DEMO_ERROR_NULL_POINTER;
         return mAVRoomControl.exitRoom();
     }
 
