@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Live</string>
+
+    <string name="notify_no_network">网络无连接，请检查网络</string>
 </resources>

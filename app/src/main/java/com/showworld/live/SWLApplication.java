@@ -1,19 +1,19 @@
 package com.showworld.live;
 
 import android.app.Application;
-import android.os.Environment;
-import android.text.TextUtils;
 
-import com.showworld.live.base.util.ScreenUtil;
+import com.showworld.live.main.control.QavsdkControl;
 
 /**
  * Created by alex on 2016/6/1.
  */
 public class SWLApplication extends Application {
+
+    private QavsdkControl mQavsdkControl = null;
     @Override
     public void onCreate() {
         super.onCreate();
-
+        mQavsdkControl = new QavsdkControl(this);
 //        DemoCache.setContext(this);
 //
 //        NIMClient.init(this, getLoginInfo(), getOptions());
@@ -33,6 +33,10 @@ public class SWLApplication extends Application {
 //            initLog();
 //            FlavorDependent.getInstance().onApplicationCreate();
 //        }
+    }
+
+    public QavsdkControl getQavsdkControl() {
+        return mQavsdkControl;
     }
 //
 //    private LoginInfo getLoginInfo() {

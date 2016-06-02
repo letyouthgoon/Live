@@ -1,4 +1,4 @@
-package com.showworld.live.main;
+package com.showworld.live.main.view;
 
 import android.os.Bundle;
 
@@ -10,11 +10,12 @@ import com.showworld.live.base.ui.TActivity;
  */
 public class LiveActivity extends TActivity {
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
-
-
 }

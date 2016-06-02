@@ -1,8 +1,8 @@
-package com.showworld.live.main;
+package com.showworld.live.main.view;
 
-import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import com.showworld.live.R;
 import com.showworld.live.base.ui.TActivity;
@@ -19,8 +19,13 @@ public class MainActivity extends TActivity {
     }
 
 
-    public void onTvClick() {
-        startActivity(new Intent(this, LiveListActivity.class));
+    public void onTvClick(View v) {
+        int id = v.getId();
+        switch (id) {
+            case R.id.tv_jump:
+                startActivity(new Intent(this, LiveListActivity.class));
+                break;
+        }
     }
 
 }
