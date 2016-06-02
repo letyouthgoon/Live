@@ -45,6 +45,7 @@ public class LiveListActivity extends TActivity implements AdapterView.OnItemCli
 
     private int mRoomNum;
 
+    private boolean isFirst = true;
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -60,13 +61,34 @@ public class LiveListActivity extends TActivity implements AdapterView.OnItemCli
             } else if (action.equals(Constants.ACTION_CLOSE_CONTEXT_COMPLETE)) {
                 mQavsdkControl.setIsInStopContext(false);
             }
-            if (action.equals(Constants.ACTION_ROOM_CREATE_COMPLETE)) {
-                startActivity(new Intent(LiveListActivity.this, LiveActivity.class)
-                        .putExtra(Constants.EXTRA_ROOM_NUM, mLiveItem.getProgrammId()) //room id
-                        .putExtra(Constants.EXTRA_SELF_IDENTIFIER, mLiveItem.getUserPhone())
-                        .putExtra(Constants.EXTRA_GROUP_ID, mLiveItem.getLiveGroupId()) // chat converse id
-                        .putExtra(Constants.EXTRA_PRAISE_NUM, mLiveItem.getLivePraiseCount()));
-                enterRoom();
+            if (!mSelfUserInfo.isCreater() && action.equals(Constants.ACTION_ROOM_CREATE_COMPLETE)) {
+                Log.d(TAG, "liveAcitivity onReceive ACTION_ROOM_CREATE_COMPLETE");
+                int mCreateRoomErrorCode = intent.getIntExtra(
+                        Constants.EXTRA_AV_ERROR_RESULT, AVError.AV_OK);
+                if (isFirst) {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    isFirst = false;
+                }
+
+                if (mCreateRoomErrorCode == AVError.AV_OK) {
+                    if (mLiveItem == null) {
+//                            Toast.makeText(LiveActivity.this, "mChoseLiveVideoInfo is null !!!! ", Toast.LENGTH_SHORT).show();
+                        Log.e(TAG, "LiveActivity onReceive mChoseLiveVideoInfo is " + mLiveItem);
+                        return;
+                    }
+                    startActivity(new Intent(LiveListActivity.this, LiveActivity.class)
+                            .putExtra(Constants.EXTRA_ROOM_NUM, mLiveItem.getProgrammId()) //room id
+                            .putExtra(Constants.EXTRA_SELF_IDENTIFIER, mLiveItem.getUserPhone())
+                            .putExtra(Constants.EXTRA_GROUP_ID, mLiveItem.getLiveGroupId()) // chat converse id
+                            .putExtra(Constants.EXTRA_PRAISE_NUM, mLiveItem.getLivePraiseCount()));
+                    enterRoom();
+                }
+            } else if (action.equals(Constants.ACTION_CLOSE_ROOM_COMPLETE)) {
+
             }
         }
     };
