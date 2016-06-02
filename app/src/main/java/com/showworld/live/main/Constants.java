@@ -27,7 +27,7 @@ public class Constants {
 
     public static final String LOCAL_PHONE = "phonenumber";
 
-    //extra
+    //action
     private static final String PACKAGE = "com.showworld.live";
 
     public static final String ACTION_START_CONTEXT_COMPLETE = PACKAGE
@@ -39,10 +39,41 @@ public class Constants {
             + ".ACTION_ROOM_CREATE_COMPLETE";
     public static final String ACTION_CLOSE_ROOM_COMPLETE = PACKAGE
             + ".ACTION_CLOSE_ROOM_COMPLETE";
+    public static final String ACTION_SURFACE_CREATED = PACKAGE
+            + ".ACTION_SURFACE_CREATED";
     public static final String ACTION_MEMBER_CHANGE = PACKAGE
             + ".ACTION_MEMBER_CHANGE";
+    public static final String ACTION_SHOW_VIDEO_MEMBER_INFO = PACKAGE
+            + ".ACTION_SHOW_VIDEO_MEMBER_INFO";
+    public static final String ACTION_VIDEO_SHOW = PACKAGE
+            + ".ACTION_VIDEO_SHOW";
+    public static final String ACTION_MEMBER_VIDEO_SHOW = PACKAGE
+            + ".ACTION_MEMBER_VIDEO_SHOW";
+    public static final String ACTION_REQUEST_MEMBER_VIEW = PACKAGE + ".ACTION_REQUEST_MEMBER_VIEW";
+
+    public static final String ACTION_VIDEO_CLOSE = PACKAGE
+            + ".ACTION_VIDEO_CLOSE";
+    public static final String ACTION_ENABLE_CAMERA_COMPLETE = PACKAGE
+            + ".ACTION_ENABLE_CAMERA_COMPLETE";
+    public static final String ACTION_SWITCH_CAMERA_COMPLETE = PACKAGE
+            + ".ACTION_SWITCH_CAMERA_COMPLETE";
     public static final String ACTION_OUTPUT_MODE_CHANGE = PACKAGE
             + ".ACTION_OUTPUT_MODE_CHANGE";
+    public static final String ACTION_ENABLE_EXTERNAL_CAPTURE_COMPLETE = PACKAGE
+            + ".ACTION_ENABLE_EXTERNAL_CAPTURE_COMPLETE";
+
+    public static final String ACTION_CREATE_GROUP_ID_COMPLETE = PACKAGE
+            + ".ACTION_CREATE_GROUP_ID_COMPLETE";
+
+    public static final String ACTION_CREATE_ROOM_NUM_COMPLETE = PACKAGE
+            + ".ACTION_CREATE_ROOM_NUM_COMPLETE";
+
+    public static final String ACTION_INSERT_ROOM_TO_SERVER_COMPLETE = PACKAGE + ".ACTION_INSERT_ROOM_TO_SERVER_COMPLETE";
+    public static final String ACTION_INVITE_MEMBER_VIDEOCHAT = PACKAGE + ".ACTION_INVITE_MEMBER_VIDEOCHAT";
+    public static final String ACTION_CLOSE_MEMBER_VIDEOCHAT = PACKAGE + ".ACTION_CLOSE_MEMBER_VIDEOCHAT";
+
+
+    //extra
     public static final String EXTRA_USER_PHONE = "userphone";
     public static final String EXTRA_PASSWORD = "password";
     public static final String EXTRA_USER_NAME = "username";

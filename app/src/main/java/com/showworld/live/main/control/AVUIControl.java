@@ -20,6 +20,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.showworld.live.SWLApplication;
 import com.tencent.av.opengl.GraphicRendererMgr;
 import com.tencent.av.opengl.gesturedetectors.MoveGestureDetector;
 import com.tencent.av.opengl.gesturedetectors.MoveGestureDetector.OnMoveGestureListener;
@@ -80,8 +81,7 @@ public class AVUIControl extends GLViewGroup {
             mCameraSurfaceCreated = true;
 
             QavsdkControl qavsdk = ((QavsdkApplication) mContext).getQavsdkControl();
-            if (qavsdk.getRoom() != null)
-            {
+            if (qavsdk.getRoom() != null) {
                 qavsdk.getAVContext().setRenderMgrAndHolder(mGraphicRenderMgr, holder);
             }
             Log.e("memoryLeak", "memoryLeak surfaceCreated");
@@ -126,11 +126,11 @@ public class AVUIControl extends GLViewGroup {
         initCameraPreview();
         initVideoParam();
         mapViewAndIdentifier = new HashMap();
-        mQavsdkControl = ((QavsdkApplication) mContext).getQavsdkControl();
+        mQavsdkControl = ((SWLApplication) mContext).getQavsdkControl();
     }
 
     private void initVideoParam() {
-        QavsdkControl qavsdkControl = ((QavsdkApplication) mContext).getQavsdkControl();
+        QavsdkControl qavsdkControl = ((SWLApplication) mContext).getQavsdkControl();
         if (null != qavsdkControl && qavsdkControl.getIsSupportMultiView()) {
             isSupportMultiVideo = true;
         }
