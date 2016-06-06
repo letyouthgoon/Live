@@ -5,12 +5,14 @@ import android.util.Log;
 import android.view.View;
 
 import com.showworld.live.main.Constants;
+import com.showworld.live.main.module.MemberInfo;
 import com.tencent.av.sdk.AVContext;
 import com.tencent.av.sdk.AVRoom;
 import com.tencent.av.sdk.AVView;
-import com.tencent.imcore.MemberInfo;
 
 import java.util.ArrayList;
+
+import com.showworld.live.R;
 
 public class QavsdkControl {
     private static final String TAG = "QavsdkControl";

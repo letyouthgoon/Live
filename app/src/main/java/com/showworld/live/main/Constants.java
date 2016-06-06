@@ -77,4 +77,7 @@ public class Constants {
     public static final String EXTRA_USER_PHONE = "userphone";
     public static final String EXTRA_PASSWORD = "password";
     public static final String EXTRA_USER_NAME = "username";
+    public static final String EXTRA_IDENTIFIER = "identifier";
+    public static final String EXTRA_IS_ENABLE = "isEnable";
+    public static final String EXTRA_IS_FRONT = "isFront";
 }

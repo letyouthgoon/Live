@@ -20,7 +20,10 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.showworld.live.R;
 import com.showworld.live.SWLApplication;
+import com.showworld.live.main.Constants;
+import com.showworld.live.main.module.MemberInfo;
 import com.tencent.av.opengl.GraphicRendererMgr;
 import com.tencent.av.opengl.gesturedetectors.MoveGestureDetector;
 import com.tencent.av.opengl.gesturedetectors.MoveGestureDetector.OnMoveGestureListener;
@@ -30,10 +33,6 @@ import com.tencent.av.opengl.ui.GLViewGroup;
 import com.tencent.av.opengl.utils.Utils;
 import com.tencent.av.sdk.AVView;
 import com.tencent.av.utils.QLog;
-import com.tencent.avsdk.MemberInfo;
-import com.tencent.avsdk.QavsdkApplication;
-import com.tencent.avsdk.R;
-import com.tencent.avsdk.Util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -77,10 +76,10 @@ public class AVUIControl extends GLViewGroup {
     private SurfaceHolder.Callback mSurfaceHolderListener = new SurfaceHolder.Callback() {
         @Override
         public void surfaceCreated(SurfaceHolder holder) {
-            mContext.sendBroadcast(new Intent(Util.ACTION_SURFACE_CREATED));
+            mContext.sendBroadcast(new Intent(Constants.ACTION_SURFACE_CREATED));
             mCameraSurfaceCreated = true;
 
-            QavsdkControl qavsdk = ((QavsdkApplication) mContext).getQavsdkControl();
+            QavsdkControl qavsdk = ((SWLApplication) mContext).getQavsdkControl();
             if (qavsdk.getRoom() != null) {
                 qavsdk.getAVContext().setRenderMgrAndHolder(mGraphicRenderMgr, holder);
             }
@@ -202,7 +201,7 @@ public class AVUIControl extends GLViewGroup {
     }
 
     public void enableDefaultRender() {
-        QavsdkControl qavsdk = ((QavsdkApplication) mContext).getQavsdkControl();
+        QavsdkControl qavsdk = ((SWLApplication) mContext).getQavsdkControl();
         qavsdk.getAVContext().setRenderFunctionPtr(mGraphicRenderMgr.getRecvDecoderFrameFunctionptr());
     }
 
@@ -333,7 +332,7 @@ public class AVUIControl extends GLViewGroup {
         mCacheRotation = rotation;
 
         // layoutVideoView(true);
-        QavsdkControl qavsdk = ((QavsdkApplication) mContext).getQavsdkControl();
+        QavsdkControl qavsdk = ((SWLApplication) mContext).getQavsdkControl();
         if ((qavsdk != null) && (qavsdk.getAVVideoControl() != null)) {
             qavsdk.getAVVideoControl().setRotation(rotation);
         }
@@ -372,7 +371,7 @@ public class AVUIControl extends GLViewGroup {
     }
 
     public String getQualityTips() {
-        QavsdkControl qavsdk = ((QavsdkApplication) mContext).getQavsdkControl();
+        QavsdkControl qavsdk = ((SWLApplication) mContext).getQavsdkControl();
         String audioQos = "";
         String videoQos = "";
         String roomQos = "";
@@ -1455,7 +1454,7 @@ public class AVUIControl extends GLViewGroup {
 
     void onMemberChange() {
         Log.d(TAG, "WL_DEBUG onMemberChange start");
-        QavsdkControl qavsdk = ((QavsdkApplication) mContext).getQavsdkControl();
+        QavsdkControl qavsdk = ((SWLApplication) mContext).getQavsdkControl();
         ArrayList<MemberInfo> memberList = qavsdk.getMemberList();
 
         for (MemberInfo memberInfo : memberList) {
@@ -1491,7 +1490,7 @@ public class AVUIControl extends GLViewGroup {
                 }
 
                 if (!memberExist) {
-                    mQavsdkControl = ((QavsdkApplication) mContext.getApplicationContext()).getQavsdkControl();
+                    mQavsdkControl = ((SWLApplication) mContext.getApplicationContext()).getQavsdkControl();
                     if (null != mQavsdkControl) {
                         String selfIdentifier = mQavsdkControl.getSelfIdentifier();
                         Log.d(TAG, "self identifier : " + selfIdentifier);
@@ -1555,8 +1554,8 @@ public class AVUIControl extends GLViewGroup {
         Log.d(TAG, "showVideoMemberInfo " + identifier);
         if (identifier == null) return;
         mContext.sendBroadcast(new Intent(
-                Util.ACTION_SHOW_VIDEO_MEMBER_INFO).putExtra(
-                Util.EXTRA_IDENTIFIER, identifier));
+                Constants.ACTION_SHOW_VIDEO_MEMBER_INFO).putExtra(
+                Constants.EXTRA_IDENTIFIER, identifier));
     }
 
     public static Object getKeyFromValue(Map hm, Object value) {

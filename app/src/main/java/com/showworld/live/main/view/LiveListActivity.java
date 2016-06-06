@@ -18,7 +18,6 @@ import com.showworld.live.SWLApplication;
 import com.showworld.live.base.ui.TActivity;
 import com.showworld.live.base.util.NetworkUtil;
 import com.showworld.live.main.Constants;
-import com.showworld.live.main.HttpUtil;
 import com.showworld.live.main.control.QavsdkControl;
 import com.showworld.live.main.module.LiveInfo;
 import com.showworld.live.main.module.UserInfo;
@@ -26,9 +25,6 @@ import com.tencent.av.sdk.AVError;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by alex on 2016/6/1.

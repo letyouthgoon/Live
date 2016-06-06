@@ -28,7 +28,7 @@
         android:layout_height="@dimen/activity_top_label_height"
         android:layout_alignParentRight="true"
         android:layout_marginTop="50dp"
-        android:background="@drawable/btn_av_press"
+        android:background="@mipmap/btn_av_press"
         android:padding="5dp"
         android:text="HLS"
         android:textColor="@color/whitesmoke"
@@ -41,7 +41,7 @@
         android:layout_marginRight="@dimen/margin"
         android:layout_marginTop="50dp"
         android:layout_toLeftOf="@+id/qav_topbar_streamtype"
-        android:background="@drawable/btn_av_press"
+        android:background="@mipmap/btn_av_press"
         android:padding="5dp"
         android:text="旁路直播"
         android:textColor="@color/whitesmoke"
@@ -54,34 +54,34 @@
         android:layout_marginRight="@dimen/margin"
         android:layout_marginTop="50dp"
         android:layout_toLeftOf="@+id/qav_topbar_push"
-        android:background="@drawable/btn_av_press"
+        android:background="@mipmap/btn_av_press"
         android:padding="5dp"
         android:text="录制"
         android:textColor="@color/whitesmoke"
         android:textSize="@dimen/text_size" />
 
 
-    <include
-        android:id="@+id/qav_top_bar"
-        layout="@layout/qav_top_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true" />
+    <!--<include-->
+        <!--android:id="@+id/qav_top_bar"-->
+        <!--layout="@layout/qav_top_bar"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentTop="true" />-->
 
-    <include
-        android:id="@+id/qav_bottom_bar"
-        layout="@layout/qav_bottom_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" />
+    <!--<include-->
+        <!--android:id="@+id/qav_bottom_bar"-->
+        <!--layout="@layout/qav_bottom_bar"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentBottom="true" />-->
 
-    <include
-        android:id="@+id/qav_beauty_setting"
-        layout="@layout/qav_beauty_setting"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="20dp" />
+    <!--<include-->
+        <!--android:id="@+id/qav_beauty_setting"-->
+        <!--layout="@layout/qav_beauty_setting"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_marginBottom="20dp" />-->
 
     <TextView
         android:id="@+id/qav_show_tips"
@@ -102,7 +102,7 @@
         android:layout_marginBottom="60dp"
         android:layout_marginRight="20dp"
         android:background="@android:color/transparent"
-        android:drawableTop="@drawable/icon_memberlist_button"
+        android:drawableTop="@mipmap/icon_memberlist_button"
         android:gravity="center"
         android:text="0"
         android:textColor="@color/white" />
@@ -127,7 +127,7 @@
         <ImageView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:background="@drawable/mask" />
+            android:background="@mipmap/mask" />
 
         <TextView
             android:id="@+id/inviteMaskInfo3"
@@ -158,7 +158,7 @@
         <ImageView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:background="@drawable/mask" />
+            android:background="@mipmap/mask" />
 
         <TextView
             android:id="@+id/inviteMaskInfo2"
@@ -189,7 +189,7 @@
         <ImageView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:background="@drawable/mask" />
+            android:background="@mipmap/mask" />
 
         <TextView
             android:id="@+id/inviteMaskInfo1"

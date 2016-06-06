@@ -6,13 +6,13 @@ import android.util.Log;
 
 import com.showworld.live.SWLApplication;
 import com.showworld.live.main.Constants;
+import com.showworld.live.main.module.MemberInfo;
 import com.showworld.live.main.module.UserInfo;
 import com.tencent.av.sdk.AVContext;
 import com.tencent.av.sdk.AVEndpoint;
 import com.tencent.av.sdk.AVError;
 import com.tencent.av.sdk.AVRoom;
 import com.tencent.av.sdk.AVRoomMulti;
-import com.tencent.imcore.MemberInfo;
 
 import java.util.ArrayList;
 
@@ -93,6 +93,12 @@ class AVRoomControl {
             Log.e(TAG, "enterRoom avContext is null");
 //            retryStartContext();
 //            try {
+
+
+
+
+
+
 //                Thread.sleep(500);
 //            } catch (InterruptedException e) {
 //                e.printStackTrace();

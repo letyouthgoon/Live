@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.showworld.live.SWLApplication;
+import com.showworld.live.main.Constants;
+import com.tencent.av.sdk.AVError;
 import com.tencent.av.sdk.AVVideoCtrl;
 
 public class AVVideoControl {
@@ -20,7 +22,7 @@ public class AVVideoControl {
     private boolean mIsOnOffExternalCapture = false;
     private boolean mIsEnableExternalCapture = false;
 
-    private EnableCameraCompleteCallback mEnableCameraCompleteCallback = new EnableCameraCompleteCallback() {
+    private AVVideoCtrl.EnableCameraCompleteCallback mEnableCameraCompleteCallback = new AVVideoCtrl.EnableCameraCompleteCallback() {
         protected void onComplete(boolean enable, int result) {
             super.onComplete(enable, result);
             Log.d(TAG, "WL_DEBUG mEnableCameraCompleteCallback.onComplete enable = " + enable);
@@ -31,11 +33,11 @@ public class AVVideoControl {
                 mIsEnableCamera = enable;
             }
             Log.d(TAG, "WL_DEBUG mEnableCameraCompleteCallback.onComplete mIsEnableCamera = " + mIsEnableCamera);
-            mContext.sendBroadcast(new Intent(Util.ACTION_ENABLE_CAMERA_COMPLETE).putExtra(Util.EXTRA_AV_ERROR_RESULT, result).putExtra(Util.EXTRA_IS_ENABLE, enable));
+            mContext.sendBroadcast(new Intent(Constants.ACTION_ENABLE_CAMERA_COMPLETE).putExtra(Constants.EXTRA_AV_ERROR_RESULT, result).putExtra(Constants.EXTRA_IS_ENABLE, enable));
         }
     };
 
-    private EnableExternalCaptureCompleteCallback mEnableExternalCaptureCompleteCallback = new EnableExternalCaptureCompleteCallback() {
+    private AVVideoCtrl.EnableExternalCaptureCompleteCallback mEnableExternalCaptureCompleteCallback = new AVVideoCtrl.EnableExternalCaptureCompleteCallback() {
         @Override
         protected void onComplete(boolean enable, int result) {
             super.onComplete(enable, result);
@@ -47,12 +49,12 @@ public class AVVideoControl {
                 mIsEnableExternalCapture = enable;
             }
 
-            mContext.sendBroadcast(new Intent(Util.ACTION_ENABLE_EXTERNAL_CAPTURE_COMPLETE).putExtra(Util.EXTRA_AV_ERROR_RESULT, result).putExtra(Util.EXTRA_IS_ENABLE, enable));
+            mContext.sendBroadcast(new Intent(Constants.ACTION_ENABLE_EXTERNAL_CAPTURE_COMPLETE).putExtra(Constants.EXTRA_AV_ERROR_RESULT, result).putExtra(Constants.EXTRA_IS_ENABLE, enable));
 
         }
     };
 
-    private SwitchCameraCompleteCallback mSwitchCameraCompleteCallback = new SwitchCameraCompleteCallback() {
+    private AVVideoCtrl.SwitchCameraCompleteCallback mSwitchCameraCompleteCallback = new AVVideoCtrl.SwitchCameraCompleteCallback() {
         protected void onComplete(int cameraId, int result) {
             super.onComplete(cameraId, result);
             Log.d(TAG, "WL_DEBUG mSwitchCameraCompleteCallback.onComplete cameraId = " + cameraId);
@@ -64,7 +66,7 @@ public class AVVideoControl {
                 mCurrentCamera = isFront;
             }
 
-            mContext.sendBroadcast(new Intent(Util.ACTION_SWITCH_CAMERA_COMPLETE).putExtra(Util.EXTRA_AV_ERROR_RESULT, result).putExtra(Util.EXTRA_IS_FRONT, isFront));
+            mContext.sendBroadcast(new Intent(Constants.ACTION_SWITCH_CAMERA_COMPLETE).putExtra(Constants.EXTRA_AV_ERROR_RESULT, result).putExtra(Constants.EXTRA_IS_FRONT, isFront));
         }
     };
 
@@ -76,7 +78,7 @@ public class AVVideoControl {
         int result = AVError.AV_OK;
 
         if (mIsEnableCamera != isEnable) {
-            QavsdkControl qavsdk = ((QavsdkApplication) mContext).getQavsdkControl();
+            QavsdkControl qavsdk = ((SWLApplication) mContext).getQavsdkControl();
             AVVideoCtrl avVideoCtrl = qavsdk.getAVContext().getVideoCtrl();
             mIsInOnOffCamera = true;
             result = avVideoCtrl.enableCamera(FRONT_CAMERA, isEnable, mEnableCameraCompleteCallback);
@@ -91,7 +93,7 @@ public class AVVideoControl {
         int result = AVError.AV_OK;
 
         if (mIsEnableExternalCapture != isEnable) {
-            QavsdkControl qavsdk = ((QavsdkApplication) mContext).getQavsdkControl();
+            QavsdkControl qavsdk = ((SWLApplication) mContext).getQavsdkControl();
             AVVideoCtrl avVideoCtrl = qavsdk.getAVContext().getVideoCtrl();
             mIsOnOffExternalCapture = true;
             result = avVideoCtrl.enableExternalCapture(isEnable, mEnableExternalCaptureCompleteCallback);
@@ -105,7 +107,7 @@ public class AVVideoControl {
     int switchCamera(boolean needCamera) {
         int result = AVError.AV_OK;
         if (mCurrentCamera != needCamera) {
-            QavsdkControl qavsdk = ((QavsdkApplication) mContext).getQavsdkControl();
+            QavsdkControl qavsdk = ((SWLApplication) mContext).getQavsdkControl();
             AVVideoCtrl avVideoCtrl = qavsdk.getAVContext().getVideoCtrl();
             mIsInSwitchCamera = true;
             Log.d(TAG, "switchCamera 1111 currentCamera " + mCurrentCamera + " needCamera  " + needCamera);
@@ -123,7 +125,7 @@ public class AVVideoControl {
     }
 
     void setRotation(int rotation) {
-        QavsdkControl qavsdk = ((QavsdkApplication) mContext).getQavsdkControl();
+        QavsdkControl qavsdk = ((SWLApplication) mContext).getQavsdkControl();
         AVVideoCtrl avVideoCtrl = qavsdk.getAVContext().getVideoCtrl();
         avVideoCtrl.setRotation(rotation);
         Log.i(TAG, "WL_DEBUG setRotation rotation = " + rotation);
@@ -131,7 +133,7 @@ public class AVVideoControl {
     }
 
     String getQualityTips() {
-        QavsdkControl qavsdk = ((QavsdkApplication) mContext).getQavsdkControl();
+        QavsdkControl qavsdk = ((SWLApplication) mContext).getQavsdkControl();
         AVVideoCtrl avVideoCtrl = qavsdk.getAVContext().getVideoCtrl();
         return avVideoCtrl.getQualityTips();
     }
@@ -140,8 +142,8 @@ public class AVVideoControl {
         return enableCamera(!mIsEnableCamera);
     }
 
-    RemoteVideoPreviewCallback remoteVideoPreviewCallback = new RemoteVideoPreviewCallback() {
-        public void onFrameReceive(VideoFrame videoFrame) {
+    AVVideoCtrl.RemoteVideoPreviewCallback remoteVideoPreviewCallback = new AVVideoCtrl.RemoteVideoPreviewCallback() {
+        public void onFrameReceive(AVVideoCtrl.VideoFrame videoFrame) {
 
             Log.d(TAG, "real RemoteVideoPreviewCallback.onFrameReceive");
             Log.d(TAG, "len: " + videoFrame.dataLen);
@@ -149,7 +151,7 @@ public class AVVideoControl {
 
             //test
             /*
-			String printTxtPath =   "/sdcard/" + videoFrame.openId + "1.yuv";
+            String printTxtPath =   "/sdcard/" + videoFrame.openId + "1.yuv";
 			Log.d("test", "printTxtPath: " + printTxtPath);
 			byte[] b = videoFrame.data;
 			DataOutputStream d;
