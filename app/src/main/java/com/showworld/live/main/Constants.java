@@ -49,6 +49,7 @@ public class Constants {
     public static final int ENV_FORMAL = 0;
     public static final int ENV_TEST = ENV_FORMAL + 1;
 
+    public static final int MY_SOCKET_TIMEOUT_MS = 30 * 1000;// in ms
     //action
     private static final String PACKAGE = "com.showworld.live";
 
@@ -104,4 +105,18 @@ public class Constants {
     public static final String EXTRA_IS_FRONT = "isFront";
 
     public static final String EXTRA_VIDEO_SRC_TYPE = "videoSrcType";
+
+    public static final String EXTRA_SEX = "sex";
+    public static final String EXTRA_CONSTELLATION = "constellation";
+    public static final String EXTRA_VIEWER_NUM = "viewernum";
+    public static final String EXTRA_SIGNATURE = "signature";
+    public static final String EXTRA_ADDRESS = "address";
+    public static final String EXTRA_HEAD_IMAGE_PATH = "headimagepath";
+    public static final String EXTRA_PROGRAM_ID = "programid";
+    public static final String EXTRA_LIVE_TITLE = "livetitle";
+    public static final String EXTRA_SUBJECT = "subject";
+    public static final String EXTRA_LIVEPHONE = "livephone";
+    public static final String EXTRA_LEAVE_MODE = "leave_mode";
+    public static final String EXTRA_REPLAYID="replayid";
+    public static final String EXTRA_RECORDTIME="duration";
 }

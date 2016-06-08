@@ -1,6 +1,7 @@
 package com.showworld.live;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.showworld.live.main.Constants;
 import com.showworld.live.main.control.QavsdkControl;
@@ -13,19 +14,25 @@ import com.tencent.bugly.imsdk.crashreport.CrashReport;
  */
 public class SWLApplication extends Application {
 
+    private static Context sContext;
     private QavsdkControl mQavsdkControl = null;
     private UserInfo mSelfUserInfo;
     private boolean handleMemberRoomSuccess = false;
     private MemberInfo hostInfo;
     private int enterIndex;
 
+    public static Context getContext() {
+        return sContext;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
         mQavsdkControl = new QavsdkControl(this);
-        mSelfUserInfo = new UserInfo("123", 10, R.mipmap.user, 1000);
+        mSelfUserInfo = new UserInfo("123", 10, R.drawable.user, 1000);
         CrashReport.initCrashReport(this, "" + Constants.APPID, true);
-
+        sContext = this;
+        RequestManager.getInstance();
 //        DemoCache.setContext(this);
 //
 //        NIMClient.init(this, getLoginInfo(), getOptions());

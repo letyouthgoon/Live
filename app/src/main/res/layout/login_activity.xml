@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@mipmap/login_bg"
+    android:background="@drawable/login_bg"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -16,7 +16,7 @@
             android:id="@+id/account_bg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@mipmap/input_bg" />
+            android:background="@drawable/input_bg" />
 
         <ImageView
             android:id="@+id/person"
@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="29dp"
             android:layout_marginTop="13dp"
-            android:background="@mipmap/person" />
+            android:background="@drawable/person" />
 
         <EditText
             android:id="@+id/login_account"
@@ -54,7 +54,7 @@
             android:id="@+id/password_bg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@mipmap/input_bg" />
+            android:background="@drawable/input_bg" />
 
         <ImageView
             android:id="@+id/password"
@@ -62,7 +62,7 @@
             android:layout_height="23dp"
             android:layout_marginLeft="33dp"
             android:layout_marginTop="13dp"
-            android:background="@mipmap/password" />
+            android:background="@drawable/password" />
 
         <EditText
             android:id="@+id/login_smssig"
@@ -86,7 +86,7 @@
             android:layout_centerVertical="true"
             android:layout_gravity="center_vertical"
             android:layout_marginRight="1.66dp"
-            android:background="@mipmap/login_button_style"
+            android:background="@drawable/login_button_style"
             android:padding="5dp"
             android:text="获取验证码"
             android:textColor="@color/white" />
@@ -99,7 +99,7 @@
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
         android:layout_marginTop="27dp"
-        android:background="@mipmap/login_button_style"
+        android:background="@drawable/login_button_style"
         android:enabled="false"
         android:gravity="center"
         android:text="登录"

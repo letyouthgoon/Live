@@ -243,57 +243,57 @@ public class RegisterActivity extends Activity implements TextWatcher, View.OnCl
 
 
     public void onSmsRegisterInfo() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                JSONObject object = new JSONObject();
-                try {
-                    String phone = mUserPhoneEditText.getText().toString().trim();
-
-                    Log.d(TAG, "onSmsRegisterInfo phone " + phone + "  username " + phone);
-                    object.put(Constants.EXTRA_USER_PHONE, phone);
-                    object.put(Constants.EXTRA_USER_NAME, phone);
-                    object.put(Constants.EXTRA_PASSWORD, "null");
-                    System.out.println(object.toString());
-                    List<NameValuePair> list = new ArrayList<NameValuePair>();
-                    list.add(new BasicNameValuePair(Constants.JSON_KEY_DATA, object.toString()));
-                    Log.d(TAG, "run register in my own ");
-                    String response = HttpUtil.PostUrl(HttpUtil.registerUrl, list);
-                    Log.d(TAG, "run response" + response);
-                    response.indexOf("{");
-                    String substring = response.substring(response.indexOf("{"), response.length());
-                    Log.d(TAG, "run response222 " + substring);
-                    System.out.println(response);
-                    if (0 == substring.length()) {
-                        mErrorHandler.sendEmptyMessage(ERROR_INTERNET);
-                        return;
-                    }
-
-
-                    if (!response.endsWith("}")) {
-                        Log.e(TAG, "onSmsRegisterInfo response is not json style" + response);
-                        return;
-                    }
-                    JSONTokener jsonTokener = new JSONTokener(substring);
-                    JSONObject jsonObject = (JSONObject) jsonTokener.nextValue();
-                    int ret = jsonObject.getInt(Constants.JSON_KEY_CODE);
-                    if (260 == ret) {
-                        Intent intent = new Intent();
-                        intent.putExtra(Constants.EXTRA_USER_PHONE, userphone);
-                        setResult(RESULT_OK, intent);
-                        finish();
-                    } else if (562 == ret) {
-                        mErrorHandler.sendEmptyMessage(ERROR_ACCOUNT_EXIT);
-                    } else if (561 == ret) {
-                        mErrorHandler.sendEmptyMessage(ERROR_USERNAME_EXIT);
-                    } else {
-                        mErrorHandler.sendEmptyMessage(ERROR_REGISTER_FAIL);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                JSONObject object = new JSONObject();
+//                try {
+//                    String phone = mUserPhoneEditText.getText().toString().trim();
+//
+//                    Log.d(TAG, "onSmsRegisterInfo phone " + phone + "  username " + phone);
+//                    object.put(Constants.EXTRA_USER_PHONE, phone);
+//                    object.put(Constants.EXTRA_USER_NAME, phone);
+//                    object.put(Constants.EXTRA_PASSWORD, "null");
+//                    System.out.println(object.toString());
+//                    List<NameValuePair> list = new ArrayList<NameValuePair>();
+//                    list.add(new BasicNameValuePair(Constants.JSON_KEY_DATA, object.toString()));
+//                    Log.d(TAG, "run register in my own ");
+//                    String response = HttpUtil.PostUrl(HttpUtil.registerUrl, list);
+//                    Log.d(TAG, "run response" + response);
+//                    response.indexOf("{");
+//                    String substring = response.substring(response.indexOf("{"), response.length());
+//                    Log.d(TAG, "run response222 " + substring);
+//                    System.out.println(response);
+//                    if (0 == substring.length()) {
+//                        mErrorHandler.sendEmptyMessage(ERROR_INTERNET);
+//                        return;
+//                    }
+//
+//
+//                    if (!response.endsWith("}")) {
+//                        Log.e(TAG, "onSmsRegisterInfo response is not json style" + response);
+//                        return;
+//                    }
+//                    JSONTokener jsonTokener = new JSONTokener(substring);
+//                    JSONObject jsonObject = (JSONObject) jsonTokener.nextValue();
+//                    int ret = jsonObject.getInt(Constants.JSON_KEY_CODE);
+//                    if (260 == ret) {
+//                        Intent intent = new Intent();
+//                        intent.putExtra(Constants.EXTRA_USER_PHONE, userphone);
+//                        setResult(RESULT_OK, intent);
+//                        finish();
+//                    } else if (562 == ret) {
+//                        mErrorHandler.sendEmptyMessage(ERROR_ACCOUNT_EXIT);
+//                    } else if (561 == ret) {
+//                        mErrorHandler.sendEmptyMessage(ERROR_USERNAME_EXIT);
+//                    } else {
+//                        mErrorHandler.sendEmptyMessage(ERROR_REGISTER_FAIL);
+//                    }
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }).start();
     }
 
     private Boolean checkInput() {
