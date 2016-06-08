@@ -23,7 +23,7 @@ public class SWLApplication extends Application {
     public void onCreate() {
         super.onCreate();
         mQavsdkControl = new QavsdkControl(this);
-        mSelfUserInfo = new UserInfo("test", 10, R.mipmap.user, 1000);
+        mSelfUserInfo = new UserInfo("123", 10, R.mipmap.user, 1000);
         CrashReport.initCrashReport(this, "" + Constants.APPID, true);
 
 //        DemoCache.setContext(this);

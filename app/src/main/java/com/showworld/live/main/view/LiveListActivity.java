@@ -145,9 +145,9 @@ public class LiveListActivity extends TActivity implements AdapterView.OnItemCli
                 finish();
             }
             mLoginErrorCode = mQavsdkControl.startContext(phone, mSelfUserInfo.getUsersig());
-            if (mLoginErrorCode == AVError.AV_OK) {
-                Toast.makeText(this, "login failed!", Toast.LENGTH_LONG).show();
-            }
+//            if (mLoginErrorCode == AVError.AV_OK) {
+//                Toast.makeText(this, "login failed!", Toast.LENGTH_LONG).show();
+//            }
         }
 
 
@@ -175,7 +175,6 @@ public class LiveListActivity extends TActivity implements AdapterView.OnItemCli
             }
         } else {
             Toast.makeText(this, getString(R.string.notify_no_network), Toast.LENGTH_SHORT).show();
-
         }
     }
 }

@@ -27,6 +27,28 @@ public class Constants {
 
     public static final String LOCAL_PHONE = "phonenumber";
 
+    public static final String LOCAL_USERNAME = "username";
+
+    public static final String LOCAL_SEX = "sex";
+
+    public static final String LOCAL_CONSTELLATION = "UserConstellation";
+
+    public static final String LOCAL_PRAISECOUNT = "PraiseCount";
+
+    public static final String LOCAL_SIGNATURE = "UserSignature";
+
+    public static final String LOCAL_ADDR = "UserAddr";
+
+    public static final String LOCAL_HEAD_IMAGE_PATH = "HeadImagePath";
+
+    public static final String LOCAL_ENV = "Env";
+
+    public static final String LOCAL_USERSIG = "Usersig";
+
+    public static final String JSON_KEY_CODE = "code";
+    public static final int ENV_FORMAL = 0;
+    public static final int ENV_TEST = ENV_FORMAL + 1;
+
     //action
     private static final String PACKAGE = "com.showworld.live";
 
