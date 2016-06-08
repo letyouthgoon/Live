@@ -80,4 +80,6 @@ public class Constants {
     public static final String EXTRA_IDENTIFIER = "identifier";
     public static final String EXTRA_IS_ENABLE = "isEnable";
     public static final String EXTRA_IS_FRONT = "isFront";
+
+    public static final String EXTRA_VIDEO_SRC_TYPE = "videoSrcType";
 }

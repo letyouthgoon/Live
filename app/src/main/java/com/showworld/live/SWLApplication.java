@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.showworld.live.main.Constants;
 import com.showworld.live.main.control.QavsdkControl;
+import com.showworld.live.main.module.MemberInfo;
 import com.showworld.live.main.module.UserInfo;
 import com.tencent.bugly.imsdk.crashreport.CrashReport;
 
@@ -14,12 +15,15 @@ public class SWLApplication extends Application {
 
     private QavsdkControl mQavsdkControl = null;
     private UserInfo mSelfUserInfo;
+    private boolean handleMemberRoomSuccess = false;
+    private MemberInfo hostInfo;
+    private int enterIndex;
 
     @Override
     public void onCreate() {
         super.onCreate();
         mQavsdkControl = new QavsdkControl(this);
-        mSelfUserInfo = new UserInfo("test", 10, R.drawable.user, 1000);
+        mSelfUserInfo = new UserInfo("test", 10, R.mipmap.user, 1000);
         CrashReport.initCrashReport(this, "" + Constants.APPID, true);
 
 //        DemoCache.setContext(this);
@@ -43,12 +47,28 @@ public class SWLApplication extends Application {
 //        }
     }
 
+    public void enterPlusPlus() {
+        enterIndex++;
+    }
+
     public QavsdkControl getQavsdkControl() {
         return mQavsdkControl;
     }
 
     public UserInfo getMyselfUserInfo() {
         return mSelfUserInfo;
+    }
+
+    public boolean isHandleMemberRoomSuccess() {
+        return handleMemberRoomSuccess;
+    }
+
+    public MemberInfo getHostInfo() {
+        return hostInfo;
+    }
+
+    public int getEnterIndex() {
+        return enterIndex;
     }
 //
 //    private LoginInfo getLoginInfo() {
