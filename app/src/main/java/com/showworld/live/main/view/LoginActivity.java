@@ -38,6 +38,7 @@ import tencent.tls.platform.TLSLoginHelper;
 import tencent.tls.platform.TLSSmsLoginListener;
 import tencent.tls.platform.TLSUserInfo;
 
+
 /**
  * 登录界面
  */
@@ -164,10 +165,11 @@ public class LoginActivity extends TActivity implements TextWatcher, View.OnClic
                 onLogin();
                 break;
             case R.id.btn_register:
-                TIMManager.getInstance().setEnv(mSelfUserInfo.getEnv());
-                TIMManager.getInstance().init(getApplicationContext());
-                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-                startActivityForResult(intent, 1);
+                getUserInfo(mSelfUserInfo.getUsersig());
+//                TIMManager.getInstance().setEnv(mSelfUserInfo.getEnv());
+//                TIMManager.getInstance().init(getApplicationContext());
+//                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+//                startActivityForResult(intent, 1);
                 break;
             case R.id.smslogin:
                 //获取验证短信
@@ -357,8 +359,8 @@ public class LoginActivity extends TActivity implements TextWatcher, View.OnClic
                 //获取个人ID
                 String UserSig = loginHelper.getUserSig(tlsUserInfo.identifier);
                 Log.e(TAG, "important " + tlsUserInfo.identifier + " : " + UserSig);
-
-                getUserInfo(UserSig);
+                mSelfUserInfo.setUsersig(UserSig);
+//                getUserInfo(UserSig);
                 System.out.println(UserSig);
             }
 
@@ -381,21 +383,57 @@ public class LoginActivity extends TActivity implements TextWatcher, View.OnClic
      */
     public void getUserInfo(final String Usersig) {
 
+//        mSelfUserInfo.setUserPhone(mUserAccountEditText.getText().toString().trim());
+//        mSelfUserInfo.login(getApplicationContext(), mSelfUserInfo.getUserPhone());
+//        CrashReport.setUserId(mSelfUserInfo.getUserPhone());
+//        JSONObject sigobj = new JSONObject();
+//        try {
+//            sigobj.put("userphone", "18511807565");
+//            sigobj.put("username", "18511807565");
+//            sigobj.put("sex", "0");
+//            sigobj.put("constellation", "");
+//            sigobj.put("headimagepath", "");
+//            sigobj.put("address", "");
+//            sigobj.put("signature", "");
+//            sigobj.put("praisenum", 106);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        mSelfUserInfo.setUsersig(mSelfUserInfo.getUsersig());
+//        setUserInfo(sigobj, mUserAccountEditText.getText().toString().trim(), mSelfUserInfo.getUsersig());
+//        TIMManager.getInstance().setEnv(mSelfUserInfo.getEnv());
+//        TIMManager.getInstance().setLogLevel(TIMLogLevel.DEBUG);
+//        TIMManager.getInstance().init(getApplicationContext());
+//        startActivity(new Intent(LoginActivity.this, LiveListActivity.class));
+//        initImageDir();
+//        finish();
         appAction.login(mUserAccountEditText.getText().toString().trim(), new ActionCallbackListener<GetMemberInfoRet>() {
             @Override
             public void onSuccess(GetMemberInfoRet bean) {
-//                mSelfUserInfo.setUserPhone(userphone);
+                mSelfUserInfo.setUserPhone(mUserAccountEditText.getText().toString().trim());
                 mSelfUserInfo.login(getApplicationContext(), mSelfUserInfo.getUserPhone());
-//                CrashReport.setUserId(mSelfUserInfo.getUserPhone());
-//                JSONObject sigobj = jsonResult.getJSONObject("data");
-//                mSelfUserInfo.setUsersig(Usersig);
-//                setUserInfo(sigobj, userphone, Usersig);
-//                TIMManager.getInstance().setEnv(mSelfUserInfo.getEnv());
-//                TIMManager.getInstance().setLogLevel(TIMLogLevel.DEBUG);
-//                TIMManager.getInstance().init(getApplicationContext());
-//                startActivity(new Intent(LoginActivity.this, LiveListActivity.class));
-//                initImageDir();
-//                finish();
+                CrashReport.setUserId(mSelfUserInfo.getUserPhone());
+                JSONObject sigobj = new JSONObject();
+                try {
+                    sigobj.put("userphone", "18511807565");
+                    sigobj.put("username", "18511807565");
+                    sigobj.put("sex", "0");
+                    sigobj.put("constellation", "");
+                    sigobj.put("headimagepath", "");
+                    sigobj.put("address", "");
+                    sigobj.put("signature", "");
+                    sigobj.put("praisenum", 106);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                mSelfUserInfo.setUsersig(Usersig);
+                setUserInfo(sigobj, mUserAccountEditText.getText().toString().trim(), Usersig);
+                TIMManager.getInstance().setEnv(mSelfUserInfo.getEnv());
+                TIMManager.getInstance().setLogLevel(TIMLogLevel.DEBUG);
+                TIMManager.getInstance().init(getApplicationContext());
+                startActivity(new Intent(LoginActivity.this, LiveListActivity.class));
+                initImageDir();
+                finish();
             }
 
             @Override

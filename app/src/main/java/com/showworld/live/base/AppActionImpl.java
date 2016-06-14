@@ -12,6 +12,12 @@ import com.showworld.live.main.HttpUtil;
 import com.showworld.live.main.module.GetMemberInfoRet;
 import com.showworld.live.main.module.Params;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
 
 /**
  * AppAction接口的实现类
@@ -32,7 +38,7 @@ public class AppActionImpl implements AppAction {
         RequestManager.getInstance().addRequest(mTag, request);
     }
 
-    @Override
+
     public void cancelAll(Object tag) {
         RequestManager.getInstance().cancelAll(tag);
     }
@@ -43,7 +49,7 @@ public class AppActionImpl implements AppAction {
         Params.GetMemberInfoParam param = new Params.GetMemberInfoParam();
         param.userphone = userphone;
 
-        query(new GsonRequest<GetMemberInfoRet>(HttpUtil.UserInfoUrl, new Gson().toJson(param),
+        query(new GsonRequest<GetMemberInfoRet>(HttpUtil.UserInfoUrl, getParamsJson(new Gson().toJson(param)),
                 GetMemberInfoRet.class,
                 new Response.Listener<GetMemberInfoRet>() {
 
@@ -58,5 +64,39 @@ public class AppActionImpl implements AppAction {
                 actionCallbackListener.onFailure("", "");
             }
         }));
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("userphone", userphone);
+
+        query(new GsonRequest<GetMemberInfoRet>(HttpUtil.UserInfoUrl, getParamsJson1(params),
+                GetMemberInfoRet.class,
+                new Response.Listener<GetMemberInfoRet>() {
+
+                    @Override
+                    public void onResponse(GetMemberInfoRet bean) {
+                        actionCallbackListener.onSuccess(bean);
+                    }
+                }
+                , new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError arg0) {
+                actionCallbackListener.onFailure("", "");
+            }
+        }));
+    }
+
+    private String getParamsJson(String s) {
+        Params.BaseParam bp = new Params.BaseParam();
+        bp.data = s;
+        String ret = new Gson().toJson(bp);
+        return ret;
+    }
+
+    private JSONObject getParamsJson1(Map<String, String> map) {
+
+        JSONObject jsonObject = new JSONObject(map);
+        Map<String, String> real_params = new HashMap<String, String>();
+//        real_params.put("data", jsonObject.toString());
+        real_params.put("data", "{'userphone':'18511707565'}");
+        return new JSONObject(real_params);
     }
 }
