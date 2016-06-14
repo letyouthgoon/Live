@@ -45,7 +45,6 @@ public class Constants {
 
     public static final String LOCAL_USERSIG = "Usersig";
 
-    public static final String JSON_KEY_CODE = "code";
     public static final int ENV_FORMAL = 0;
     public static final int ENV_TEST = ENV_FORMAL + 1;
 
@@ -119,4 +118,8 @@ public class Constants {
     public static final String EXTRA_LEAVE_MODE = "leave_mode";
     public static final String EXTRA_REPLAYID="replayid";
     public static final String EXTRA_RECORDTIME="duration";
+
+    public static final String JSON_KEY_DATA = "data";
+    public static final String JSON_KEY_CODE = "code";
+
 }

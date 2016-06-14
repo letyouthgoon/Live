@@ -3,7 +3,11 @@ package com.showworld.live.main.module;
 
 import android.graphics.Bitmap;
 
-public class LiveInfo {
+import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
+
+public class LiveInfo  extends BasePojo{
     private UserInfo mUserInfo;
     private int mProgrammId;
     private String mLiveSubject;

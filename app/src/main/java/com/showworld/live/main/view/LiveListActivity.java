@@ -15,7 +15,10 @@ import android.widget.Toast;
 
 import com.showworld.live.R;
 import com.showworld.live.SWLApplication;
+import com.showworld.live.base.ActionCallbackListener;
 import com.showworld.live.base.ui.TActivity;
+import com.showworld.live.base.ui.TAdapterDelegate;
+import com.showworld.live.base.ui.TViewHolder;
 import com.showworld.live.base.util.NetworkUtil;
 import com.showworld.live.main.Constants;
 import com.showworld.live.main.control.QavsdkControl;
@@ -26,10 +29,13 @@ import com.tencent.av.sdk.AVError;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by alex on 2016/6/1.
  */
-public class LiveListActivity extends TActivity implements AdapterView.OnItemClickListener {
+public class LiveListActivity extends TActivity implements AdapterView.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
     private static final String TAG = "LiveListActivity";
     private int mLoginErrorCode = AVError.AV_OK;
     private SwipeRefreshLayout mLiveListSrl;
@@ -40,7 +46,7 @@ public class LiveListActivity extends TActivity implements AdapterView.OnItemCli
     private LiveInfo mLiveItem;
 
     private int mRoomNum;
-
+    private List<LiveInfo> mLiveList = new ArrayList<LiveInfo>();
     private boolean isFirst = true;
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -126,6 +132,7 @@ public class LiveListActivity extends TActivity implements AdapterView.OnItemCli
         mSelfUserInfo = mQavsdkApplication.getMyselfUserInfo();
         startContext();
         initView();
+        getLiveVideoList();
     }
 
     @Override
@@ -157,6 +164,19 @@ public class LiveListActivity extends TActivity implements AdapterView.OnItemCli
         mLiveListSrl = (SwipeRefreshLayout) findViewById(R.id.srl_live_list);
         mLiveListLv = (ListView) findViewById(R.id.lv_live_list);
         mLiveListLv.setOnItemClickListener(this);
+        mLiveAdapter = new LiveAdapter(getBaseContext(), R.layout.live_item, mLiveList, new TAdapterDelegate() {
+            @Override
+            public int getViewTypeCount() {
+                return 0;
+            }
+
+            @Override
+            public Class<? extends TViewHolder> viewHolderAtPosition(int position) {
+                return null;
+            }
+        });
+
+        mLiveListLv.setAdapter(mLiveAdapter);
     }
 
 
@@ -176,5 +196,79 @@ public class LiveListActivity extends TActivity implements AdapterView.OnItemCli
         } else {
             Toast.makeText(this, getString(R.string.notify_no_network), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void getLiveVideoList() {
+        appAction.getLiveVideoList(new ActionCallbackListener<LiveInfo>() {
+            @Override
+            public void onSuccess(LiveInfo data) {
+                mLiveAdapter.clear();
+                mLiveAdapter.addAll();
+            }
+
+            @Override
+            public void onFailure(String errorEvent, String message) {
+
+            }
+        });
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                String response = HttpUtil.PostUrl(HttpUtil.getLiveListUrl, new ArrayList<NameValuePair>());
+////                Log.d(TAG, "getLiveVideoList response  " + response);
+//                if (HttpUtil.FAIL == response.length()) {
+//                    Log.e(TAG, "response's length is 0");
+//                    return;
+//                }
+//                if (!response.endsWith("}")) {
+//                    Log.e(TAG, "run response is not json style" + response);
+//                    return;
+//                }
+//
+//                JSONTokener jsonTokener = new JSONTokener(response);
+////                Log.d(TAG, "getLiveVideoList response jsonTokener " + jsonTokener.toString() );
+//                try {
+//                    JSONObject object = (JSONObject) jsonTokener.nextValue();
+//                    int ret = object.getInt(Constants.JSON_KEY_CODE);
+//                    if (ret != HttpUtil.SUCCESS) {
+//                        Toast.makeText(LiveListActivity.this, "error: " + ret, Toast.LENGTH_SHORT).show();
+//                        return;
+//                    }
+//
+//                    JSONArray array = object.getJSONArray(Constants.JSON_KEY_DATA);
+//                    Message message = new Message();
+//                    List<LiveInfo> tmplist = new ArrayList<LiveInfo>();
+//                    for (int i = 0; i < array.length(); i++) {
+//                        JSONObject jobject = array.getJSONObject(i);
+//                        Log.i(TAG, "getLiveVideoList title:" + jobject.getString("subject") +
+//                                "name: " + jobject.getString("username") +
+//                                "id:" + jobject.getInt("programid") +
+//                                "loop:" + i);
+//
+//                        LiveInfo item = new LiveInfo(jobject.getInt(Constants.EXTRA_PROGRAM_ID),
+//                                jobject.getString(Constants.EXTRA_SUBJECT), R.drawable.user,
+//                                jobject.getInt(Constants.EXTRA_VIEWER_NUM), jobject.getInt(Constants.EXTRA_PRAISE_NUM),
+//                                new UserInfo(jobject.getString(Constants.EXTRA_USER_PHONE),
+//                                        jobject.getString(Constants.EXTRA_USER_NAME),
+//                                        jobject.getString("headimagepath")),
+//                                jobject.getString(Constants.EXTRA_GROUP_ID), "12345");
+//                        item.setCoverpath(jobject.getString("coverimagepath"));
+//                        Log.d(TAG, "getLiveVideoList " + item.getUserName() + " listsize " + tmplist.size());
+//                        tmplist.add(item);
+//                    }
+//                    message.what = REFRESH_ING;
+//                    message.obj = tmplist;
+//                    mHandler.sendMessage(message);
+////                        }
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }).start();
+    }
+
+    @Override
+    public void onRefresh() {
+        getLiveVideoList();
     }
 }

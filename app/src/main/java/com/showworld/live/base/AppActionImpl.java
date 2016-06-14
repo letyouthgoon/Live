@@ -9,7 +9,9 @@ import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.showworld.live.RequestManager;
 import com.showworld.live.main.HttpUtil;
+import com.showworld.live.main.module.BasePojo;
 import com.showworld.live.main.module.GetMemberInfoRet;
+import com.showworld.live.main.module.LiveInfo;
 import com.showworld.live.main.module.Params;
 
 import org.json.JSONException;
@@ -83,6 +85,23 @@ public class AppActionImpl implements AppAction {
             }
         }));
     }
+
+    @Override
+    public void getLiveVideoList(final ActionCallbackListener<LiveInfo> actionCallbackListener) {
+        query(new GsonRequest<LiveInfo>(HttpUtil.getLiveListUrl, "", LiveInfo.class, new Response.Listener<LiveInfo>() {
+            @Override
+            public void onResponse(LiveInfo bean) {
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }
+        ));
+    }
+
 
     private String getParamsJson(String s) {
         Params.BaseParam bp = new Params.BaseParam();
