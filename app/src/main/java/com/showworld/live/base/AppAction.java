@@ -7,6 +7,7 @@ package com.showworld.live.base;
 import com.showworld.live.main.module.BasePojo;
 import com.showworld.live.main.module.GetMemberInfoRet;
 import com.showworld.live.main.module.LiveInfo;
+import com.showworld.live.main.module.getLiveListRet;
 
 /**
  * 接收app层的各种Action
@@ -29,5 +30,5 @@ public interface AppAction {
      *
      * @param actionCallbackListener
      */
-    void getLiveVideoList(final ActionCallbackListener<LiveInfo> actionCallbackListener);
+    void getLiveVideoList(final ActionCallbackListener<getLiveListRet> actionCallbackListener);
 }

@@ -27,6 +27,7 @@ import com.showworld.live.base.ui.TAdapterDelegate;
 import com.showworld.live.main.HttpUtil;
 import com.showworld.live.main.module.LiveInfo;
 import com.showworld.live.main.module.UserInfo;
+import com.showworld.live.main.module.getLiveListRet;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -113,9 +114,12 @@ public class LiveAdapter extends TAdapter<LiveInfo> implements View.OnClickListe
     }
 
     public void clear() {
+        items.clear();
     }
 
-    public void addAll() {
+    public void addAll(List<LiveInfo> data) {
+        items = data;
+        notifyDataSetChanged();
     }
 
 

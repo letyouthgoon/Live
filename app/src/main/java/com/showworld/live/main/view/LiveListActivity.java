@@ -24,6 +24,7 @@ import com.showworld.live.main.Constants;
 import com.showworld.live.main.control.QavsdkControl;
 import com.showworld.live.main.module.LiveInfo;
 import com.showworld.live.main.module.UserInfo;
+import com.showworld.live.main.module.getLiveListRet;
 import com.tencent.av.sdk.AVError;
 
 import org.json.JSONException;
@@ -199,11 +200,24 @@ public class LiveListActivity extends TActivity implements AdapterView.OnItemCli
     }
 
     private void getLiveVideoList() {
-        appAction.getLiveVideoList(new ActionCallbackListener<LiveInfo>() {
+        appAction.getLiveVideoList(new ActionCallbackListener<getLiveListRet>() {
             @Override
-            public void onSuccess(LiveInfo data) {
+            public void onSuccess(getLiveListRet bean) {
                 mLiveAdapter.clear();
-                mLiveAdapter.addAll();
+                ArrayList<LiveInfo> array = new ArrayList<LiveInfo>();
+                for (int i = 0; i < bean.data.size(); i++) {
+                    getLiveListRet.Data retData = bean.data.get(i);
+                    LiveInfo item = new LiveInfo(retData.programid,
+                            retData.subject, R.drawable.user,
+                            retData.viewernum, retData.praisenum,
+                            new UserInfo(retData.userphone,
+                                    retData.username,
+                                    retData.headimagepath),
+                            retData.groupid, "12345");
+                    item.setCoverpath(retData.coverimagepath);
+                    array.add(item);
+                }
+                mLiveAdapter.addAll(array);
             }
 
             @Override

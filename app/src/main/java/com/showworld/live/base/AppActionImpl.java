@@ -9,12 +9,10 @@ import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.showworld.live.RequestManager;
 import com.showworld.live.main.HttpUtil;
-import com.showworld.live.main.module.BasePojo;
 import com.showworld.live.main.module.GetMemberInfoRet;
-import com.showworld.live.main.module.LiveInfo;
 import com.showworld.live.main.module.Params;
+import com.showworld.live.main.module.getLiveListRet;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -87,16 +85,16 @@ public class AppActionImpl implements AppAction {
     }
 
     @Override
-    public void getLiveVideoList(final ActionCallbackListener<LiveInfo> actionCallbackListener) {
-        query(new GsonRequest<LiveInfo>(HttpUtil.getLiveListUrl, "", LiveInfo.class, new Response.Listener<LiveInfo>() {
+    public void getLiveVideoList(final ActionCallbackListener<getLiveListRet> actionCallbackListener) {
+        query(new GsonRequest<getLiveListRet>(HttpUtil.getLiveListUrl, "", getLiveListRet.class, new Response.Listener<getLiveListRet>() {
             @Override
-            public void onResponse(LiveInfo bean) {
-
+            public void onResponse(getLiveListRet bean) {
+                actionCallbackListener.onSuccess(bean);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                actionCallbackListener.onFailure("", "");
             }
         }
         ));

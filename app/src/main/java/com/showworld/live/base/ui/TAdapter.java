@@ -14,9 +14,9 @@ import java.util.List;
 public class TAdapter<T> extends BaseAdapter {
 
     protected final Context context;
-    private final List<T> items;
-    private final LayoutInflater inflater;
-    private final TAdapterDelegate delegate;
+    public List<T> items;
+    public final LayoutInflater inflater;
+    public final TAdapterDelegate delegate;
 
     public TAdapter(Context context, List<T> items, TAdapterDelegate delegate) {
         this.context = context;
