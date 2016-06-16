@@ -6,6 +6,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
+import android.hardware.SensorManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -15,15 +17,26 @@ import android.os.PowerManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.OrientationEventListener;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.showworld.live.R;
 import com.showworld.live.SWLApplication;
 import com.showworld.live.base.ui.TActivity;
@@ -43,11 +56,13 @@ import com.tencent.TIMMessage;
 import com.tencent.TIMMessageListener;
 import com.tencent.TIMTextElem;
 import com.tencent.TIMValueCallBack;
+import com.tencent.av.sdk.AVAudioCtrl;
 import com.tencent.av.sdk.AVConstants;
 import com.tencent.av.sdk.AVEndpoint;
 import com.tencent.av.sdk.AVError;
 import com.tencent.av.sdk.AVRoomMulti;
 import com.tencent.av.sdk.AVView;
+import com.tencent.av.utils.PhoneStatusTools;
 import com.tencent.open.utils.Util;
 
 import java.io.UnsupportedEncodingException;
@@ -62,7 +77,7 @@ import java.util.TimerTask;
  * Created by alex on 2016/6/1.
  * 直播界面
  */
-public class LiveActivity extends TActivity {
+public class LiveActivity extends TActivity implements View.OnClickListener {
 
     private static final String TAG = "AvActivity";
     private static final String UNREAD = "0";
@@ -79,6 +94,7 @@ public class LiveActivity extends TActivity {
     private static final int MEMBER_ENTER_MSG = 2;
     private static final int ERROR_MESSAGE_TOO_LONG = 0x1;
     private static final int ERROR_ACCOUNT_NOT_EXIT = ERROR_MESSAGE_TOO_LONG + 1;
+    private static final int MAX_REQUEST_VIEW_COUNT = 3;//当前最大支持请求画面个数
 
     private TIMConversation mConversation;
     private PowerManager.WakeLock wakeLock;
@@ -86,7 +102,7 @@ public class LiveActivity extends TActivity {
     private SWLApplication mQavsdkApplication;
     private QavsdkControl mQavsdkControl;
     private UserInfo mSelfUserInfo;
-    private EditText mEditTextInputMsg;
+//    private EditText mEditTextInputMsg;
     private boolean mIsSuccess = false;
     private Timer mVideoTimer;
     private VideoTimerTask mVideoTimerTask;
@@ -109,11 +125,17 @@ public class LiveActivity extends TActivity {
     private int praiseNum;
     private TIMConversation mSystemConversation, testConversation;
     ArrayList<MemberInfo> mMemberList, mVideoMemberList, mNormalMemberList;
-    private ListView mListViewMsgItems;
+//    private ListView mListViewMsgItems;
     private AVView mRequestViewList[] = null;
     private String mRequestIdentifierList[] = null;
-    private ImageButton mButtonPraise;
-    private TextView mPraiseNum;
+//    private ImageButton mButtonPraise;
+    private int roomNum;
+//    private TextView mPraiseNum;
+//    private Button mButtonSendMsg;
+    private Dialog dialog;
+
+    private InputMethodManager mInputKeyBoard;
+    private int groupForPush;
     private Handler mHandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(android.os.Message msg) {
@@ -121,7 +143,7 @@ public class LiveActivity extends TActivity {
                 case REFRESH_PRAISE:
                     if (praiseNum == 0)
                         praiseNum++;
-                    mPraiseNum.setText("" + praiseNum);
+//                    mPraiseNum.setText("" + praiseNum);
                     break;
 //                case IM_HOST_LEAVE:
 ////                    onMemberExit();
@@ -187,8 +209,13 @@ public class LiveActivity extends TActivity {
             return false;
         }
     };
-    private Button mButtonSendMsg;
-    private Dialog dialog;
+    private OrientationEventListener mOrientationEventListener = null;
+    private int mRotationAngle = 0;
+
+    @Override
+    public void onClick(View v) {
+
+    }
 
     private class VideoTimerTask extends TimerTask {
         public void run() {
@@ -258,7 +285,7 @@ public class LiveActivity extends TActivity {
 //                mQavsdkControl.toggleEnableCamera();
                 if (mSelfUserInfo.isCreater()) {
                     initTIMGroup();
-                    mEditTextInputMsg.setClickable(true);
+//                    mEditTextInputMsg.setClickable(true);
                     mIsSuccess = true;
                     mVideoTimer = new Timer(true);
                     mVideoTimerTask = new VideoTimerTask();
@@ -303,7 +330,7 @@ public class LiveActivity extends TActivity {
                 joinGroup();
                 initTIMGroup();
                 mIsSuccess = true;
-                mEditTextInputMsg.setClickable(true);
+//                mEditTextInputMsg.setClickable(true);
                 //获取群组成员信息
                 getMemberInfo();
                 //发消息通知大家 自己上线了
@@ -426,9 +453,224 @@ public class LiveActivity extends TActivity {
         } else {
             finish();
         }
+        mQavsdkControl.setRequestCount(0);
+        mSelfUserInfo = mQavsdkApplication.getMyselfUserInfo();
+        mMemberList = mQavsdkControl.getMemberList();
+        mNormalMemberList = copyToNormalMember();
+        mVideoMemberList = new ArrayList<MemberInfo>();
+        roomNum = getIntent().getExtras().getInt(Constants.EXTRA_ROOM_NUM);
+        groupForPush = roomNum;
+        mRecvIdentifier = "" + roomNum;
+        mHostIdentifier = getIntent().getExtras().getString(Constants.EXTRA_SELF_IDENTIFIER);
+        groupId = getIntent().getExtras().getString(Constants.EXTRA_GROUP_ID);
+        if (!mSelfUserInfo.isCreater()) {
+            praiseNum = getIntent().getExtras().getInt(Constants.EXTRA_PRAISE_NUM);
+        }
+        mIsSuccess = false;
+        mRequestIdentifierList = new String[MAX_REQUEST_VIEW_COUNT];
+        mRequestViewList = new AVView[MAX_REQUEST_VIEW_COUNT];
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
+                this).threadPriority(Thread.NORM_PRIORITY - 2)
+                .denyCacheImageMultipleSizesInMemory()
+                .discCacheFileNameGenerator(new Md5FileNameGenerator())
+                .tasksProcessingOrder(QueueProcessingType.LIFO)
+                .writeDebugLogs().build();
+        ImageLoader.getInstance().init(config);
+        initView();
 
+//        initShowTips();
+        registerOrientationListener();
     }
 
+    private void initView() {
+//        ImageButton mButtonSwitchCamera;
+//        hostHead = (CircularImageButton) findViewById(R.id.host_head);
+//        mButtonMute = (ImageButton) findViewById(R.id.mic_btn);
+//        mButtonBeauty = (TextView) findViewById(R.id.beauty_btn);
+//        mButtonBeauty.setOnClickListener(this);
+//        mButtonSwitchCamera = (ImageButton) findViewById(R.id.qav_topbar_switchcamera);
+//        mListViewMsgItems = (ListView) findViewById(R.id.im_msg_items);
+//        mEditTextInputMsg = (EditText) findViewById(R.id.qav_bottombar_msg_input);
+//        mBeautySettings = (LinearLayout) findViewById(R.id.qav_beauty_setting);
+//        mBeautyConfirm = (TextView) findViewById(R.id.qav_beauty_setting_finish);
+//        mBeautyConfirm.setOnClickListener(this);
+//        mBottomBar = (FrameLayout) findViewById(R.id.qav_bottom_bar);
+//        mBeautyBar = (SeekBar) (findViewById(R.id.qav_beauty_progress));
+//        mBeautyBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+//
+//            @Override
+//            public void onStopTrackingTouch(SeekBar seekBar) {
+//                // TODO Auto-generated method stub
+//                Log.d("SeekBar", "onStopTrackingTouch");
+//                Toast.makeText(AvActivity.this, "beauty " + mBeautyRate + "%", Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onStartTrackingTouch(SeekBar seekBar) {
+//                // TODO Auto-generated method stub
+//                Log.d("SeekBar", "onStartTrackingTouch");
+//            }
+//
+//            @Override
+//            public void onProgressChanged(SeekBar seekBar, int progress,
+//                                          boolean fromUser) {
+//                // TODO Auto-generated method stub
+//                mBeautyRate = progress;
+//                mQavsdkControl.getAVContext().getVideoCtrl().inputBeautyParam(getBeautyProgress(progress));
+//
+//            }
+//        });
+
+
+//        mInviteMastk1 = (FrameLayout) findViewById(R.id.inviteMaskItem1);
+//        mInviteMastk2 = (FrameLayout) findViewById(R.id.inviteMaskItem2);
+//        mInviteMastk3 = (FrameLayout) findViewById(R.id.inviteMaskItem3);
+//        mVideoHead1 = (ImageView) findViewById(R.id.inviteMaskHead1);
+//        mVideoHead2 = (ImageView) findViewById(R.id.inviteMaskHead2);
+//        mVideoHead3 = (ImageView) findViewById(R.id.inviteMaskHead3);
+//        mInviteMastk1.setVisibility(View.GONE);
+//        mInviteMastk2.setVisibility(View.GONE);
+//        mInviteMastk3.setVisibility(View.GONE);
+
+//        mEditTextInputMsg.setOnClickListener(this);
+
+//        findViewById(R.id.qav_topbar_hangup).setOnClickListener(this);
+        findViewById(R.id.qav_topbar_push).setOnClickListener(this);
+        findViewById(R.id.qav_topbar_record).setOnClickListener(this);
+        findViewById(R.id.qav_topbar_streamtype).setOnClickListener(this);
+        if (!mSelfUserInfo.isCreater()) {
+            findViewById(R.id.qav_topbar_push).setVisibility(View.GONE);
+            findViewById(R.id.qav_topbar_streamtype).setVisibility(View.GONE);
+            findViewById(R.id.qav_topbar_record).setVisibility(View.GONE);
+        }
+//        praiseLayout = (LinearLayout) findViewById(R.id.praise_layout);
+//        mButtonSendMsg = (Button) findViewById(R.id.qav_bottombar_send_msg);
+//        mButtonSendMsg.setOnClickListener(this);
+//        mClockTextView = (TextView) findViewById(R.id.qav_timer);
+//        mPraiseNum = (TextView) findViewById(R.id.text_view_live_praise);
+//        mMemberListButton = (TextView) findViewById(R.id.btn_member_list);
+//        mMemberListButton.setOnClickListener(this);
+//        mButtonPraise = (ImageButton) findViewById(R.id.image_btn_praise);
+//        mButtonPraise.setOnClickListener(this);
+
+        if (mSelfUserInfo.isCreater()) {
+//            mButtonMute.setOnClickListener(this);
+//            mButtonSwitchCamera.setOnClickListener(this);
+            AVAudioCtrl avAudioCtrl = mQavsdkControl.getAVContext().getAudioCtrl();
+//            avAudioCtrl.enableMic(false);
+            avAudioCtrl.enableMic(true);
+//            mButtonPraise.setEnabled(false);
+        } else {
+//            mButtonSwitchCamera.setOnClickListener(this);
+            mQavsdkControl.getAVContext().getAudioCtrl().enableMic(false);
+//            mPraiseNum.setText("" + praiseNum);
+//            mButtonMute.setVisibility(View.GONE);
+//            mButtonSwitchCamera.setVisibility(View.GONE);
+        }
+
+        //不熄屏
+        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        wakeLock = pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "TAG");
+
+        //默认不显示键盘
+        mInputKeyBoard = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
+        findViewById(R.id.av_screen_layout).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                hideMsgIputKeyboard();
+//                mEditTextInputMsg.setVisibility(View.VISIBLE);
+                return false;
+            }
+        });
+
+        mVideoTimer = new Timer(true);
+        mHeartClickTimer = new Timer(true);
+
+
+//        tvTipsMsg = (TextView) findViewById(R.id.qav_tips_msg);
+//        tvTipsMsg.setTextColor(Color.GREEN);
+//        tvShowTips = (TextView) findViewById(R.id.param_video);
+//        tvShowTips.setOnClickListener(this);
+//        timer.schedule(task, TIMER_INTERVAL, TIMER_INTERVAL);
+    }
+
+    public boolean hideMsgIputKeyboard() {
+        if (getWindow().getAttributes().softInputMode != WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) {
+            if (getCurrentFocus() != null) {
+                mInputKeyBoard.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    class VideoOrientationEventListener extends OrientationEventListener {
+        boolean mbIsTablet = false;
+
+        public VideoOrientationEventListener(Context context, int rate) {
+            super(context, rate);
+            mbIsTablet = PhoneStatusTools.isTablet(context);
+        }
+
+        int mLastOrientation = -25;
+
+        @Override
+        public void onOrientationChanged(int orientation) {
+            if (orientation == OrientationEventListener.ORIENTATION_UNKNOWN) {
+                mLastOrientation = orientation;
+                return;
+            }
+
+            if (mLastOrientation < 0) {
+                mLastOrientation = 0;
+            }
+
+            if (((orientation - mLastOrientation) < 20)
+                    && ((orientation - mLastOrientation) > -20)) {
+                return;
+            }
+
+            if (mbIsTablet) {
+                orientation -= 90;
+                if (orientation < 0) {
+                    orientation += 360;
+                }
+            }
+            mLastOrientation = orientation;
+
+            if (orientation > 314 || orientation < 45) {
+                if (mQavsdkControl != null) {
+                    mQavsdkControl.setRotation(0);
+                }
+                mRotationAngle = 0;
+            } else if (orientation > 44 && orientation < 135) {
+                if (mQavsdkControl != null) {
+                    mQavsdkControl.setRotation(90);
+                }
+                mRotationAngle = 90;
+            } else if (orientation > 134 && orientation < 225) {
+                if (mQavsdkControl != null) {
+                    mQavsdkControl.setRotation(180);
+                }
+                mRotationAngle = 180;
+            } else {
+                if (mQavsdkControl != null) {
+                    mQavsdkControl.setRotation(270);
+                }
+                mRotationAngle = 270;
+            }
+        }
+    }
+
+    void registerOrientationListener() {
+        if (mOrientationEventListener == null) {
+            mOrientationEventListener = new VideoOrientationEventListener(super.getApplicationContext(), SensorManager.SENSOR_DELAY_UI);
+        }
+    }
 
     private void registerBroadcastReceiver() {
         IntentFilter intentFilter = new IntentFilter();
@@ -464,37 +706,37 @@ public class LiveActivity extends TActivity {
 //        testConversation = TIMManager.getInstance().getConversation(TIMConversationType.C2C, "18602833226");
         mArrayListChatEntity = new ArrayList<ChatEntity>();
         mChatMsgListAdapter = new ChatMsgListAdapter(this, mArrayListChatEntity, mMemberList, mSelfUserInfo);
-        mListViewMsgItems.setAdapter(mChatMsgListAdapter);
-        if (mListViewMsgItems.getCount() > 1)
-            mListViewMsgItems.setSelection(mListViewMsgItems.getCount() - 1);
-        mListViewMsgItems.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
+//        mListViewMsgItems.setAdapter(mChatMsgListAdapter);
+//        if (mListViewMsgItems.getCount() > 1)
+//            mListViewMsgItems.setSelection(mListViewMsgItems.getCount() - 1);
+//        mListViewMsgItems.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
 //                hideMsgIputKeyboard();
 //                mEditTextInputMsg.setVisibility(View.VISIBLE);
-                return false;
-            }
-        });
-
-        mListViewMsgItems.setOnScrollListener(new AbsListView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-                switch (scrollState) {
-                    case AbsListView.OnScrollListener.SCROLL_STATE_IDLE:
-//                        if (view.getFirstVisiblePosition() == 0 && !mIsLoading && bMore) {
-//                            bNeverLoadMore = false;
-//                            mIsLoading = true;
-//                            mLoadMsgNum += MAX_PAGE_NUM;
-////							getMessage();
-//                        }
-                        break;
-                }
-            }
-
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-            }
-        });
+////                return false;
+////            }
+////        });
+////
+////        mListViewMsgItems.setOnScrollListener(new AbsListView.OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(AbsListView view, int scrollState) {
+//                switch (scrollState) {
+//                    case AbsListView.OnScrollListener.SCROLL_STATE_IDLE:
+////                        if (view.getFirstVisiblePosition() == 0 && !mIsLoading && bMore) {
+////                            bNeverLoadMore = false;
+////                            mIsLoading = true;
+////                            mLoadMsgNum += MAX_PAGE_NUM;
+//////							getMessage();
+////                        }
+//                        break;
+//                }
+//            }
+//
+//            @Override
+//            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+//            }
+//        });
 //        getMessage();
 
         TIMManager.getInstance().addMessageListener(msgListener);
@@ -575,10 +817,10 @@ public class LiveActivity extends TActivity {
                     .putExtra(Constants.EXTRA_VIDEO_SRC_TYPE, view.videoSrcType));
 
         } else {
-            mEditTextInputMsg.setVisibility(View.GONE);
-            mButtonSendMsg.setVisibility(View.GONE);
-            mPraiseNum.setVisibility(View.GONE);
-            mButtonPraise.setVisibility(View.GONE);
+//            mEditTextInputMsg.setVisibility(View.GONE);
+//            mButtonSendMsg.setVisibility(View.GONE);
+//            mPraiseNum.setVisibility(View.GONE);
+//            mButtonPraise.setVisibility(View.GONE);
 
 //            dialog = new Dialog(this, R.style.dialog);
 //            dialog.setContentView(R.layout.alert_dialog);
@@ -635,10 +877,10 @@ public class LiveActivity extends TActivity {
                     .putExtra(Constants.EXTRA_IDENTIFIER, identifier)
                     .putExtra(Constants.EXTRA_VIDEO_SRC_TYPE, view.videoSrcType));
         } else {
-            mEditTextInputMsg.setVisibility(View.GONE);
-            mButtonSendMsg.setVisibility(View.GONE);
-            mPraiseNum.setVisibility(View.GONE);
-            mButtonPraise.setVisibility(View.GONE);
+//            mEditTextInputMsg.setVisibility(View.GONE);
+//            mButtonSendMsg.setVisibility(View.GONE);
+//            mPraiseNum.setVisibility(View.GONE);
+//            mButtonPraise.setVisibility(View.GONE);
 
 //            dialog = new Dialog(this, R.style.dialog);
 //            dialog.setContentView(R.layout.alert_dialog);
@@ -773,5 +1015,13 @@ public class LiveActivity extends TActivity {
 //                getMessage();
             }
         });
+    }
+
+    public ArrayList<MemberInfo> copyToNormalMember() {
+        mNormalMemberList = new ArrayList<MemberInfo>();
+        for (MemberInfo member : mMemberList) {
+            mNormalMemberList.add(member);
+        }
+        return mNormalMemberList;
     }
 }

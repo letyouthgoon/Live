@@ -8,11 +8,14 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.showworld.live.RequestManager;
+import com.showworld.live.main.Constants;
 import com.showworld.live.main.HttpUtil;
+import com.showworld.live.main.module.BasePojo;
 import com.showworld.live.main.module.GetMemberInfoRet;
 import com.showworld.live.main.module.Params;
 import com.showworld.live.main.module.getLiveListRet;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -115,5 +118,33 @@ public class AppActionImpl implements AppAction {
 //        real_params.put("data", jsonObject.toString());
         real_params.put("data", "{'userphone':'18511707565'}");
         return new JSONObject(real_params);
+    }
+
+    @Override
+    public void enterRoom(int mRoomNum, String userPhone, final ActionCallbackListener<BasePojo> actionCallbackListener) {
+
+        Params.enterRoomParam param = new Params.enterRoomParam();
+        JSONObject object = new JSONObject();
+        try {
+            object.put(Constants.EXTRA_ROOM_NUM, mRoomNum);
+            object.put(Constants.EXTRA_USER_PHONE, userPhone);
+            param.viewerdata = object.toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        query(new GsonRequest<BasePojo>(HttpUtil.enterRoomUrl, new Gson().toJson(param),
+                BasePojo.class, new Response.Listener<BasePojo>() {
+            @Override
+            public void onResponse(BasePojo bean) {
+                actionCallbackListener.onSuccess(bean);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                actionCallbackListener.onFailure("", "");
+            }
+        }
+        ));
     }
 }

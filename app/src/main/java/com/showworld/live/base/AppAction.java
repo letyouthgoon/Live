@@ -31,4 +31,6 @@ public interface AppAction {
      * @param actionCallbackListener
      */
     void getLiveVideoList(final ActionCallbackListener<getLiveListRet> actionCallbackListener);
+
+    void enterRoom(int mRoomNum, String userPhone, ActionCallbackListener<BasePojo> actionCallbackListener);
 }

@@ -26,4 +26,10 @@ public class Params extends BasePojo {
         public String userphone;
     }
 
+    public static class enterRoomParam {
+
+        @SerializedName("viewerdata")
+        public String viewerdata;
+    }
+
 }
