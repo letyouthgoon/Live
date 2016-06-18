@@ -50,6 +50,7 @@ import com.tencent.TIMCallBack;
 import com.tencent.TIMConversation;
 import com.tencent.TIMConversationType;
 import com.tencent.TIMCustomElem;
+import com.tencent.TIMElem;
 import com.tencent.TIMGroupManager;
 import com.tencent.TIMManager;
 import com.tencent.TIMMessage;
@@ -91,10 +92,34 @@ public class LiveActivity extends TActivity implements View.OnClickListener {
     private static final int IM_HOST_LEAVE = START_RECORD + 1;
     private static final int GET_ROOM_INFO = IM_HOST_LEAVE + 1;
     private static final int REFRESH_PRAISE = GET_ROOM_INFO + 1;
+    private static final int PRIASE_MSG = 1;
     private static final int MEMBER_ENTER_MSG = 2;
+    private static final int MEMBER_EXIT_MSG = 3;
+    private static final int VIDEOCHAT_INVITE = 4;
+    private static final int YES_I_JOIN = 5;
+    private static final int NO_I_REFUSE = 6;
+    private static final int MUTEVOICE = 7;
+    private static final int UNMUTEVOICE = 8;
+    private static final int MUTEVIDEO = 9;
+    private static final int UNMUTEVIDEO = 10;
+    private static final int CLOSEVIDEOSEND = 11;
     private static final int ERROR_MESSAGE_TOO_LONG = 0x1;
     private static final int ERROR_ACCOUNT_NOT_EXIT = ERROR_MESSAGE_TOO_LONG + 1;
     private static final int MAX_REQUEST_VIEW_COUNT = 3;//当前最大支持请求画面个数
+    private static boolean LEVAE_MODE = false;
+    private static boolean hasPullMemberList = false;
+
+    private static final int DIALOG_INIT = 0;
+    private static final int DIALOG_AT_ON_CAMERA = DIALOG_INIT + 1;
+    private static final int DIALOG_ON_CAMERA_FAILED = DIALOG_AT_ON_CAMERA + 1;
+    private static final int DIALOG_AT_OFF_CAMERA = DIALOG_ON_CAMERA_FAILED + 1;
+    private static final int DIALOG_OFF_CAMERA_FAILED = DIALOG_AT_OFF_CAMERA + 1;
+    private static final int DIALOG_AT_SWITCH_FRONT_CAMERA = DIALOG_OFF_CAMERA_FAILED + 1;
+    private static final int DIALOG_SWITCH_FRONT_CAMERA_FAILED = DIALOG_AT_SWITCH_FRONT_CAMERA + 1;
+    private static final int DIALOG_AT_SWITCH_BACK_CAMERA = DIALOG_SWITCH_FRONT_CAMERA_FAILED + 1;
+    private static final int DIALOG_SWITCH_BACK_CAMERA_FAILED = DIALOG_AT_SWITCH_BACK_CAMERA + 1;
+    private static final int DIALOG_DESTROY = DIALOG_SWITCH_BACK_CAMERA_FAILED + 1;
+
 
     private TIMConversation mConversation;
     private PowerManager.WakeLock wakeLock;
@@ -102,7 +127,7 @@ public class LiveActivity extends TActivity implements View.OnClickListener {
     private SWLApplication mQavsdkApplication;
     private QavsdkControl mQavsdkControl;
     private UserInfo mSelfUserInfo;
-//    private EditText mEditTextInputMsg;
+    //    private EditText mEditTextInputMsg;
     private boolean mIsSuccess = false;
     private Timer mVideoTimer;
     private VideoTimerTask mVideoTimerTask;
@@ -125,15 +150,20 @@ public class LiveActivity extends TActivity implements View.OnClickListener {
     private int praiseNum;
     private TIMConversation mSystemConversation, testConversation;
     ArrayList<MemberInfo> mMemberList, mVideoMemberList, mNormalMemberList;
-//    private ListView mListViewMsgItems;
+    //    private ListView mListViewMsgItems;
     private AVView mRequestViewList[] = null;
     private String mRequestIdentifierList[] = null;
-//    private ImageButton mButtonPraise;
+    //    private ImageButton mButtonPraise;
     private int roomNum;
-//    private TextView mPraiseNum;
+    //    private TextView mPraiseNum;
 //    private Button mButtonSendMsg;
-    private Dialog dialog;
+    private ArrayList<ChatEntity> mArrayListChatEntity;
+    private ChatMsgListAdapter mChatMsgListAdapter;
 
+
+    private Dialog dialog;
+    private Boolean OpenVoice = false;
+    private int mMaskViewCount = 0;
     private InputMethodManager mInputKeyBoard;
     private int groupForPush;
     private Handler mHandler = new Handler(new Handler.Callback() {
@@ -189,9 +219,158 @@ public class LiveActivity extends TActivity implements View.OnClickListener {
             return false;
         }
     });
-    private ArrayList<ChatEntity> mArrayListChatEntity;
-    private ChatMsgListAdapter mChatMsgListAdapter;
 
+    private void handleCustomMsg(TIMElem elem) {
+        Log.i(TAG, " inviteVC handleCustomMsg  ");
+        try {
+            String customText = new String(((TIMCustomElem) elem).getData(), "UTF-8");
+            Log.i(TAG, " inviteVC handleCustomMsg  :" + customText);
+            String splitItems[] = customText.split("&");
+//            if(splitItems.length<=3){
+//                splitItems[3]="";
+//            }
+            int cmd = Integer.parseInt(splitItems[1]);
+            for (int i = 0; i < splitItems.length; ++i) {
+                Log.d(TAG, " splitItems :" + splitItems[i] + " loop " + i);
+            }
+            switch (cmd) {
+//                case PRIASE_MSG:
+//                    int num = Integer.parseInt(splitItems[2]);
+//                    praiseNum += num;
+//                    mPraiseNum.setText("" + praiseNum);
+//                    break;
+                //用户登录消息
+                case MEMBER_ENTER_MSG:
+                    boolean isExist = false;
+                    //判断是否已经群组存在
+                    for (int i = 0; i < mMemberList.size(); ++i) {
+
+                        String userPhone = mMemberList.get(i).getUserPhone();
+                        if (userPhone.equals(splitItems[0])) {
+                            isExist = true;
+                            Log.d(TAG, " willguo handleCustomMsg isExist = true  ");
+                            break;
+                        }
+                    }
+                    //不存在增加
+                    if (!isExist) {
+                        Log.d(TAG, "willguo handleCustomMsg  isExist = false");
+                        MemberInfo member = null;
+                        //包含完整信息
+                        if (splitItems.length <= 3) {
+                            member = new MemberInfo(splitItems[0], splitItems[2], "");
+                        } else {
+                            member = new MemberInfo(splitItems[0], splitItems[2], splitItems[3]);
+                        }
+                        if (!member.getUserPhone().equals(mSelfUserInfo.getUserPhone())) {
+                            mMemberList.add(member);
+                            mNormalMemberList.add(member);
+//                            mMemberListButton.setText("" + mMemberList.size());
+                        }
+//                        updateMemberHeadImage();
+                        mHandler.sendEmptyMessage(UPDAT_MEMBER);
+                    }
+                    break;
+                //用户登出消息
+                case MEMBER_EXIT_MSG:
+                    for (int i = 0; i < mMemberList.size(); ++i) {
+                        String userPhone = mMemberList.get(i).getUserPhone();
+                        if (userPhone.equals(splitItems[0])) {
+                            Log.d(TAG, "handleCustomMsg member leave userPhone " + userPhone);
+
+                            mQavsdkControl.closeMemberView(userPhone);
+                            mMemberList.remove(i);
+                            viewIndexRemove(userPhone);
+                            MemberInfo member = findMemberInfo(mVideoMemberList, userPhone);
+                            if (member != null) {
+                                Log.d(TAG, "before  mVideoMemberList remove   " + mVideoMemberList.size());
+                                mVideoMemberList.remove(member);
+                                Log.d(TAG, "after mVideoMemberList remove " + mVideoMemberList.size());
+
+                            } else {
+                                MemberInfo normalMember = findMemberInfo(mNormalMemberList, userPhone);
+                                mNormalMemberList.remove(normalMember);
+                            }
+//                            mMemberListButton.setText("" + mMemberList.size());
+
+                        }
+                    }
+                    updateMemberView();
+                    break;
+//                case VIDEOCHAT_INVITE:
+//                    showInviteDialog();
+//                    break;
+//                case YES_I_JOIN:
+//                    //对方答应加入
+//                    String memberIdentifier = splitItems[0];
+//                    Log.i(TAG, "handleCustomMsg YES_I_JOIN+ " + memberIdentifier);
+//                    upMemberLevel(memberIdentifier);
+////                    acceptHideMaskView(memberIdentifier);
+//                    requestMultiView(memberIdentifier);
+//                    acceptHideMaskView(memberIdentifier);
+//                    break;
+//                case NO_I_REFUSE:
+//                    String memberIdentifier2 = splitItems[0];
+//                    //
+//                    refuseHideMaskView(memberIdentifier2);
+//                    Toast.makeText(AvActivity.this, memberIdentifier2 + "memberIdentifier2 refuese !", Toast.LENGTH_SHORT).show();
+//                    break;
+                case MUTEVOICE:
+                    AVAudioCtrl avAudioCtrl = mQavsdkControl.getAVContext().getAudioCtrl();
+                    if (!OpenVoice) {
+                        Toast.makeText(LiveActivity.this, "host open your voice ", Toast.LENGTH_SHORT).show();
+                        avAudioCtrl.enableMic(true);
+                        OpenVoice = true;
+                    } else {
+                        Toast.makeText(LiveActivity.this, "host close your voice ", Toast.LENGTH_SHORT).show();
+                        avAudioCtrl.enableMic(false);
+                        OpenVoice = false;
+                    }
+                    //关闭Mic
+                    break;
+                case UNMUTEVOICE:
+                    Toast.makeText(LiveActivity.this, "host allow your voice again ", Toast.LENGTH_SHORT).show();
+                    //开启Mic
+                    AVAudioCtrl avAudioCtrl2 = mQavsdkControl.getAVContext().getAudioCtrl();
+                    avAudioCtrl2.enableMic(true);
+                    break;
+                case MUTEVIDEO:
+                    if (!mQavsdkControl.getIsEnableCamera()) {
+                        //打开你的视频
+                        Toast.makeText(LiveActivity.this, "host open your camera  ", Toast.LENGTH_SHORT).show();
+                        mQavsdkControl.toggleEnableCamera();
+                    } else {
+                        //关闭你的视频
+                        Toast.makeText(LiveActivity.this, "host close your camera ", Toast.LENGTH_SHORT).show();
+                        mQavsdkControl.toggleEnableCamera();
+                    }
+                    break;
+                case UNMUTEVIDEO:
+                    Toast.makeText(LiveActivity.this, "host allow your video again ", Toast.LENGTH_SHORT).show();
+                    //开启Video
+//                    if (mQavsdkControl.getIsInOnOffCamera() == false) {
+                    mQavsdkControl.toggleEnableCamera();
+//                    }
+                    break;
+                case CLOSEVIDEOSEND:
+//                    if (inviteDialog != null && inviteDialog.isShowing())
+//                        inviteDialog.dismiss();
+                    Toast.makeText(LiveActivity.this, "host close your video  ", Toast.LENGTH_SHORT).show();
+
+                    if (mQavsdkControl.getIsEnableCamera() == true) {
+                        mQavsdkControl.toggleEnableCamera();
+                    }
+                    AVAudioCtrl avAudioCtrl3 = mQavsdkControl.getAVContext().getAudioCtrl();
+                    avAudioCtrl3.enableMic(false);
+                    OpenVoice = false;
+
+                default:
+                    break;
+            }
+        } catch (UnsupportedEncodingException e) {
+            Log.e(TAG, " inviteVC handleCustomMsg  " + e.toString());
+        }
+    }
 
     private TIMMessageListener msgListener = new TIMMessageListener() {
         @Override
@@ -1017,11 +1196,200 @@ public class LiveActivity extends TActivity implements View.OnClickListener {
         });
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+//        if (mSelfUserInfo.isCreater() == true)
+//            if (mQavsdkControl.getIsEnableCamera() == false) {
+////                mQavsdkControl.toggleEnableCamera();
+//                OpenVideo = true;
+//
+//            }
+        AVAudioCtrl avAudioCtrl = mQavsdkControl.getAVContext().getAudioCtrl();
+        avAudioCtrl.enableMic(true);
+        OpenVoice = true;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mIsPaused = false;
+        LEVAE_MODE = false;
+        mQavsdkControl.onResume();
+        Log.i(TAG, "onResume switchCamera!! ");
+        refreshCameraUI();
+
+        if (mOnOffCameraErrorCode != AVError.AV_OK) {
+            showDialog(DIALOG_ON_CAMERA_FAILED);
+        }
+//        startOrientationListener();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mIsPaused = true;
+        mQavsdkControl.onPause();
+        Log.i(TAG, "onPause switchCamera!! ");
+        refreshCameraUI();
+        if (mOnOffCameraErrorCode != AVError.AV_OK) {
+            showDialog(DIALOG_OFF_CAMERA_FAILED);
+        }
+//        stopOrientationListener();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        //关闭摄像头
+//        if (mQavsdkControl.getIsEnableCamera() == true) {
+////            mQavsdkControl.toggleEnableCamera();
+////            OpenVideo = false;
+//        }
+        //关闭Mic
+//        mQavsdkControl.setRequestCount(0);
+        AVAudioCtrl avAudioCtrl = mQavsdkControl.getAVContext().getAudioCtrl();
+        avAudioCtrl.enableMic(false);
+        OpenVoice = false;
+        mQavsdkApplication.setHandleMemberRoomSuccess(false);
+        hasPullMemberList = false;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mMaskViewCount = 0;
+        mQavsdkControl.onDestroy();
+        // 注销广播
+        if (mBroadcastReceiver != null) {
+            unregisterReceiver(mBroadcastReceiver);
+        }
+        if (connectionReceiver != null) {
+            unregisterReceiver(connectionReceiver);
+        }
+
+        Log.d(TAG, "WL_DEBUG onDestroy");
+//        Util.switchWaitingDialog(ctx, mDialogAtDestroy, DIALOG_DESTROY, false);
+    }
+
+    public MemberInfo findMemberInfo(ArrayList<MemberInfo> list, String id) {
+        Log.d(TAG, "findMemberInfo id" + id);
+        String identifier = "";
+        if (id.startsWith("86-")) {
+            identifier = id.substring(3);
+        } else {
+            identifier = id;
+        }
+        Log.d(TAG, "findMemberInfo identifier " + identifier);
+        for (MemberInfo member : list) {
+
+            if (member.getUserPhone().equals(identifier))
+                return member;
+        }
+        return null;
+    }
+
+    public void upMemberLevel(String identifier) {
+        MemberInfo upMember = findMemberInfo(mNormalMemberList, identifier);
+        mVideoMemberList.add(upMember);
+        mNormalMemberList.remove(upMember);
+//        mMemberListDialog.refreshMemberData(mNormalMemberList, mVideoMemberList);
+    }
+
+    public void downMemberLevel(String identifier) {
+        MemberInfo upMember = findMemberInfo(mVideoMemberList, identifier);
+        mNormalMemberList.add(upMember);
+        mVideoMemberList.remove(upMember);
+//        mMemberListDialog.refreshMemberData(mNormalMemberList, mVideoMemberList);
+    }
+
     public ArrayList<MemberInfo> copyToNormalMember() {
         mNormalMemberList = new ArrayList<MemberInfo>();
         for (MemberInfo member : mMemberList) {
             mNormalMemberList.add(member);
         }
         return mNormalMemberList;
+    }
+
+    private void closeVideoMemberByHost(String identifer) {
+        viewIndexRemove(identifer);
+        sendCloseVideoMsg(identifer);
+        mQavsdkControl.closeMemberView(identifer);
+        downMemberLevel(identifer);
+    }
+
+    private void viewIndexRemove(String identifer) {
+        if (viewIndex != null) {
+            String id;
+            if (identifer.startsWith("86-")) {
+                id = identifer.substring(3);
+
+            } else {
+                id = identifer;
+            }
+            if (viewIndex.containsKey(id)) {
+                viewIndex.remove(id);
+            }
+
+        }
+
+    }
+
+    private void sendCloseVideoMsg(String inviteIdentifier) {
+
+        mQavsdkApplication.enterPlusPlus();
+        if (mSelfUserInfo.getUserName() == null) {
+            mSelfUserInfo.setUserName("null");
+        }
+        if (mSelfUserInfo.getHeadImagePath().equals("")) {
+            mSelfUserInfo.setHeadImagePath("null");
+        }
+        String message = mSelfUserInfo.getUserPhone() + "&"
+                + CLOSEVIDEOSEND + "&"
+                + mSelfUserInfo.getUserName() + "&"
+                + inviteIdentifier + "&";
+
+
+        Log.d(TAG, "inviteVC sendVCInvitation " + message);
+        TIMMessage Tim = new TIMMessage();
+        TIMCustomElem elem = new TIMCustomElem();
+        elem.setData(message.getBytes());
+        elem.setDesc(UNREAD);
+        if (1 == Tim.addElement(elem))
+            Toast.makeText(getApplicationContext(), "enter error", Toast.LENGTH_SHORT).show();
+        else {
+            if (!inviteIdentifier.startsWith("86-"))
+                inviteIdentifier = "86-" + inviteIdentifier;
+            testConversation = TIMManager.getInstance().getConversation(TIMConversationType.C2C, inviteIdentifier);
+            testConversation.sendMessage(Tim, new TIMValueCallBack<TIMMessage>() {
+                @Override
+                public void onError(int i, String s) {
+                    Log.e(TAG, "enter error" + i + ": " + s);
+                }
+
+                @Override
+                public void onSuccess(TIMMessage timMessage) {
+                    TIMCustomElem elem = (TIMCustomElem) (timMessage.getElement(0));
+                    try {
+                        String text = new String(elem.getData(), "utf-8");
+                        Log.i(TAG, "inviteVC sendVCInvitation send groupmsg enter  success :" + text);
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+    }
+
+    private void updateMemberView() {
+//        Log.d(TAG, "IMGroupSystem updateMemberView memberNum " + mVideoMemberList.size());
+//        if (mMemberListDialog != null)
+//            mMemberListDialog.refreshMemberData(mNormalMemberList, mVideoMemberList);
+//        mMemberListButton.setText("" + mMemberList.size());
+//        if (hostMember != null) {
+//            String headurl = HttpUtil.rootUrl + "?imagepath=" + hostMember.getHeadImagePath() + "&width=0&height=0";
+//            imageLoader.displayImage(headurl, hostHead);
+//        }
+
     }
 }

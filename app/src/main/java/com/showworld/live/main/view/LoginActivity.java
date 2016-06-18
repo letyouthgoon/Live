@@ -383,64 +383,64 @@ public class LoginActivity extends TActivity implements TextWatcher, View.OnClic
      */
     public void getUserInfo(final String Usersig) {
 
-//        mSelfUserInfo.setUserPhone(mUserAccountEditText.getText().toString().trim());
-//        mSelfUserInfo.login(getApplicationContext(), mSelfUserInfo.getUserPhone());
-//        CrashReport.setUserId(mSelfUserInfo.getUserPhone());
-//        JSONObject sigobj = new JSONObject();
-//        try {
-//            sigobj.put("userphone", "18511807565");
-//            sigobj.put("username", "18511807565");
-//            sigobj.put("sex", "0");
-//            sigobj.put("constellation", "");
-//            sigobj.put("headimagepath", "");
-//            sigobj.put("address", "");
-//            sigobj.put("signature", "");
-//            sigobj.put("praisenum", 106);
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//        mSelfUserInfo.setUsersig(mSelfUserInfo.getUsersig());
-//        setUserInfo(sigobj, mUserAccountEditText.getText().toString().trim(), mSelfUserInfo.getUsersig());
-//        TIMManager.getInstance().setEnv(mSelfUserInfo.getEnv());
-//        TIMManager.getInstance().setLogLevel(TIMLogLevel.DEBUG);
-//        TIMManager.getInstance().init(getApplicationContext());
-//        startActivity(new Intent(LoginActivity.this, LiveListActivity.class));
-//        initImageDir();
-//        finish();
-        appAction.login(mUserAccountEditText.getText().toString().trim(), new ActionCallbackListener<GetMemberInfoRet>() {
-            @Override
-            public void onSuccess(GetMemberInfoRet bean) {
-                mSelfUserInfo.setUserPhone(mUserAccountEditText.getText().toString().trim());
-                mSelfUserInfo.login(getApplicationContext(), mSelfUserInfo.getUserPhone());
-                CrashReport.setUserId(mSelfUserInfo.getUserPhone());
-                JSONObject sigobj = new JSONObject();
-                try {
-                    sigobj.put("userphone", "18511807565");
-                    sigobj.put("username", "18511807565");
-                    sigobj.put("sex", "0");
-                    sigobj.put("constellation", "");
-                    sigobj.put("headimagepath", "");
-                    sigobj.put("address", "");
-                    sigobj.put("signature", "");
-                    sigobj.put("praisenum", 106);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                mSelfUserInfo.setUsersig(Usersig);
-                setUserInfo(sigobj, mUserAccountEditText.getText().toString().trim(), Usersig);
-                TIMManager.getInstance().setEnv(mSelfUserInfo.getEnv());
-                TIMManager.getInstance().setLogLevel(TIMLogLevel.DEBUG);
-                TIMManager.getInstance().init(getApplicationContext());
-                startActivity(new Intent(LoginActivity.this, LiveListActivity.class));
-                initImageDir();
-                finish();
-            }
-
-            @Override
-            public void onFailure(String errorEvent, String message) {
-                mErrorHandler.sendEmptyMessage(ERROR_LOGIN_FAILE);
-            }
-        });
+        mSelfUserInfo.setUserPhone(mUserAccountEditText.getText().toString().trim());
+        mSelfUserInfo.login(getApplicationContext(), mSelfUserInfo.getUserPhone());
+        CrashReport.setUserId(mSelfUserInfo.getUserPhone());
+        JSONObject sigobj = new JSONObject();
+        try {
+            sigobj.put("userphone", "18511807565");
+            sigobj.put("username", "18511807565");
+            sigobj.put("sex", "0");
+            sigobj.put("constellation", "");
+            sigobj.put("headimagepath", "");
+            sigobj.put("address", "");
+            sigobj.put("signature", "");
+            sigobj.put("praisenum", 106);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        mSelfUserInfo.setUsersig(mSelfUserInfo.getUsersig());
+        setUserInfo(sigobj, mUserAccountEditText.getText().toString().trim(), mSelfUserInfo.getUsersig());
+        TIMManager.getInstance().setEnv(mSelfUserInfo.getEnv());
+        TIMManager.getInstance().setLogLevel(TIMLogLevel.DEBUG);
+        TIMManager.getInstance().init(getApplicationContext());
+        startActivity(new Intent(LoginActivity.this, LiveListActivity.class));
+        initImageDir();
+        finish();
+//        appAction.login(mUserAccountEditText.getText().toString().trim(), new ActionCallbackListener<GetMemberInfoRet>() {
+//            @Override
+//            public void onSuccess(GetMemberInfoRet bean) {
+//                mSelfUserInfo.setUserPhone(mUserAccountEditText.getText().toString().trim());
+//                mSelfUserInfo.login(getApplicationContext(), mSelfUserInfo.getUserPhone());
+//                CrashReport.setUserId(mSelfUserInfo.getUserPhone());
+//                JSONObject sigobj = new JSONObject();
+//                try {
+//                    sigobj.put("userphone", "18511807565");
+//                    sigobj.put("username", "18511807565");
+//                    sigobj.put("sex", "0");
+//                    sigobj.put("constellation", "");
+//                    sigobj.put("headimagepath", "");
+//                    sigobj.put("address", "");
+//                    sigobj.put("signature", "");
+//                    sigobj.put("praisenum", 106);
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//                mSelfUserInfo.setUsersig(Usersig);
+//                setUserInfo(sigobj, mUserAccountEditText.getText().toString().trim(), Usersig);
+//                TIMManager.getInstance().setEnv(mSelfUserInfo.getEnv());
+//                TIMManager.getInstance().setLogLevel(TIMLogLevel.DEBUG);
+//                TIMManager.getInstance().init(getApplicationContext());
+//                startActivity(new Intent(LoginActivity.this, LiveListActivity.class));
+//                initImageDir();
+//                finish();
+//            }
+//
+//            @Override
+//            public void onFailure(String errorEvent, String message) {
+//                mErrorHandler.sendEmptyMessage(ERROR_LOGIN_FAILE);
+//            }
+//        });
 
 
 //        new Thread(new Runnable() {

@@ -66,12 +66,16 @@ public class SWLApplication extends Application {
         return mSelfUserInfo;
     }
 
+    public MemberInfo getHostInfo() {
+        return hostInfo;
+    }
+
     public boolean isHandleMemberRoomSuccess() {
         return handleMemberRoomSuccess;
     }
 
-    public MemberInfo getHostInfo() {
-        return hostInfo;
+    public void setHandleMemberRoomSuccess(boolean handleMemberRoomSuccess) {
+        this.handleMemberRoomSuccess = handleMemberRoomSuccess;
     }
 
     public int getEnterIndex() {
