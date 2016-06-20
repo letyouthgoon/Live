@@ -100,8 +100,8 @@ public class GsonRequest<T> extends JsonRequest<T> {
     @Override
     protected Response<T> parseNetworkResponse(NetworkResponse response) {
         try {
-            String json = new String(response.data,
-                    HttpHeaderParser.parseCharset(response.headers));
+            String json = new String(response.data,"UTF-8");
+//                    HttpHeaderParser.parseCharset(response.headers));
             Log.i("--->", "data:\n" + json);
 
             return Response.success(mGson.fromJson(json, mClazz),

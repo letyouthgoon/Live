@@ -18,6 +18,7 @@ public class Constants {
     public static final String EXTRA_PRAISE_NUM = "praisenum";
 
     public static final int APPID = 1400001692;
+//    public static final int APPID = 1400010805;
 
     public static final String ACCOUNTTYPE = "884";
 
@@ -94,7 +95,8 @@ public class Constants {
     public static final String ACTION_INVITE_MEMBER_VIDEOCHAT = PACKAGE + ".ACTION_INVITE_MEMBER_VIDEOCHAT";
     public static final String ACTION_CLOSE_MEMBER_VIDEOCHAT = PACKAGE + ".ACTION_CLOSE_MEMBER_VIDEOCHAT";
 
-
+    public static final int SHOW_RESULT_CODE = 10000;
+    public static final int VIEW_RESULT_CODE = 30000;
     //extra
     public static final String EXTRA_USER_PHONE = "userphone";
     public static final String EXTRA_PASSWORD = "password";

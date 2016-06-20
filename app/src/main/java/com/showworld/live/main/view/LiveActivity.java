@@ -42,6 +42,7 @@ import com.showworld.live.SWLApplication;
 import com.showworld.live.base.ui.TActivity;
 import com.showworld.live.base.util.NetworkUtil;
 import com.showworld.live.main.Constants;
+import com.showworld.live.main.HttpUtil;
 import com.showworld.live.main.control.QavsdkControl;
 import com.showworld.live.main.module.ChatEntity;
 import com.showworld.live.main.module.MemberInfo;
@@ -65,6 +66,9 @@ import com.tencent.av.sdk.AVRoomMulti;
 import com.tencent.av.sdk.AVView;
 import com.tencent.av.utils.PhoneStatusTools;
 import com.tencent.open.utils.Util;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -605,9 +609,9 @@ public class LiveActivity extends TActivity implements View.OnClickListener {
 //                showVideoMemberInfo(identifier);
             } else if (action.equals(Constants.ACTION_CLOSE_MEMBER_VIDEOCHAT)) {
                 String identifier = intent.getStringExtra(Constants.EXTRA_IDENTIFIER);
-//                closeVideoMemberByHost(identifier);
+                closeVideoMemberByHost(identifier);
             } else if (action.equals(Constants.ACTION_CLOSE_ROOM_COMPLETE)) {
-//                closeActivity();
+                closeActivity();
             }
 
 
@@ -615,6 +619,105 @@ public class LiveActivity extends TActivity implements View.OnClickListener {
     };
 
     private void getMemberInfo() {
+    }
+    private void destroyTIM() {
+        TIMManager.getInstance().removeMessageListener(msgListener);
+        Log.d(TAG, "WL_DEBUG onDestroy");
+        if (groupId != null && mIsSuccess) {
+            if (mSelfUserInfo.isCreater()) {
+                TIMGroupManager.getInstance().deleteGroup(groupId, new TIMCallBack() {
+                    @Override
+                    public void onError(int i, String s) {
+                        Log.e(TAG, "quit group error " + i + " " + s);
+                    }
+
+                    @Override
+                    public void onSuccess() {
+                        Log.e(TAG, "delete group success");
+                        Log.d(TAG, "WL_DEBUG onDestroy");
+                    }
+                });
+            } else {
+                TIMGroupManager.getInstance().quitGroup(groupId, new TIMCallBack() {
+                    @Override
+                    public void onError(int i, String s) {
+                        Log.e(TAG, "quit group error " + i + " " + s);
+                    }
+
+                    @Override
+                    public void onSuccess() {
+                        Log.i(TAG, "delete group success");
+                        Log.i(TAG, "WL_DEBUG onDestroy");
+                    }
+                });
+            }
+            TIMManager.getInstance().deleteConversation(TIMConversationType.Group, groupId);
+        }
+    }
+
+    private void leaveLive() {
+//        new Thread() {
+//            @Override
+//            public void run() {
+//                super.run();
+//                JSONObject object = new JSONObject();
+//                try {
+//                    object.put(Util.EXTRA_ROOM_NUM, roomNum);
+//                    object.put(Util.EXTRA_USER_PHONE, mSelfUserInfo.getUserPhone());
+//                    System.out.println(object.toString());
+//                    List<NameValuePair> list = new ArrayList<NameValuePair>();
+//                    list.add(new BasicNameValuePair("viewerout", object.toString()));
+//                    String ret = HttpUtil.PostUrl(HttpUtil.closeLiveUrl, list);
+//                    Log.d(TAG, "leave room" + ret);
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }.start();
+    }
+
+    private void closeLive() {
+//        new Thread() {
+//            @Override
+//            public void run() {
+//                super.run();
+//                JSONObject object = new JSONObject();
+//                try {
+//                    Log.d(TAG, "DEBUG " + mRecvIdentifier);
+//                    object.put(Constants.EXTRA_ROOM_NUM, roomNum);
+//                    System.out.println(object.toString());
+//                    List<NameValuePair> list = new ArrayList<NameValuePair>();
+//                    list.add(new BasicNameValuePair("closedata", object.toString()));
+//                    String ret = HttpUtil.PostUrl(HttpUtil.liveCloseUrl, list);
+//                    Log.d(TAG, "close room" + ret);
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }.start();
+    }
+
+    private void closeActivity() {
+        destroyTIM();
+        if (wakeLock.isHeld())
+            wakeLock.release();
+        if (mSelfUserInfo.isCreater() == true) {
+            closeLive();
+            setResult(Constants.SHOW_RESULT_CODE);
+//            Util.switchWaitingDialog(ctx, mDialogAtDestroy, DIALOG_DESTROY, true);
+//            startActivity(new Intent(AvActivity.this, GameOverActivity.class)
+//                    .putExtra(Util.EXTRA_ROOM_NUM, roomNum)
+//                    .putExtra(Util.EXTRA_LEAVE_MODE,false)
+//                    );
+        } else {
+            leaveLive();
+            setResult(Constants.VIEW_RESULT_CODE);
+        }
+        startActivity(new Intent(LiveActivity.this, GameOverActivity.class)
+                .putExtra(Constants.EXTRA_ROOM_NUM, roomNum)
+                .putExtra(Constants.EXTRA_LEAVE_MODE, LEVAE_MODE)
+        );
+        finish();
     }
 
     @Override
