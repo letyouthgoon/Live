@@ -42,6 +42,7 @@
         <activity android:name=".main.view.LiveActivity" />
         <activity android:name=".main.view.LiveListActivity" />
         <activity android:name=".main.view.GameOverActivity" />
+        <activity android:name=".main.view.RegisterActivity" />
     </application>
 
 </manifest>

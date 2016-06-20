@@ -21,6 +21,7 @@ public class Constants {
 //    public static final int APPID = 1400010805;
 
     public static final String ACCOUNTTYPE = "884";
+//    public static final String ACCOUNTTYPE = "5761";
 
     public static final int AUDIO_VOICE_CHAT_MODE = 0;
 

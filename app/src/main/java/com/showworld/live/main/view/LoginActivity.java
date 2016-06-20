@@ -165,11 +165,10 @@ public class LoginActivity extends TActivity implements TextWatcher, View.OnClic
                 onLogin();
                 break;
             case R.id.btn_register:
-                getUserInfo(mSelfUserInfo.getUsersig());
-//                TIMManager.getInstance().setEnv(mSelfUserInfo.getEnv());
-//                TIMManager.getInstance().init(getApplicationContext());
-//                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-//                startActivityForResult(intent, 1);
+                TIMManager.getInstance().setEnv(mSelfUserInfo.getEnv());
+                TIMManager.getInstance().init(getApplicationContext());
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivityForResult(intent, 1);
                 break;
             case R.id.smslogin:
                 //获取验证短信
@@ -358,10 +357,8 @@ public class LoginActivity extends TActivity implements TextWatcher, View.OnClic
             public void OnSmsLoginSuccess(TLSUserInfo tlsUserInfo) {
                 //获取个人ID
                 String UserSig = loginHelper.getUserSig(tlsUserInfo.identifier);
-                Log.e(TAG, "important " + tlsUserInfo.identifier + " : " + UserSig);
                 mSelfUserInfo.setUsersig(UserSig);
-//                getUserInfo(UserSig);
-                System.out.println(UserSig);
+                getUserInfo(UserSig);
             }
 
             @Override
@@ -382,7 +379,7 @@ public class LoginActivity extends TActivity implements TextWatcher, View.OnClic
      * @param Usersig
      */
     public void getUserInfo(final String Usersig) {
-        appAction.login("18511707565", new ActionCallbackListener<GetMemberInfoRet>() {
+        appAction.login(mUserAccountEditText.getText().toString(), new ActionCallbackListener<GetMemberInfoRet>() {
             @Override
             public void onSuccess(GetMemberInfoRet bean) {
                 mSelfUserInfo.setUserPhone(mUserAccountEditText.getText().toString().trim());
