@@ -11,6 +11,9 @@ public class HttpUtil {
     public static final String UserInfoUrl = SERVER_URL + "user_getinfo.php";
     public static final String getLiveListUrl = SERVER_URL + "live_listget.php";
 
+    public static final String liveCloseUrl = SERVER_URL + "live_close.php";
+    public static final String liveLeaveUrl = SERVER_URL + "room_withdraw.php";
+
     public static final int SUCCESS = 200;
     public static final int FAIL = 500;
 }

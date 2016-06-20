@@ -31,5 +31,10 @@ public class Params extends BasePojo {
         @SerializedName("viewerdata")
         public String viewerdata;
     }
+    public static class closeLive {
+
+        @SerializedName("closedata")
+        public String closedata;
+    }
 
 }

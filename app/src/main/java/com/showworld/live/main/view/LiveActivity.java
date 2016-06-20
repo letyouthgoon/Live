@@ -39,11 +39,13 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.showworld.live.R;
 import com.showworld.live.SWLApplication;
+import com.showworld.live.base.ActionCallbackListener;
 import com.showworld.live.base.ui.TActivity;
 import com.showworld.live.base.util.NetworkUtil;
 import com.showworld.live.main.Constants;
 import com.showworld.live.main.HttpUtil;
 import com.showworld.live.main.control.QavsdkControl;
+import com.showworld.live.main.module.BasePojo;
 import com.showworld.live.main.module.ChatEntity;
 import com.showworld.live.main.module.MemberInfo;
 import com.showworld.live.main.module.UserInfo;
@@ -620,6 +622,7 @@ public class LiveActivity extends TActivity implements View.OnClickListener {
 
     private void getMemberInfo() {
     }
+
     private void destroyTIM() {
         TIMManager.getInstance().removeMessageListener(msgListener);
         Log.d(TAG, "WL_DEBUG onDestroy");
@@ -656,45 +659,32 @@ public class LiveActivity extends TActivity implements View.OnClickListener {
     }
 
     private void leaveLive() {
-//        new Thread() {
-//            @Override
-//            public void run() {
-//                super.run();
-//                JSONObject object = new JSONObject();
-//                try {
-//                    object.put(Util.EXTRA_ROOM_NUM, roomNum);
-//                    object.put(Util.EXTRA_USER_PHONE, mSelfUserInfo.getUserPhone());
-//                    System.out.println(object.toString());
-//                    List<NameValuePair> list = new ArrayList<NameValuePair>();
-//                    list.add(new BasicNameValuePair("viewerout", object.toString()));
-//                    String ret = HttpUtil.PostUrl(HttpUtil.closeLiveUrl, list);
-//                    Log.d(TAG, "leave room" + ret);
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }.start();
+        appAction.leaveLive(roomNum, mSelfUserInfo.getUserPhone(), new ActionCallbackListener<BasePojo>() {
+            @Override
+            public void onSuccess(BasePojo data) {
+
+            }
+
+            @Override
+            public void onFailure(String errorEvent, String message) {
+
+            }
+        });
     }
 
     private void closeLive() {
-//        new Thread() {
-//            @Override
-//            public void run() {
-//                super.run();
-//                JSONObject object = new JSONObject();
-//                try {
-//                    Log.d(TAG, "DEBUG " + mRecvIdentifier);
-//                    object.put(Constants.EXTRA_ROOM_NUM, roomNum);
-//                    System.out.println(object.toString());
-//                    List<NameValuePair> list = new ArrayList<NameValuePair>();
-//                    list.add(new BasicNameValuePair("closedata", object.toString()));
-//                    String ret = HttpUtil.PostUrl(HttpUtil.liveCloseUrl, list);
-//                    Log.d(TAG, "close room" + ret);
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }.start();
+
+        appAction.closeLive(roomNum, new ActionCallbackListener<BasePojo>() {
+            @Override
+            public void onSuccess(BasePojo data) {
+
+            }
+
+            @Override
+            public void onFailure(String errorEvent, String message) {
+
+            }
+        });
     }
 
     private void closeActivity() {

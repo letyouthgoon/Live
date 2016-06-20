@@ -109,25 +109,6 @@ public class LiveListActivity extends TActivity implements AdapterView.OnItemCli
 
             }
         });
-//        new Thread() {
-//            @Override
-//            public void run() {
-//                super.run();
-//                JSONObject object = new JSONObject();
-//                try {
-//                    object.put(Constants.EXTRA_ROOM_NUM, mRoomNum);
-//                    object.put(Constants.EXTRA_USER_PHONE, mSelfUserInfo.getUserPhone());
-//                    System.out.println(object.toString());
-//                    List<NameValuePair> list = new ArrayList<NameValuePair>();
-//                    list.add(new BasicNameValuePair("viewerdata", object.toString()));
-//                    // TODO: 16/6/2
-//                    String ret = HttpUtil.PostUrl(Constants.enterRoomUrl, list);
-////                    Log.d(TAG, "enter room" + ret);
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }.start();
     }
 
     @Override
@@ -177,7 +158,6 @@ public class LiveListActivity extends TActivity implements AdapterView.OnItemCli
     private void initView() {
         mLiveListSrl = (SwipeRefreshLayout) findViewById(R.id.srl_live_list);
         mLiveListLv = (ListView) findViewById(R.id.lv_live_list);
-        mLiveListLv.setOnItemClickListener(this);
         mLiveAdapter = new LiveAdapter(getBaseContext(), R.layout.live_item, mLiveList, new TAdapterDelegate() {
             @Override
             public int getViewTypeCount() {
@@ -189,8 +169,10 @@ public class LiveListActivity extends TActivity implements AdapterView.OnItemCli
                 return null;
             }
         });
-
         mLiveListLv.setAdapter(mLiveAdapter);
+
+        mLiveListSrl.setOnRefreshListener(this);
+        mLiveListLv.setOnItemClickListener(this);
     }
 
 
@@ -231,6 +213,7 @@ public class LiveListActivity extends TActivity implements AdapterView.OnItemCli
                     array.add(item);
                 }
                 mLiveAdapter.addAll(array);
+                mLiveListSrl.setRefreshing(false);
             }
 
             @Override

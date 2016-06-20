@@ -147,4 +147,55 @@ public class AppActionImpl implements AppAction {
         }
         ));
     }
+
+    @Override
+    public void leaveLive(int roomNum,String phoneNum, final ActionCallbackListener<BasePojo> actionCallbackListener) {
+        Params.closeLive param = new Params.closeLive();
+        JSONObject object = new JSONObject();
+        try {
+            object.put(Constants.EXTRA_ROOM_NUM, roomNum);
+            object.put(Constants.EXTRA_USER_PHONE, phoneNum);
+            param.closedata = object.toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        query(new GsonRequest<BasePojo>(HttpUtil.liveLeaveUrl, new Gson().toJson(param), BasePojo.class, new Response.Listener<BasePojo>() {
+            @Override
+            public void onResponse(BasePojo bean) {
+                actionCallbackListener.onSuccess(bean);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                actionCallbackListener.onFailure("", "");
+            }
+        }));
+
+    }
+    @Override
+    public void closeLive(int roomNum, final ActionCallbackListener<BasePojo> actionCallbackListener) {
+        Params.closeLive param = new Params.closeLive();
+        JSONObject object = new JSONObject();
+        try {
+            object.put(Constants.EXTRA_ROOM_NUM, roomNum);
+            param.closedata = object.toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        query(new GsonRequest<BasePojo>(HttpUtil.liveCloseUrl, new Gson().toJson(param), BasePojo.class, new Response.Listener<BasePojo>() {
+            @Override
+            public void onResponse(BasePojo bean) {
+                actionCallbackListener.onSuccess(bean);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                actionCallbackListener.onFailure("", "");
+            }
+        }));
+
+    }
+
 }
