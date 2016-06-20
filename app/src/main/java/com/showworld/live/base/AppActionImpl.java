@@ -41,36 +41,25 @@ public class AppActionImpl implements AppAction {
         RequestManager.getInstance().addRequest(mTag, request);
     }
 
-
     public void cancelAll(Object tag) {
         RequestManager.getInstance().cancelAll(tag);
     }
 
-
     @Override
-    public void login(String userphone, final ActionCallbackListener<GetMemberInfoRet> actionCallbackListener) {
-        Params.GetMemberInfoParam param = new Params.GetMemberInfoParam();
-        param.userphone = userphone;
+    public void login(String userPhone, final ActionCallbackListener<GetMemberInfoRet> actionCallbackListener) {
 
-        query(new GsonRequest<GetMemberInfoRet>(HttpUtil.UserInfoUrl, getParamsJson(new Gson().toJson(param)),
-                GetMemberInfoRet.class,
-                new Response.Listener<GetMemberInfoRet>() {
+        JSONObject object = new JSONObject();
+        try {
+            object.put(Constants.EXTRA_USER_PHONE, userPhone);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
-                    @Override
-                    public void onResponse(GetMemberInfoRet bean) {
-                        actionCallbackListener.onSuccess(bean);
-                    }
-                }
-                , new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError arg0) {
-                actionCallbackListener.onFailure("", "");
-            }
-        }));
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("userphone", userphone);
+        Map<String, String> param = new HashMap<String, String>();
+        param.put("data", object.toString());
 
-        query(new GsonRequest<GetMemberInfoRet>(HttpUtil.UserInfoUrl, getParamsJson1(params),
+
+        query(new TestRequest<GetMemberInfoRet>(HttpUtil.UserInfoUrl, param,
                 GetMemberInfoRet.class,
                 new Response.Listener<GetMemberInfoRet>() {
 
@@ -103,22 +92,6 @@ public class AppActionImpl implements AppAction {
         ));
     }
 
-
-    private String getParamsJson(String s) {
-        Params.BaseParam bp = new Params.BaseParam();
-        bp.data = s;
-        String ret = new Gson().toJson(bp);
-        return ret;
-    }
-
-    private JSONObject getParamsJson1(Map<String, String> map) {
-
-        JSONObject jsonObject = new JSONObject(map);
-        Map<String, String> real_params = new HashMap<String, String>();
-//        real_params.put("data", jsonObject.toString());
-        real_params.put("data", "{'userphone':'18511707565'}");
-        return new JSONObject(real_params);
-    }
 
     @Override
     public void enterRoom(int mRoomNum, String userPhone, final ActionCallbackListener<BasePojo> actionCallbackListener) {

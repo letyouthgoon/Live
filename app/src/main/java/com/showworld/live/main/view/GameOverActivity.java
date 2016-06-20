@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -14,11 +13,6 @@ import android.widget.Toast;
 import com.showworld.live.R;
 import com.showworld.live.SWLApplication;
 import com.showworld.live.main.Constants;
-import com.showworld.live.main.HttpUtil;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONTokener;
 
 /**
  * 直播结束界面

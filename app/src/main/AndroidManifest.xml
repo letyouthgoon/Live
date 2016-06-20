@@ -41,6 +41,7 @@
         <activity android:name=".base.ui.TActivity" />
         <activity android:name=".main.view.LiveActivity" />
         <activity android:name=".main.view.LiveListActivity" />
+        <activity android:name=".main.view.GameOverActivity" />
     </application>
 
 </manifest>
