@@ -123,9 +123,16 @@ public class AppActionImpl implements AppAction {
     @Override
     public void enterRoom(int mRoomNum, String userPhone, final ActionCallbackListener<BasePojo> actionCallbackListener) {
 
+        JSONObject object = new JSONObject();
+        try {
+            object.put(Constants.EXTRA_ROOM_NUM, mRoomNum);
+            object.put(Constants.EXTRA_USER_PHONE, userPhone);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         Map<String, String> map = new HashMap<String, String>();
-        map.put(Constants.EXTRA_ROOM_NUM, mRoomNum + "");
-        map.put(Constants.EXTRA_USER_PHONE, userPhone);
+        map.put("viewerdata", object.toString());
 
         query(new TestRequest<BasePojo>(HttpUtil.enterRoomUrl, map,
                 BasePojo.class, new Response.Listener<BasePojo>() {
@@ -140,46 +147,22 @@ public class AppActionImpl implements AppAction {
             }
         }
         ));
-
-        Params.enterRoomParam param = new Params.enterRoomParam();
-        JSONObject object = new JSONObject();
-        try {
-            object.put(Constants.EXTRA_ROOM_NUM, mRoomNum);
-            object.put(Constants.EXTRA_USER_PHONE, userPhone);
-            param.viewerdata = object.toString();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        
-//        query(new GsonRequest<BasePojo>(HttpUtil.enterRoomUrl, new Gson().toJson(param),
-//                BasePojo.class, new Response.Listener<BasePojo>() {
-//            @Override
-//            public void onResponse(BasePojo bean) {
-//                actionCallbackListener.onSuccess(bean);
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                actionCallbackListener.onFailure("", "");
-//            }
-//        }
-//        ));
     }
 
     @Override
     public void leaveLive(int roomNum, String phoneNum, final ActionCallbackListener<BasePojo> actionCallbackListener) {
-        Params.closeLive param = new Params.closeLive();
+        Map<String, String> param = new HashMap<String, String>();
+
         JSONObject object = new JSONObject();
         try {
             object.put(Constants.EXTRA_ROOM_NUM, roomNum);
             object.put(Constants.EXTRA_USER_PHONE, phoneNum);
-            param.closedata = object.toString();
+            param.put("closedata", object.toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        query(new GsonRequest<BasePojo>(HttpUtil.liveLeaveUrl, new Gson().toJson(param), BasePojo.class, new Response.Listener<BasePojo>() {
+        query(new TestRequest<BasePojo>(HttpUtil.liveLeaveUrl, param, BasePojo.class, new Response.Listener<BasePojo>() {
             @Override
             public void onResponse(BasePojo bean) {
                 actionCallbackListener.onSuccess(bean);
@@ -195,16 +178,16 @@ public class AppActionImpl implements AppAction {
 
     @Override
     public void closeLive(int roomNum, final ActionCallbackListener<BasePojo> actionCallbackListener) {
-        Params.closeLive param = new Params.closeLive();
+        Map<String, String> param = new HashMap<String, String>();
         JSONObject object = new JSONObject();
         try {
             object.put(Constants.EXTRA_ROOM_NUM, roomNum);
-            param.closedata = object.toString();
+            param.put("closedata", object.toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        query(new GsonRequest<BasePojo>(HttpUtil.liveCloseUrl, new Gson().toJson(param), BasePojo.class, new Response.Listener<BasePojo>() {
+        query(new TestRequest<BasePojo>(HttpUtil.liveCloseUrl, param, BasePojo.class, new Response.Listener<BasePojo>() {
             @Override
             public void onResponse(BasePojo bean) {
                 actionCallbackListener.onSuccess(bean);

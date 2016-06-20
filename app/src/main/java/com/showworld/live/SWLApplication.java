@@ -20,6 +20,7 @@ public class SWLApplication extends Application {
     private boolean handleMemberRoomSuccess = false;
     private MemberInfo hostInfo;
     private int enterIndex;
+    private int exitIndex = 0;
 
     public static Context getContext() {
         return sContext;
@@ -80,6 +81,14 @@ public class SWLApplication extends Application {
 
     public int getEnterIndex() {
         return enterIndex;
+    }
+
+    public void exitPlusPlus() {
+        exitIndex++;
+    }
+
+    public int getExitIndex() {
+        return exitIndex;
     }
 //
 //    private LoginInfo getLoginInfo() {

@@ -16,6 +16,7 @@ import android.os.Message;
 import android.os.PowerManager;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.OrientationEventListener;
 import android.view.View;
@@ -126,7 +127,7 @@ public class LiveActivity extends TActivity implements View.OnClickListener {
     private static final int DIALOG_SWITCH_BACK_CAMERA_FAILED = DIALOG_AT_SWITCH_BACK_CAMERA + 1;
     private static final int DIALOG_DESTROY = DIALOG_SWITCH_BACK_CAMERA_FAILED + 1;
 
-
+    private boolean mIsClicked = false;
     private TIMConversation mConversation;
     private PowerManager.WakeLock wakeLock;
     private ProgressDialog mDialogInit = null;
@@ -181,43 +182,43 @@ public class LiveActivity extends TActivity implements View.OnClickListener {
                         praiseNum++;
 //                    mPraiseNum.setText("" + praiseNum);
                     break;
-//                case IM_HOST_LEAVE:
-////                    onMemberExit();
-//                    onCloseVideo();
-//                    break;
-//
-//                case ERROR_MESSAGE_TOO_LONG:
-//                    Toast.makeText(getBaseContext(), "消息太长，发送失败", Toast.LENGTH_SHORT).show();
-//                    break;
-//                case ERROR_ACCOUNT_NOT_EXIT:
-//                    Toast.makeText(getBaseContext(), "对方账号不存在或未登陆过！", Toast.LENGTH_SHORT).show();
-//                    break;
-//
-//                case UPDAT_WALL_TIME_TIMER_TASK:
+                case IM_HOST_LEAVE:
+//                    onMemberExit();
+                    onCloseVideo();
+                    break;
+
+                case ERROR_MESSAGE_TOO_LONG:
+                    Toast.makeText(getBaseContext(), "消息太长，发送失败", Toast.LENGTH_SHORT).show();
+                    break;
+                case ERROR_ACCOUNT_NOT_EXIT:
+                    Toast.makeText(getBaseContext(), "对方账号不存在或未登陆过！", Toast.LENGTH_SHORT).show();
+                    break;
+
+                case UPDAT_WALL_TIME_TIMER_TASK:
 //                    updateWallTime();
-//                    break;
-//                case REMOVE_CHAT_ITEM_TIMER_TASK:
+                    break;
+                case REMOVE_CHAT_ITEM_TIMER_TASK:
 //                    removeChatItem();
+                    break;
+                case UPDAT_MEMBER:
+                    updateMemberView();
+//                    mChatMsgListAdapter.refresh(hostMember);
+                    break;
+//                case REFRESH_HOST_INFO
 //                    break;
-//                case UPDAT_MEMBER:
-//                    updateMemberView();
-////                    mChatMsgListAdapter.refresh(hostMember);
-//                    break;
-////                case REFRESH_HOST_INFO
-////                    break;
-//                case MEMBER_EXIT_COMPLETE:
-//                    sendCloseMsg();
-//                    break;-
-//                case CLOSE_VIDEO:
-//                    onCloseVideo();
-//                    break;
-//                case START_RECORD:
+                case MEMBER_EXIT_COMPLETE:
+                    sendCloseMsg();
+                    break;
+                case CLOSE_VIDEO:
+                    onCloseVideo();
+                    break;
+                case START_RECORD:
 //                    startRecord();
-//                    break;
-//                case GET_ROOM_INFO:
-//                    getMemberInfo();
-//                    break;
-//                case REFRESH_CHAT:
+                    break;
+                case GET_ROOM_INFO:
+                    getMemberInfo();
+                    break;
+                case REFRESH_CHAT:
 //                    showTextMessage((TIMMessage) msg.obj);
                 default:
                     break;
@@ -656,6 +657,157 @@ public class LiveActivity extends TActivity implements View.OnClickListener {
             }
             TIMManager.getInstance().deleteConversation(TIMConversationType.Group, groupId);
         }
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_BACK:
+                if (mIsClicked) {
+                    mIsClicked = false;
+                    break;
+                }
+                if (mSelfUserInfo.isCreater()) {
+                }
+//                    hostCloseAlertDialog();
+                else {
+//                    memberCloseAlertDialog();
+//                    onCloseVideo();
+                    onMemberExit();
+                }
+                break;
+        }
+
+        return false; //这一句很关键
+    }
+
+    private void sendCloseMsg() {
+        final String msg = "轻轻地“" + mSelfUserInfo.getUserName() + "”离开了";
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (msg.length() == 0)
+                    return;
+                try {
+                    byte[] byte_num = msg.getBytes("utf8");
+                    if (byte_num.length > 160) {
+                        mHandler.sendEmptyMessage(ERROR_MESSAGE_TOO_LONG);
+                        return;
+                    }
+
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                    return;
+                }
+                TIMMessage Nmsg = new TIMMessage();
+                TIMTextElem elem = new TIMTextElem();
+                elem.setText(msg);
+                if (Nmsg.addElement(elem) != 0) {
+                    return;
+                }
+                mConversation.sendMessage(Nmsg, new TIMValueCallBack<TIMMessage>() {
+                    @Override
+                    public void onError(int i, String s) {
+                        if (i == 85) {
+                            mHandler.sendEmptyMessage(ERROR_MESSAGE_TOO_LONG);
+                        } else if (i == 6011) {
+                            mHandler.sendEmptyMessage(ERROR_ACCOUNT_NOT_EXIT);
+                        }
+                        Log.e(TAG, "send message failed. code: " + i + " errmsg: " + s);
+                        mHandler.sendEmptyMessage(CLOSE_VIDEO);
+                    }
+
+                    @Override
+                    public void onSuccess(TIMMessage timMessage) {
+                        Log.e(TAG, "Send text Msg ok");
+                        mHandler.sendEmptyMessage(CLOSE_VIDEO);
+                    }
+                });
+            }
+        }).start();
+
+    }
+    /**
+     * 发一条消息通知大家 自己下线了
+     */
+    private void onMemberExit() {
+        mQavsdkApplication.exitPlusPlus();
+        String message = mSelfUserInfo.getUserPhone() + "&"
+                + MEMBER_EXIT_MSG + "&" + "inedex: " + mQavsdkApplication.getExitIndex() + "&";
+        ;
+        TIMMessage Tim = new TIMMessage();
+        TIMCustomElem elem = new TIMCustomElem();
+        elem.setData(message.getBytes());
+        elem.setDesc(UNREAD);
+        if (1 == Tim.addElement(elem))
+            Toast.makeText(getApplicationContext(), "exit error", Toast.LENGTH_SHORT).show();
+        else {
+            mConversation.sendMessage(Tim, new TIMValueCallBack<TIMMessage>() {
+                @Override
+                public void onError(int i, String s) {
+                    Log.e(TAG, "exit error" + i + ": " + s);
+
+                    mHandler.sendEmptyMessage(MEMBER_EXIT_COMPLETE);
+                }
+
+                @Override
+                public void onSuccess(TIMMessage timMessage) {
+
+                    TIMCustomElem elem = (TIMCustomElem) (timMessage.getElement(0));
+                    try {
+                        String text = new String(elem.getData(), "utf-8");
+                        Log.i(TAG, "msgSystem send groupmsg exit  success :" + text);
+
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+                    mHandler.sendEmptyMessage(MEMBER_EXIT_COMPLETE);
+                }
+            });
+        }
+        mMemberList.clear();
+    }
+
+    private void onCloseVideo() {
+//        if (mSelfUserInfo.isCreater() == true)
+//            stopRecord();
+//        stopOrientationListener();
+//		showDialog(DIALOG_DESTROY);
+        if (mSelfUserInfo.isCreater() != true) {
+//            Util.switchWaitingDialog(ctx, mDialogAtDestroy, DIALOG_DESTROY, true);
+        }
+        if (mIsSuccess) {
+            mChatTimer.cancel();
+            mVideoTimer.cancel();
+//            timer.cancel();
+            mHeartClickTimer.cancel();
+        }
+        //退出IM聊天室
+//        destroyTIM();
+        //退出AV那边群
+        mQavsdkControl.exitRoom();
+
+//        if (wakeLock.isHeld())
+//            wakeLock.release();
+//
+//        if (mSelfUserInfo.isCreater() == true) {
+//            closeLive();
+//            setResult(Util.SHOW_RESULT_CODE);
+//            Util.switchWaitingDialog(ctx, mDialogAtDestroy, DIALOG_DESTROY, true);
+////            startActivity(new Intent(AvActivity.this, GameOverActivity.class)
+////                    .putExtra(Util.EXTRA_ROOM_NUM, roomNum)
+////                    .putExtra(Util.EXTRA_LEAVE_MODE,false)
+////                    );
+//        } else {
+//            leaveLive();
+//            setResult(Util.VIEW_RESULT_CODE);
+//        }
+//
+//        startActivity(new Intent(AvActivity.this, GameOverActivity.class)
+//                        .putExtra(Util.EXTRA_ROOM_NUM, roomNum)
+//                        .putExtra(Util.EXTRA_LEAVE_MODE, LEVAE_MODE)
+//        );
+//        finish();
     }
 
     private void leaveLive() {
