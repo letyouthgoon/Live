@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Suixinbo</string>
+    <string name="app_name">Living</string>
 
     <!-- login re fragment-->
     <string name="title_activity_login">LoginActivity</string>

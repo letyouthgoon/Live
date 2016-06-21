@@ -26,14 +26,13 @@ public class Constants {
     public static final String LIVE_ANIMATOR = "live_animator";
     public static final String LOG_LEVEL = "log_level";
 
-//    //
-//    public static final int ACCOUNT_TYPE = 792;
-//    //    //sdk appid 由腾讯分配
-//    public static final int SDK_APPID = 1400001533;
+    public static final int SDK_APPID = 1400010805;
 
-    public static final int SDK_APPID = 1400001692;
-
-    public static final int ACCOUNT_TYPE = 884;
+    public static final int ACCOUNT_TYPE = 5761;
+//
+//    public static final int SDK_APPID = 1400001692;
+//
+//    public static final int ACCOUNT_TYPE = 884;
 
     public static final String ID_STATUS = "id_status";
 
@@ -55,7 +54,7 @@ public class Constants {
     public static final int MEMBER_ENTER = 1;
     public static final int MEMBER_EXIT = 2;
 
-    public static final String ROOT_DIR = "/sdcard/Suixinbo/";
+    public static final String ROOT_DIR = "/sdcard/Living/";
 
 
     public static final int AVIMCMD_MULTI = 0x800;             // 多人互动消息类型
