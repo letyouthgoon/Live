@@ -78,6 +78,7 @@ public class AVUIControl extends GLViewGroup {
                 qavsdk.getAVContext().setRenderMgrAndHolder(mGraphicRenderMgr, holder);
             }
             mContext.sendBroadcast(new Intent(Constants.ACTION_SURFACE_CREATED));
+            mContext.sendBroadcast(new Intent(Constants.ACTION_SURFACE_CHANGED));
             SxbLog.e(TAG, " surfaceCreated");
         }
 

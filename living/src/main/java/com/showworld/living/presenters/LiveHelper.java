@@ -100,6 +100,24 @@ public class LiveHelper extends Presenter {
 
     }
 
+    public void autoFocusCam() {
+        AVVideoCtrl videoCtrl = QavsdkControl.getInstance().getAVContext().getVideoCtrl();
+        final Object cam = videoCtrl.getCamera();
+        if ((cam == null) || (!(cam instanceof Camera))) {
+            return;
+        }
+        ((Camera) cam).getParameters().setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+//        ((Camera) cam).autoFocus(new Camera.AutoFocusCallback() {
+//            @Override
+//            public void onAutoFocus(boolean success, Camera camera) {
+//                if (success) {
+////                    initCamera();//实现相机的参数初始化
+//                    camera.cancelAutoFocus();//只有加上了这一句，才会自动对焦。
+//                }
+//            }
+//
+//        });
+    }
 
     /**
      * 打开摄像头
@@ -183,6 +201,7 @@ public class LiveHelper extends Presenter {
                     } else {
                         mIsFrontCamera = false;
                     }
+
 
                     //如果是主播直接本地渲染
 //                    if (MySelfInfo.getInstance().getIdStatus() == Constants.HOST)
@@ -761,7 +780,7 @@ public class LiveHelper extends Presenter {
             @Override
             public void onError(int i, String s) {
                 Log.e(TAG, "stop record error " + i + " : " + s);
-                mLiveView.stopRecordCallback(false,null);
+                mLiveView.stopRecordCallback(false, null);
             }
 
             @Override
@@ -773,7 +792,6 @@ public class LiveHelper extends Presenter {
         });
         Log.d(TAG, "success");
     }
-
 
 
     @Override

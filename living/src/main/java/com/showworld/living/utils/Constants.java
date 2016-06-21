@@ -110,6 +110,8 @@ public class Constants {
             + ".ACTION_CLOSE_ROOM_COMPLETE";
     public static final String ACTION_SURFACE_CREATED = PACKAGE
             + ".ACTION_SURFACE_CREATED";
+    public static final String ACTION_SURFACE_CHANGED = PACKAGE
+            + ".ACTION_SURFACE_CHANGED";
     public static final String ACTION_MEMBER_CHANGE = PACKAGE
             + ".ACTION_MEMBER_CHANGE";
     public static final String ACTION_CHANGE_AUTHRITY = PACKAGE
