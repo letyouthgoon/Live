@@ -3,7 +3,7 @@ package com.showworld.living.presenters;
 import android.content.Context;
 import android.widget.Toast;
 
-import com.showworld.living.utils.SWLLog;
+import com.showworld.living.utils.SwlLog;
 import com.tencent.TIMCallBack;
 import com.tencent.TIMManager;
 import com.tencent.TIMUser;
@@ -62,13 +62,13 @@ public class LoginHelper extends Presenter {
                 new TIMCallBack() {
                     @Override
                     public void onError(int i, String s) {
-                        SWLLog.e(TAG, "IMLogin fail ：" + i + " msg " + s);
+                        SwlLog.e(TAG, "IMLogin fail ：" + i + " msg " + s);
                         Toast.makeText(mContext, "IMLogin fail ：" + i + " msg " + s, Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onSuccess() {
-                        SWLLog.i(TAG, "keypath IMLogin succ !");
+                        SwlLog.i(TAG, "keypath IMLogin succ !");
 //                        Toast.makeText(mContext, "IMLogin succ !", Toast.LENGTH_SHORT).show();
                         getMyRoomNum();
                         startAVSDK();
@@ -86,12 +86,12 @@ public class LoginHelper extends Presenter {
         TIMManager.getInstance().logout(new TIMCallBack() {
             @Override
             public void onError(int i, String s) {
-                SWLLog.e(TAG, "IMLogout fail ：" + i + " msg " + s);
+                SwlLog.e(TAG, "IMLogout fail ：" + i + " msg " + s);
             }
 
             @Override
             public void onSuccess() {
-                SWLLog.i(TAG, "IMLogout succ !");
+                SwlLog.i(TAG, "IMLogout succ !");
                 //清除本地缓存
                 MySelfInfo.getInstance().clearCache(mContext);
                 //反向初始化avsdk
@@ -112,7 +112,7 @@ public class LoginHelper extends Presenter {
             @Override
             public void OnPwdLoginSuccess(TLSUserInfo tlsUserInfo) {//获取用户信息
 //                Toast.makeText(mContext, "TLS login succ ! " + tlsUserInfo.identifier, Toast.LENGTH_SHORT).show();
-//                SWLLog.i(TAG, "TLS OnPwdLoginSuccess " + tlsUserInfo.identifier);
+//                SwlLog.i(TAG, "TLS OnPwdLoginSuccess " + tlsUserInfo.identifier);
                 String userSig = InitBusinessHelper.getmLoginHelper().getUserSig(tlsUserInfo.identifier);
                 MySelfInfo.getInstance().setId(tlsUserInfo.identifier);
                 MySelfInfo.getInstance().setUserSig(userSig);
@@ -131,13 +131,13 @@ public class LoginHelper extends Presenter {
 
             @Override
             public void OnPwdLoginFail(TLSErrInfo tlsErrInfo) {
-                SWLLog.e(TAG, "OnPwdLoginFail " + tlsErrInfo.Msg);
+                SwlLog.e(TAG, "OnPwdLoginFail " + tlsErrInfo.Msg);
                 Toast.makeText(mContext, "OnPwdLoginFail：\n" + tlsErrInfo.Msg, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void OnPwdLoginTimeout(TLSErrInfo tlsErrInfo) {
-                SWLLog.e(TAG, "OnPwdLoginTimeout " + tlsErrInfo.Msg);
+                SwlLog.e(TAG, "OnPwdLoginTimeout " + tlsErrInfo.Msg);
                 Toast.makeText(mContext, "OnPwdLoginTimeout：\n" + tlsErrInfo.Msg, Toast.LENGTH_SHORT).show();
             }
         });

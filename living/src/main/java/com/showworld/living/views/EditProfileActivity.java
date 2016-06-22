@@ -25,7 +25,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
-import com.showworld.living.utils.SWLLog;
+import com.showworld.living.utils.SwlLog;
 import com.tencent.TIMUserProfile;
 import com.showworld.living.R;
 import com.showworld.living.model.MySelfInfo;
@@ -75,7 +75,7 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
             Bitmap cirBitMap = UIUtils.createCircleImage(bitmap, 0);
             ivIcon.setImageBitmap(cirBitMap);
         }else{
-            SWLLog.d(TAG, "profile avator: " + MySelfInfo.getInstance().getAvatar());
+            SwlLog.d(TAG, "profile avator: " + MySelfInfo.getInstance().getAvatar());
             RequestManager req = Glide.with(this);
             req.load(MySelfInfo.getInstance().getAvatar()).transform(new GlideCircleTransform(this)).into(ivIcon);
         }
@@ -264,7 +264,7 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != RESULT_OK){
-            SWLLog.e(TAG, "onActivityResult->failed for request: " + requestCode + "/" + resultCode);
+            SwlLog.e(TAG, "onActivityResult->failed for request: " + requestCode + "/" + resultCode);
             return;
         }
         switch (requestCode){
@@ -280,7 +280,7 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
         case IMAGE_STORE:
             String path = UIUtils.getPath(this, data.getData());
             if (null != path){
-                SWLLog.e(TAG, "startPhotoZoom->path:" + path);
+                SwlLog.e(TAG, "startPhotoZoom->path:" + path);
                 File file = new File(path);
                 startPhotoZoom(Uri.fromFile(file));
             }
@@ -332,7 +332,7 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
         if (0 == code) {
             mProfileInfoHelper.setMyAvator(url);
         }else{
-            SWLLog.w(TAG, "onUploadResult->failed: "+code);
+            SwlLog.w(TAG, "onUploadResult->failed: "+code);
         }
     }
 }

@@ -3,7 +3,7 @@ package com.showworld.living.avcontrollers;
 import android.content.Context;
 import android.content.Intent;
 
-import com.showworld.living.utils.SWLLog;
+import com.showworld.living.utils.SwlLog;
 import com.tencent.av.sdk.AVContext;
 import com.tencent.av.sdk.AVError;
 import com.tencent.openqq.IMSdkInt;
@@ -31,7 +31,7 @@ class AVContextControl {
         public void OnComplete(int result) {
             mIsInStartContext = false;
 //            Toast.makeText(mContext, "SDKLogin complete : " + result, Toast.LENGTH_SHORT).show();
-            SWLLog.i(TAG, "keypath AVSDK startContext  result " + result);
+            SwlLog.i(TAG, "keypath AVSDK startContext  result " + result);
 //            mContext.sendBroadcast(new Intent(
 //                    AvConstants.ACTION_START_CONTEXT_COMPLETE).putExtra(
 //                    AvConstants.EXTRA_AV_ERROR_RESULT, result));
@@ -65,7 +65,7 @@ class AVContextControl {
     int startContext() {
         int result = AVError.AV_OK;
         if (!hasAVContext()) {
-            SWLLog.i(TAG, "AVSDKLogin startContext hasAVContext ");
+            SwlLog.i(TAG, "AVSDKLogin startContext hasAVContext ");
             onAVSDKCreate(true, IMSdkInt.get().getTinyId(), 0);
         } else {
             return AVError.AV_ERR_FAILED;
@@ -94,7 +94,7 @@ class AVContextControl {
      */
     void stopContext() {
         if (hasAVContext()) {
-            SWLLog.d(TAG, "WL_DEBUG stopContext");
+            SwlLog.d(TAG, "WL_DEBUG stopContext");
             mAVContext.stop(mStopContextCompleteCallback);
             mIsInStopContext = true;
         }
@@ -136,7 +136,7 @@ class AVContextControl {
             mAVContext = AVContext.createInstance(mContext, mConfig);
             mSelfIdentifier = mConfig.identifier;
             int ret = mAVContext.start(mStartContextCompleteCallback);
-            SWLLog.i(TAG, "onAVSDKCreate ret "+ret);
+            SwlLog.i(TAG, "onAVSDKCreate ret "+ret);
             mIsInStartContext = true;
         } else {
             mStartContextCompleteCallback.OnComplete(errorCode);

@@ -8,7 +8,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.showworld.living.utils.SWLLog;
+import com.showworld.living.utils.SwlLog;
 import com.tencent.TIMCallBack;
 import com.tencent.TIMConversation;
 import com.tencent.TIMConversationType;
@@ -78,7 +78,7 @@ public class LiveHelper extends Presenter {
     private AVVideoCtrl.CameraPreviewChangeCallback mCameraPreviewChangeCallback = new AVVideoCtrl.CameraPreviewChangeCallback() {
         @Override
         public void onCameraPreviewChangeCallback(int cameraId) {
-            SWLLog.d(TAG, "WL_DEBUG mCameraPreviewChangeCallback.onCameraPreviewChangeCallback cameraId = " + cameraId);
+            SwlLog.d(TAG, "WL_DEBUG mCameraPreviewChangeCallback.onCameraPreviewChangeCallback cameraId = " + cameraId);
 
             QavsdkControl.getInstance().setMirror(FRONT_CAMERA == cameraId);
             autoFocusCam();
@@ -189,14 +189,14 @@ public class LiveHelper extends Presenter {
         } else {
             isOpenCamera = false;
         }
-        SWLLog.i(TAG, "createlive enableCamera camera " + camera + "  isEnable " + isEnable);
+        SwlLog.i(TAG, "createlive enableCamera camera " + camera + "  isEnable " + isEnable);
         AVVideoCtrl avVideoCtrl = QavsdkControl.getInstance().getAVContext().getVideoCtrl();
         //打开摄像头
 
         int ret = avVideoCtrl.enableCamera(camera, isEnable, new AVVideoCtrl.EnableCameraCompleteCallback() {
             protected void onComplete(boolean enable, int result) {//开启摄像头回调
                 super.onComplete(enable, result);
-                SWLLog.i(TAG, "createlive enableCamera result " + result);
+                SwlLog.i(TAG, "createlive enableCamera result " + result);
                 if (result == AVError.AV_OK) {//开启成功
 
                     if (camera == FRONT_CAMERA) {
@@ -212,7 +212,7 @@ public class LiveHelper extends Presenter {
             }
         });
 
-        SWLLog.i(TAG, "enableCamera " + ret);
+        SwlLog.i(TAG, "enableCamera " + ret);
 
     }
 
@@ -222,15 +222,15 @@ public class LiveHelper extends Presenter {
      * @param identifiers 主播ID
      */
     public void requestViewList(ArrayList<String> identifiers) {
-        SWLLog.i(TAG, "requestViewList " + identifiers);
+        SwlLog.i(TAG, "requestViewList " + identifiers);
         if (identifiers.size() == 0) return;
         AVEndpoint endpoint = ((AVRoomMulti) QavsdkControl.getInstance().getAVContext().getRoom()).getEndpointById(identifiers.get(0));
-        SWLLog.d(TAG, "requestViewList hostIdentifier " + identifiers + " endpoint " + endpoint);
+        SwlLog.d(TAG, "requestViewList hostIdentifier " + identifiers + " endpoint " + endpoint);
         if (endpoint != null) {
             ArrayList<String> alreadyIds = QavsdkControl.getInstance().getRemoteVideoIds();//已经存在的IDs
 
-            SWLLog.i(TAG, "requestViewList identifiers : " + identifiers.size());
-            SWLLog.i(TAG, "requestViewList alreadyIds : " + alreadyIds.size());
+            SwlLog.i(TAG, "requestViewList identifiers : " + identifiers.size());
+            SwlLog.i(TAG, "requestViewList alreadyIds : " + alreadyIds.size());
             for (String id : identifiers) {//把新加入的添加到后面
                 alreadyIds.add(id);
             }
@@ -262,7 +262,7 @@ public class LiveHelper extends Presenter {
                 mLiveView.showVideoView(REMOTE, id);
             }
             // TODO
-            SWLLog.d(TAG, "RequestViewListCompleteCallback.OnComplete");
+            SwlLog.d(TAG, "RequestViewListCompleteCallback.OnComplete");
         }
     };
 
@@ -276,7 +276,7 @@ public class LiveHelper extends Presenter {
                     } else if (i == 6011) {//群主不存在
                         Toast.makeText(mContext, "Host don't exit ", Toast.LENGTH_SHORT).show();
                     }
-                    SWLLog.e(TAG, "send message failed. code: " + i + " errmsg: " + s);
+                    SwlLog.e(TAG, "send message failed. code: " + i + " errmsg: " + s);
                 }
 
                 @Override
@@ -298,7 +298,7 @@ public class LiveHelper extends Presenter {
                             handleTextMessage(elem, name);
                         }
                     }
-                    SWLLog.i(TAG, "Send text Msg ok");
+                    SwlLog.i(TAG, "Send text Msg ok");
 
                 }
             });
@@ -313,7 +313,7 @@ public class LiveHelper extends Presenter {
             e.printStackTrace();
         }
         String cmds = inviteCmd.toString();
-        SWLLog.i(TAG, "send cmd : " + cmd + "|" + cmds);
+        SwlLog.i(TAG, "send cmd : " + cmd + "|" + cmds);
         TIMMessage Gmsg = new TIMMessage();
         TIMCustomElem elem = new TIMCustomElem();
         elem.setData(cmds.getBytes());
@@ -333,12 +333,12 @@ public class LiveHelper extends Presenter {
                 } else if (i == 6011) {//群主不存在
                     Toast.makeText(mContext, "Host don't exit ", Toast.LENGTH_SHORT).show();
                 }
-                SWLLog.e(TAG, "send message failed. code: " + i + " errmsg: " + s);
+                SwlLog.e(TAG, "send message failed. code: " + i + " errmsg: " + s);
             }
 
             @Override
             public void onSuccess(TIMMessage timMessage) {
-                SWLLog.i(TAG, "onSuccess ");
+                SwlLog.i(TAG, "onSuccess ");
             }
         });
     }
@@ -347,7 +347,7 @@ public class LiveHelper extends Presenter {
      * 初始化聊天室  设置监听器
      */
     public void initTIMListener(String chatRoomId) {
-        SWLLog.v(TAG, "initTIMListener->current room id: " + chatRoomId);
+        SwlLog.v(TAG, "initTIMListener->current room id: " + chatRoomId);
         mGroupConversation = TIMManager.getInstance().getConversation(TIMConversationType.Group, chatRoomId);
         TIMManager.getInstance().addMessageListener(msgListener);
         mC2CConversation = TIMManager.getInstance().getConversation(TIMConversationType.C2C, chatRoomId);
@@ -387,7 +387,7 @@ public class LiveHelper extends Presenter {
     private TIMMessageListener msgListener = new TIMMessageListener() {
         @Override
         public boolean onNewMessages(List<TIMMessage> list) {
-            //SWLLog.d(TAG, "onNewMessages readMessage " + list.size());
+            //SwlLog.d(TAG, "onNewMessages readMessage " + list.size());
             //解析TIM推送消息
             parseIMMessage(list);
             return false;
@@ -406,7 +406,7 @@ public class LiveHelper extends Presenter {
         if (tlist.size() > 0) {
             if (mGroupConversation != null)
                 mGroupConversation.setReadMessage(tlist.get(0));
-            SWLLog.d(TAG, "parseIMMessage readMessage " + tlist.get(0).timestamp());
+            SwlLog.d(TAG, "parseIMMessage readMessage " + tlist.get(0).timestamp());
         }
 //        if (!bNeverLoadMore && (tlist.size() < mLoadMsgNum))
 //            bMore = false;
@@ -493,7 +493,7 @@ public class LiveHelper extends Presenter {
     private void handleCustomMsg(TIMElem elem, String identifier, String nickname) {
         try {
             String customText = new String(((TIMCustomElem) elem).getData(), "UTF-8");
-            SWLLog.i(TAG, "cumstom msg  " + customText);
+            SwlLog.i(TAG, "cumstom msg  " + customText);
 
             JSONTokener jsonParser = new JSONTokener(customText);
             // 此时还未读取任何json文本，直接读取就是一个JSONObject对象。
@@ -647,7 +647,7 @@ public class LiveHelper extends Presenter {
                         ((Camera) cam).setParameters(camParam);
                         flashLgihtStatus = true;
                     } catch (RuntimeException e) {
-                        SWLLog.d("setParameters", "RuntimeException");
+                        SwlLog.d("setParameters", "RuntimeException");
                     }
                 }
             });
@@ -659,7 +659,7 @@ public class LiveHelper extends Presenter {
                         ((Camera) cam).setParameters(camParam);
                         flashLgihtStatus = false;
                     } catch (RuntimeException e) {
-                        SWLLog.d("setParameters", "RuntimeException");
+                        SwlLog.d("setParameters", "RuntimeException");
                     }
 
                 }
@@ -677,7 +677,7 @@ public class LiveHelper extends Presenter {
             e.printStackTrace();
         }
         String cmds = inviteCmd.toString();
-        SWLLog.i(TAG, "send cmd : " + cmd + "|" + cmds);
+        SwlLog.i(TAG, "send cmd : " + cmd + "|" + cmds);
         TIMMessage msg = new TIMMessage();
         TIMCustomElem elem = new TIMCustomElem();
         elem.setData(cmds.getBytes());
@@ -687,12 +687,12 @@ public class LiveHelper extends Presenter {
         mC2CConversation.sendMessage(msg, new TIMValueCallBack<TIMMessage>() {
             @Override
             public void onError(int i, String s) {
-                SWLLog.e(TAG, "enter error" + i + ": " + s);
+                SwlLog.e(TAG, "enter error" + i + ": " + s);
             }
 
             @Override
             public void onSuccess(TIMMessage timMessage) {
-                SWLLog.i(TAG, "send praise succ !");
+                SwlLog.i(TAG, "send praise succ !");
             }
         });
     }
@@ -703,8 +703,8 @@ public class LiveHelper extends Presenter {
 
     public void pushAction(TIMAvManager.StreamParam mStreamParam) {
         int roomid = (int) QavsdkControl.getInstance().getAVContext().getRoom().getRoomId();
-        SWLLog.i(TAG, "Push roomid: " + roomid);
-        SWLLog.d(TAG, "Push groupid: " + CurLiveInfo.getRoomNum());
+        SwlLog.i(TAG, "Push roomid: " + roomid);
+        SwlLog.d(TAG, "Push groupid: " + CurLiveInfo.getRoomNum());
         roomInfo = TIMAvManager.getInstance().new RoomInfo();
         roomInfo.setRoomId(roomid);
         roomInfo.setRelationId(CurLiveInfo.getRoomNum());
@@ -713,7 +713,7 @@ public class LiveHelper extends Presenter {
             TIMAvManager.getInstance().requestMultiVideoStreamerStart(roomInfo, mStreamParam, new TIMValueCallBack<TIMAvManager.StreamRes>() {
                 @Override
                 public void onError(int i, String s) {
-                    SWLLog.e(TAG, "url error " + i + " : " + s);
+                    SwlLog.e(TAG, "url error " + i + " : " + s);
                     Toast.makeText(mContext, "start stream error,try again " + i + " : " + s, Toast.LENGTH_SHORT).show();
                 }
 
@@ -731,13 +731,13 @@ public class LiveHelper extends Presenter {
     }
 
     public void stopPushAction() {
-        SWLLog.d(TAG, "Push stop Id " + streamChannelID);
+        SwlLog.d(TAG, "Push stop Id " + streamChannelID);
         List<Long> myList = new ArrayList<Long>();
         myList.add(streamChannelID);
         TIMAvManager.getInstance().requestMultiVideoStreamerStop(roomInfo, myList, new TIMCallBack() {
             @Override
             public void onError(int i, String s) {
-                SWLLog.e(TAG, "url stop error " + i + " : " + s);
+                SwlLog.e(TAG, "url stop error " + i + " : " + s);
                 Toast.makeText(mContext, "stop stream error,try again " + i + " : " + s, Toast.LENGTH_SHORT).show();
 
             }
@@ -812,7 +812,7 @@ public class LiveHelper extends Presenter {
     public void changeAuthandRole(final boolean leverChange, long auth_bits, final String role) {
         changeAuthority(auth_bits, null, new AVRoomMulti.ChangeAuthorityCallback() {
             protected void onChangeAuthority(int retCode) {
-                SWLLog.i(TAG, "changeAuthority code " + retCode);
+                SwlLog.i(TAG, "changeAuthority code " + retCode);
                 changeRole(role, leverChange);
             }
         });
@@ -828,7 +828,7 @@ public class LiveHelper extends Presenter {
      * @return
      */
     private boolean changeAuthority(long auth_bits, byte[] auth_buffer, AVRoomMulti.ChangeAuthorityCallback callback) {
-        SWLLog.d(TAG, " changeAuthority");
+        SwlLog.d(TAG, " changeAuthority");
         QavsdkControl qavsdk = QavsdkControl.getInstance();
         AVContext avContext = qavsdk.getAVContext();
         AVRoomMulti room = (AVRoomMulti) avContext.getRoom();
@@ -849,7 +849,7 @@ public class LiveHelper extends Presenter {
         ((AVRoomMulti) (QavsdkControl.getInstance().getRoom())).changeAVControlRole(role, new AVRoomMulti.ChangeAVControlRoleCompleteCallback() {
                     @Override
                     public void OnComplete(int arg0) {
-                        SWLLog.i(TAG, "changeRole code " + arg0);
+                        SwlLog.i(TAG, "changeRole code " + arg0);
                         if (arg0 == AVError.AV_OK) {
                             if (leverupper == true) {
                                 openCameraAndMic();//打开摄像头

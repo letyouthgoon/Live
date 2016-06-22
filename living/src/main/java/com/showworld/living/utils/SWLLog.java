@@ -7,8 +7,8 @@ import java.util.Calendar;
 /**
  * 日志输出
  */
-public class SWLLog {
-    public enum SxbLogLevel {
+public class SwlLog {
+    public enum SwlLogLevel {
         OFF,
         ERROR,
         WARN,
@@ -16,10 +16,10 @@ public class SWLLog {
         INFO
     }
 
-    static private SxbLogLevel level = SxbLogLevel.INFO;
+    static private SwlLogLevel level = SwlLogLevel.INFO;
 
     static public String[] getStringValues() {
-        SxbLogLevel[] levels = SxbLogLevel.values();
+        SwlLogLevel[] levels = SwlLogLevel.values();
         String[] stringValuse = new String[levels.length];
         for (int i = 0; i < levels.length; i++) {
             stringValuse[i] = levels[i].toString();
@@ -27,15 +27,15 @@ public class SWLLog {
         return stringValuse;
     }
 
-    static public void setLogLevel(SxbLogLevel newLevel) {
+    static public void setLogLevel(SwlLogLevel newLevel) {
         level = newLevel;
         w("Log", "change log level: " + newLevel);
     }
 
     public static void v(String strTag, String strInfo) {
         Log.v(strTag, strInfo);
-        if (level.ordinal() >= SxbLogLevel.INFO.ordinal()) {
-            SWLLogImpl.writeLog("I", strTag, strInfo, null);
+        if (level.ordinal() >= SwlLogLevel.INFO.ordinal()) {
+            SwlLogImpl.writeLog("I", strTag, strInfo, null);
         }
     }
 
@@ -45,28 +45,28 @@ public class SWLLog {
 
     public static void d(String strTag, String strInfo) {
         Log.d(strTag, strInfo);
-        if (level.ordinal() >= SxbLogLevel.DEBUG.ordinal()) {
-            SWLLogImpl.writeLog("D", strTag, strInfo, null);
+        if (level.ordinal() >= SwlLogLevel.DEBUG.ordinal()) {
+            SwlLogImpl.writeLog("D", strTag, strInfo, null);
         }
     }
 
 
     public static void w(String strTag, String strInfo) {
         Log.w(strTag, strInfo);
-        if (level.ordinal() >= SxbLogLevel.WARN.ordinal()) {
-            SWLLogImpl.writeLog("W", strTag, strInfo, null);
+        if (level.ordinal() >= SwlLogLevel.WARN.ordinal()) {
+            SwlLogImpl.writeLog("W", strTag, strInfo, null);
         }
     }
 
     public static void e(String strTag, String strInfo) {
         Log.e(strTag, strInfo);
-        if (level.ordinal() >= SxbLogLevel.ERROR.ordinal()) {
-            SWLLogImpl.writeLog("E", strTag, strInfo, null);
+        if (level.ordinal() >= SwlLogLevel.ERROR.ordinal()) {
+            SwlLogImpl.writeLog("E", strTag, strInfo, null);
         }
     }
 
     public static void writeException(String strTag, String strInfo, Exception tr) {
-        SWLLogImpl.writeLog("C", strTag, strInfo, tr);
+        SwlLogImpl.writeLog("C", strTag, strInfo, tr);
     }
 
     public static String getTime() {

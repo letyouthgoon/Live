@@ -11,7 +11,7 @@ import com.showworld.living.R;
 import com.showworld.living.model.MySelfInfo;
 import com.showworld.living.presenters.LoginHelper;
 import com.showworld.living.presenters.viewinface.LoginView;
-import com.showworld.living.utils.SWLLog;
+import com.showworld.living.utils.SwlLog;
 import com.showworld.living.views.customviews.BaseActivity;
 
 /**
@@ -26,7 +26,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SWLLog.i(TAG, "LoginActivity onCreate");
+        SwlLog.i(TAG, "LoginActivity onCreate");
         mLoginHeloper = new LoginHelper(this, this);
         //获取个人数据本地缓存
         MySelfInfo.getInstance().getCache(getApplicationContext());
@@ -40,7 +40,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
             mBtnLogin.setOnClickListener(this);
         } else {
             //有账户登录直接IM登录
-            SWLLog.i(TAG, "LoginActivity onCreate");
+            SwlLog.i(TAG, "LoginActivity onCreate");
             mLoginHeloper.imLogin(MySelfInfo.getInstance().getId(), MySelfInfo.getInstance().getUserSig());
         }
     }

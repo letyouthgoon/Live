@@ -14,7 +14,7 @@ import com.tencent.av.opengl.ui.GLView;
 import com.tencent.av.opengl.utils.Utils;
 import com.tencent.av.sdk.AVView;
 import com.tencent.av.utils.QLog;
-import com.showworld.living.utils.SWLLog;
+import com.showworld.living.utils.SwlLog;
 
 /**
  * 视频界面类
@@ -97,7 +97,7 @@ public class GLVideoView extends GLView {
                 }
 
                 if (isFristFrame == false) {
-                    SWLLog.i(TAG, "PerformanceTest  end     " +  SWLLog.getTime());
+                    SwlLog.i(TAG, "PerformanceTest  end     " +  SwlLog.getTime());
                     isFristFrame = true;
                 }
                 mYuvTexture.setTextureSize(width, height);
@@ -446,7 +446,7 @@ public class GLVideoView extends GLView {
         mVideoSrcType = videoSrcType;
         String key = mIdentifier + "_" + mVideoSrcType;// 一个uin可能有多路视频，用uin做key不够，这里用uin_srcType做key
         if (null == mYuvTexture) {
-            SWLLog.e(TAG, "null == mYuvTexture");
+            SwlLog.e(TAG, "null == mYuvTexture");
         }
         mGraphicRenderMgr.setGlRender(key, mYuvTexture);
 

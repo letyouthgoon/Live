@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TabHost;
 
+import com.showworld.living.utils.SwlLog;
 import com.tencent.TIMUserProfile;
 import com.showworld.living.R;
 import com.showworld.living.avcontrollers.QavsdkControl;
@@ -18,7 +19,6 @@ import com.showworld.living.presenters.InitBusinessHelper;
 import com.showworld.living.presenters.LoginHelper;
 import com.showworld.living.presenters.ProfileInfoHelper;
 import com.showworld.living.presenters.viewinface.ProfileView;
-import com.showworld.living.utils.SWLLog;
 import com.showworld.living.views.customviews.BaseFragmentActivity;
 
 import java.util.List;
@@ -41,7 +41,7 @@ public class HomeActivity extends BaseFragmentActivity implements ProfileView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_layout);
-        SWLLog.i(TAG, "HomeActivity onStart");
+        SwlLog.i(TAG, "HomeActivity onStart");
         mTabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
         layoutInflater = LayoutInflater.from(this);
         mTabHost.setup(this, getSupportFragmentManager(), R.id.contentPanel);
@@ -76,11 +76,11 @@ public class HomeActivity extends BaseFragmentActivity implements ProfileView {
 
     @Override
     protected void onStart() {
-        SWLLog.i(TAG, "HomeActivity onStart");
+        SwlLog.i(TAG, "HomeActivity onStart");
         super.onStart();
         if (QavsdkControl.getInstance().getAVContext() == null) {//retry
             InitBusinessHelper.initApp(getApplicationContext());
-            SWLLog.i(TAG, "HomeActivity retry login");
+            SwlLog.i(TAG, "HomeActivity retry login");
             mLoginHelper = new LoginHelper(this);
             mLoginHelper.imLogin(MySelfInfo.getInstance().getId(), MySelfInfo.getInstance().getUserSig());
         }
@@ -97,14 +97,14 @@ public class HomeActivity extends BaseFragmentActivity implements ProfileView {
     protected void onDestroy() {
         if (mLoginHelper != null)
             mLoginHelper.onDestory();
-        SWLLog.i(TAG, "HomeActivity onDestroy");
+        SwlLog.i(TAG, "HomeActivity onDestroy");
         QavsdkControl.getInstance().stopContext();
         super.onDestroy();
     }
 
     @Override
     public void updateProfileInfo(TIMUserProfile profile) {
-        SWLLog.i(TAG, "updateProfileInfo");
+        SwlLog.i(TAG, "updateProfileInfo");
         if (null != profile) {
             MySelfInfo.getInstance().setAvatar(profile.getFaceUrl());
             if (!TextUtils.isEmpty(profile.getNickName())) {

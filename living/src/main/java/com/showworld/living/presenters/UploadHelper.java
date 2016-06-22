@@ -9,7 +9,7 @@ import android.text.TextUtils;
 
 import com.showworld.living.model.MySelfInfo;
 import com.showworld.living.presenters.viewinface.UploadView;
-import com.showworld.living.utils.SWLLog;
+import com.showworld.living.utils.SwlLog;
 import com.tencent.upload.Const;
 import com.tencent.upload.UploadManager;
 import com.tencent.upload.task.ITask;
@@ -67,7 +67,7 @@ public class UploadHelper extends Presenter {
         mMainHandler = new Handler(Looper.getMainLooper(), new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
-                SWLLog.d(TAG, "handleMessage id:" + msg.what);
+                SwlLog.d(TAG, "handleMessage id:" + msg.what);
                 switch (msg.what) {
                     case MAIN_CALL_BACK:
                         mView.onUploadResult(msg.arg1, (String) msg.obj);
@@ -90,7 +90,7 @@ public class UploadHelper extends Presenter {
     private void doUpdateSig() {
         String sig = OKhttpHelper.getInstance().getCosSig();
         MySelfInfo.getInstance().setCosSig(sig);
-//        SWLLog.d(TAG, "doUpdateSig->get sig: " + sig);
+//        SwlLog.d(TAG, "doUpdateSig->get sig: " + sig);
     }
 
     private void doUploadCover(final String path, boolean bRetry) {
@@ -108,11 +108,11 @@ public class UploadHelper extends Presenter {
 
         UploadManager fileUploadMgr = new UploadManager(mContext, appid,
                 Const.FileType.File, "qcloudphoto");
-        SWLLog.d(TAG, "upload cover: " + path);
+        SwlLog.d(TAG, "upload cover: " + path);
         FileUploadTask task = new FileUploadTask(bucket, path, createNetUrl(), null, new IUploadTaskListener() {
             @Override
             public void onUploadSucceed(final FileInfo result) {
-                SWLLog.i(TAG, "upload succeed: " + result.url);
+                SwlLog.i(TAG, "upload succeed: " + result.url);
                 Message msg = new Message();
                 msg.what = MAIN_CALL_BACK;
                 msg.arg1 = 0;
@@ -123,7 +123,7 @@ public class UploadHelper extends Presenter {
 
             @Override
             public void onUploadFailed(int i, String s) {
-                SWLLog.w(TAG, "upload error code: " + i + " msg:" + s);
+                SwlLog.w(TAG, "upload error code: " + i + " msg:" + s);
                 if (-96 == i) {  // 签名过期重试
                     Message msg = new Message();
                     msg.what = THREAD_GETSIG_UPLOAD;
@@ -142,7 +142,7 @@ public class UploadHelper extends Presenter {
 
             @Override
             public void onUploadProgress(long l, long l1) {
-                SWLLog.d(TAG, "onUploadProgress: " + l + "/" + l1);
+                SwlLog.d(TAG, "onUploadProgress: " + l + "/" + l1);
                 Message msg = new Message();
                 msg.what = MAIN_PROCESS;
                 msg.arg1 = (int) (l * 100 / l1);
@@ -152,7 +152,7 @@ public class UploadHelper extends Presenter {
 
             @Override
             public void onUploadStateChange(ITask.TaskState taskState) {
-                SWLLog.d(TAG, "onUploadStateChange: " + taskState);
+                SwlLog.d(TAG, "onUploadStateChange: " + taskState);
             }
         });
 

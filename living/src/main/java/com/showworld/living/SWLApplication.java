@@ -4,16 +4,16 @@ import android.app.Application;
 import android.content.Context;
 
 import com.showworld.living.presenters.InitBusinessHelper;
-import com.showworld.living.utils.SWLLogImpl;
+import com.showworld.living.utils.SwlLogImpl;
 import com.squareup.leakcanary.LeakCanary;
 
 
 /**
  * 全局Application
  */
-public class SWLApplication extends Application {
+public class SwlApplication extends Application {
 
-    private static SWLApplication mApp;
+    private static SwlApplication mApp;
     private static Context mContext;
 
     @Override
@@ -22,7 +22,7 @@ public class SWLApplication extends Application {
         mApp = this;
         mContext = getApplicationContext();
 
-        SWLLogImpl.init(getApplicationContext());
+        SwlLogImpl.init(getApplicationContext());
 
         //初始化APP
         InitBusinessHelper.initApp(mContext);
@@ -34,7 +34,7 @@ public class SWLApplication extends Application {
         return mContext;
     }
 
-    public static SWLApplication getInstance() {
+    public static SwlApplication getInstance() {
         return mApp;
     }
 }

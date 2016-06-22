@@ -29,7 +29,7 @@ import com.showworld.living.presenters.UploadHelper;
 import com.showworld.living.presenters.viewinface.LocationView;
 import com.showworld.living.presenters.viewinface.UploadView;
 import com.showworld.living.utils.Constants;
-import com.showworld.living.utils.SWLLog;
+import com.showworld.living.utils.SwlLog;
 import com.showworld.living.utils.UIUtils;
 import com.showworld.living.views.customviews.BaseActivity;
 import com.showworld.living.views.customviews.CustomSwitch;
@@ -111,7 +111,7 @@ public class PublishLiveActivity extends BaseActivity implements View.OnClickLis
                     CurLiveInfo.setHostID(MySelfInfo.getInstance().getId());
                     CurLiveInfo.setRoomNum(MySelfInfo.getInstance().getMyRoomNum());
                     startActivity(intent);
-                    SWLLog.i(TAG, "PerformanceTest  publish Live     " +  SWLLog.getTime());
+                    SwlLog.i(TAG, "PerformanceTest  publish Live     " +  SwlLog.getTime());
                     this.finish();
                 }
                 break;
@@ -261,7 +261,7 @@ public class PublishLiveActivity extends BaseActivity implements View.OnClickLis
                 case IMAGE_STORE:
                     String path = UIUtils.getPath(this, data.getData());
                     if (null != path) {
-                        SWLLog.d(TAG, "startPhotoZoom->path:" + path);
+                        SwlLog.d(TAG, "startPhotoZoom->path:" + path);
                         File file = new File(path);
                         startPhotoZoom(Uri.fromFile(file));
                     }
@@ -282,7 +282,7 @@ public class PublishLiveActivity extends BaseActivity implements View.OnClickLis
     public void startPhotoZoom(Uri uri) {
         cropUri = createCoverUri("_crop");
 
-        SWLLog.e("XIAO", "startPhotoZoom->url:" + uri);
+        SwlLog.e("XIAO", "startPhotoZoom->url:" + uri);
         Intent intent = new Intent("com.android.camera.action.CROP");
         intent.setDataAndType(uri, "image/*");
         intent.putExtra("crop", "true");

@@ -16,7 +16,7 @@ import com.bumptech.glide.RequestManager;
 import com.showworld.living.R;
 import com.showworld.living.model.LiveInfoJson;
 import com.showworld.living.utils.GlideCircleTransform;
-import com.showworld.living.utils.SWLLog;
+import com.showworld.living.utils.SwlLog;
 import com.showworld.living.utils.UIUtils;
 
 import java.util.ArrayList;
@@ -70,7 +70,7 @@ public class LiveShowAdapter extends ArrayAdapter<LiveInfoJson> {
 
         LiveInfoJson data = getItem(position);
         if (!TextUtils.isEmpty(data.getCover())){
-            SWLLog.d(TAG, "load cover: " + data.getCover());
+            SwlLog.d(TAG, "load cover: " + data.getCover());
             RequestManager req = Glide.with(mActivity);
             req.load(data.getCover()).into(holder.ivCover);
         }else{
@@ -83,7 +83,7 @@ public class LiveShowAdapter extends ArrayAdapter<LiveInfoJson> {
             Bitmap cirBitMap = UIUtils.createCircleImage(bitmap, 0);
             holder.ivAvatar.setImageBitmap(cirBitMap);
         }else{
-            SWLLog.d(TAG, "user avator: " + data.getHost().getAvatar());
+            SwlLog.d(TAG, "user avator: " + data.getHost().getAvatar());
             RequestManager req = Glide.with(mActivity);
             req.load(data.getHost().getAvatar()).transform(new GlideCircleTransform(mActivity)).into(holder.ivAvatar);
         }

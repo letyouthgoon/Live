@@ -16,7 +16,7 @@ import android.text.TextUtils;
 
 import com.showworld.living.presenters.viewinface.LocationView;
 import com.showworld.living.utils.Constants;
-import com.showworld.living.utils.SWLLog;
+import com.showworld.living.utils.SwlLog;
 
 import java.io.IOException;
 import java.util.List;
@@ -49,7 +49,7 @@ public class LocationHelper {
         try {
             double latitude = location.getLatitude();
             double longitude = location.getLongitude();
-            SWLLog.d(TAG, "getAddressFromLocation->lat:" + latitude + ", long:" + longitude);
+            SwlLog.d(TAG, "getAddressFromLocation->lat:" + latitude + ", long:" + longitude);
             List<Address> list = geocoder.getFromLocation(latitude, longitude, 1);
             if (list.size() > 0) {
                 Address address = list.get(0);

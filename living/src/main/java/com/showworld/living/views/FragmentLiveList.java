@@ -20,7 +20,7 @@ import com.showworld.living.model.MySelfInfo;
 import com.showworld.living.presenters.LiveListViewHelper;
 import com.showworld.living.presenters.viewinface.LiveListView;
 import com.showworld.living.utils.Constants;
-import com.showworld.living.utils.SWLLog;
+import com.showworld.living.utils.SwlLog;
 
 import java.util.ArrayList;
 
@@ -74,7 +74,7 @@ public class FragmentLiveList extends Fragment implements View.OnClickListener, 
                 CurLiveInfo.setAdmires(item.getAdmireCount());
                 CurLiveInfo.setAddress(item.getLbs().getAddress());
                 startActivity(intent);
-                SWLLog.i(TAG, "PerformanceTest  join Live     " + SWLLog.getTime());
+                SwlLog.i(TAG, "PerformanceTest  join Live     " + SwlLog.getTime());
             }
         });
 

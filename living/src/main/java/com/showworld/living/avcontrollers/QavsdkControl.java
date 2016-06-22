@@ -3,7 +3,7 @@ package com.showworld.living.avcontrollers;
 import android.content.Context;
 import android.view.View;
 
-import com.showworld.living.utils.SWLLog;
+import com.showworld.living.utils.SwlLog;
 import com.tencent.av.sdk.AVAudioCtrl;
 import com.tencent.av.sdk.AVContext;
 import com.tencent.av.sdk.AVRoom;
@@ -46,7 +46,7 @@ public class QavsdkControl {
 
     private QavsdkControl(Context context) {
         mAVContextControl = new AVContextControl(context);
-        SWLLog.d(TAG, "WL_DEBUG QavsdkControl");
+        SwlLog.d(TAG, "WL_DEBUG QavsdkControl");
     }
 
 
@@ -176,7 +176,7 @@ public class QavsdkControl {
     }
 
     public void setMirror(boolean isMirror) {
-        SWLLog.d(TAG, "setMirror SelfIdentifier:" + getSelfIdentifier() + "/" + isMirror);
+        SwlLog.d(TAG, "setMirror SelfIdentifier:" + getSelfIdentifier() + "/" + isMirror);
 
         if (null != mAVUIControl) {
             mAVUIControl.setMirror(isMirror, getSelfIdentifier());
@@ -261,7 +261,7 @@ public class QavsdkControl {
     }
 
     public void setRemoteHasVideo(boolean isRemoteHasVideo, String identifier, int videoSrcType) {
-        SWLLog.i(TAG, "setRemoteHasVideo : " + identifier);
+        SwlLog.i(TAG, "setRemoteHasVideo : " + identifier);
         if (null != mAVUIControl) {
             mAVUIControl.setSmallVideoViewLayout(isRemoteHasVideo, identifier, videoSrcType);
         }

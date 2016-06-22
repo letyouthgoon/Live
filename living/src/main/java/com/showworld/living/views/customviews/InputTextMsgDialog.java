@@ -14,11 +14,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.showworld.living.utils.SwlLog;
 import com.tencent.TIMMessage;
 import com.tencent.TIMTextElem;
 import com.showworld.living.R;
 import com.showworld.living.presenters.LiveHelper;
-import com.showworld.living.utils.SWLLog;
 import com.showworld.living.views.LiveActivity;
 
 import java.io.UnsupportedEncodingException;
@@ -56,7 +56,7 @@ public class InputTextMsgDialog extends Dialog {
         confirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SWLLog.d("XIAO", "onClick enter->");
+                SwlLog.d("XIAO", "onClick enter->");
                 if (messageTextView.getText().length() > 0) {
                     sendText("" + messageTextView.getText());
                     imm.showSoftInput(messageTextView, InputMethodManager.SHOW_FORCED);
@@ -70,7 +70,7 @@ public class InputTextMsgDialog extends Dialog {
         messageTextView.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                SWLLog.d("XIAO", "onKey->" + v + "," + keyCode + "," + event);
+                SwlLog.d("XIAO", "onKey->" + v + "," + keyCode + "," + event);
                 if (event.getAction() != KeyEvent.ACTION_UP) {   // 忽略其它事件
                     return false;
                 }
@@ -108,7 +108,7 @@ public class InputTextMsgDialog extends Dialog {
                     imm.hideSoftInputFromWindow(messageTextView.getWindowToken(), 0);
                     dismiss();
                 }
-                SWLLog.d("XIAO", heightDifference+"/"+mLastDiff);
+                SwlLog.d("XIAO", heightDifference+"/"+mLastDiff);
                 mLastDiff = heightDifference;
             }
         });

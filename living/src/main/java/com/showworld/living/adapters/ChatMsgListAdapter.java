@@ -21,7 +21,7 @@ import com.showworld.living.R;
 import com.showworld.living.model.ChatEntity;
 import com.showworld.living.model.MySelfInfo;
 import com.showworld.living.utils.Constants;
-import com.showworld.living.utils.SWLLog;
+import com.showworld.living.utils.SwlLog;
 import com.showworld.living.views.customviews.CustomTextView;
 
 import java.util.ArrayList;
@@ -218,7 +218,7 @@ public class ChatMsgListAdapter extends BaseAdapter implements AbsListView.OnScr
         if (firstVisable <= pos) {
             playViewAnimator(view, 1f, ANIMATORDURING);
         } else {
-            SWLLog.d(TAG, "playDisappearAnimator->unexpect pos: " + pos + "/" + firstVisable);
+            SwlLog.d(TAG, "playDisappearAnimator->unexpect pos: " + pos + "/" + firstVisable);
         }
     }
 
@@ -246,16 +246,16 @@ public class ChatMsgListAdapter extends BaseAdapter implements AbsListView.OnScr
                 startAlpha = 1f * during / ANIMATORDURING;                    // 计算动画初始透明度
                 if (during < 0) {   // 剩余时长小于0直接设置透明度为0并返回
                     itemView.setAlpha(0f);
-                    SWLLog.v(TAG, "continueAnimator->already end animator:" + position + "/" + item.getContext() + "-" + during);
+                    SwlLog.v(TAG, "continueAnimator->already end animator:" + position + "/" + item.getContext() + "-" + during);
                     return;
                 }
             }
 
             // 创建属性动画并播放
-            SWLLog.v(TAG, "continueAnimator->pos: " + position + "/" + listMessage.size() + ", alpha:" + startAlpha + ", dur:" + during);
+            SwlLog.v(TAG, "continueAnimator->pos: " + position + "/" + listMessage.size() + ", alpha:" + startAlpha + ", dur:" + during);
             playViewAnimator(itemView, startAlpha, during);
         } else {
-            SWLLog.v(TAG, "continueAnimator->ignore pos: " + position + "/" + listMessage.size());
+            SwlLog.v(TAG, "continueAnimator->ignore pos: " + position + "/" + listMessage.size());
         }
     }
 
@@ -266,7 +266,7 @@ public class ChatMsgListAdapter extends BaseAdapter implements AbsListView.OnScr
         for (int i = 0; i < mListView.getChildCount(); i++) {
             View itemView = mListView.getChildAt(i);
             if (null == itemView) {
-                SWLLog.w(TAG, "playDisappearAnimator->view not found: " + i + "/" + mListView.getCount());
+                SwlLog.w(TAG, "playDisappearAnimator->view not found: " + i + "/" + mListView.getCount());
                 break;
             }
 
@@ -275,7 +275,7 @@ public class ChatMsgListAdapter extends BaseAdapter implements AbsListView.OnScr
             if (position < mAnimatorInfoList.size()) {
                 mAnimatorInfoList.get(position).setCreateTime(System.currentTimeMillis());
             } else {
-                SWLLog.e(TAG, "playDisappearAnimator->error: " + position + "/" + mAnimatorInfoList.size());
+                SwlLog.e(TAG, "playDisappearAnimator->error: " + position + "/" + mAnimatorInfoList.size());
             }
 
             playViewAnimator(itemView, 1f, ANIMATORDURING);
@@ -320,7 +320,7 @@ public class ChatMsgListAdapter extends BaseAdapter implements AbsListView.OnScr
         }
 
         while (mAnimatorInfoList.size() >= listMessage.size()) {
-            SWLLog.e(TAG, "clearFinishItem->error size: " + mAnimatorInfoList.size() + "/" + listMessage.size());
+            SwlLog.e(TAG, "clearFinishItem->error size: " + mAnimatorInfoList.size() + "/" + listMessage.size());
             if (mAnimatorInfoList.size() > 0) {
                 mAnimatorInfoList.remove(0);
             } else {
@@ -396,7 +396,7 @@ public class ChatMsgListAdapter extends BaseAdapter implements AbsListView.OnScr
      */
     @Override
     public void notifyDataSetChanged() {
-        SWLLog.v(TAG, "notifyDataSetChanged->scroll: " + mScrolling);
+        SwlLog.v(TAG, "notifyDataSetChanged->scroll: " + mScrolling);
         if (mScrolling) {
             // 滑动过程中不刷新
             super.notifyDataSetChanged();

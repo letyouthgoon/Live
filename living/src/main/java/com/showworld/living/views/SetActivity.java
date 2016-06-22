@@ -10,7 +10,7 @@ import com.tencent.av.sdk.AVContext;
 import com.tencent.qalsdk.QALSDKManager;
 import com.showworld.living.R;
 import com.showworld.living.model.MySelfInfo;
-import com.showworld.living.utils.SWLLog;
+import com.showworld.living.utils.SwlLog;
 import com.showworld.living.views.customviews.BaseActivity;
 import com.showworld.living.views.customviews.CustomSwitch;
 import com.showworld.living.views.customviews.LineControllerView;
@@ -59,11 +59,11 @@ public class SetActivity extends BaseActivity implements View.OnClickListener{
 
     private void changeLogLevel(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setItems(SWLLog.getStringValues(), new DialogInterface.OnClickListener() {
+        builder.setItems(SwlLog.getStringValues(), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, final int which) {
-                MySelfInfo.getInstance().setLogLevel(SWLLog.SxbLogLevel.values()[which]);
-                SWLLog.setLogLevel(MySelfInfo.getInstance().getLogLevel());
+                MySelfInfo.getInstance().setLogLevel(SwlLog.SwlLogLevel.values()[which]);
+                SwlLog.setLogLevel(MySelfInfo.getInstance().getLogLevel());
                 lcvLog.setContent(MySelfInfo.getInstance().getLogLevel().toString());
                 MySelfInfo.getInstance().writeToCache(SetActivity.this);
             }

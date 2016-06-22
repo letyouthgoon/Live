@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.showworld.living.utils.Constants;
-import com.showworld.living.utils.SWLLog;
+import com.showworld.living.utils.SwlLog;
 
 /**
  * 自己的状态数据
@@ -19,7 +19,7 @@ public class MySelfInfo {
     private String CosSig;
 
     private boolean bLiveAnimator;  // 渐隐动画
-    private SWLLog.SxbLogLevel logLevel;           // 日志等级
+    private SwlLog.SwlLogLevel logLevel;           // 日志等级
 
 
     private int id_status;
@@ -97,11 +97,11 @@ public class MySelfInfo {
         this.bLiveAnimator = bLiveAnimator;
     }
 
-    public SWLLog.SxbLogLevel getLogLevel() {
+    public SwlLog.SwlLogLevel getLogLevel() {
         return logLevel;
     }
 
-    public void setLogLevel(SWLLog.SxbLogLevel logLevel) {
+    public void setLogLevel(SwlLog.SwlLogLevel logLevel) {
         this.logLevel = logLevel;
     }
 
@@ -135,14 +135,14 @@ public class MySelfInfo {
         avatar = sharedata.getString(Constants.USER_AVATAR, null);
         sign = sharedata.getString(Constants.USER_SIGN, null);
         bLiveAnimator = sharedata.getBoolean(Constants.LIVE_ANIMATOR, false);
-        int level = sharedata.getInt(Constants.LOG_LEVEL, SWLLog.SxbLogLevel.INFO.ordinal());
-        if (level < SWLLog.SxbLogLevel.OFF.ordinal() || level > SWLLog.SxbLogLevel.INFO.ordinal()){
-            logLevel = SWLLog.SxbLogLevel.INFO;
+        int level = sharedata.getInt(Constants.LOG_LEVEL, SwlLog.SwlLogLevel.INFO.ordinal());
+        if (level < SwlLog.SwlLogLevel.OFF.ordinal() || level > SwlLog.SwlLogLevel.INFO.ordinal()){
+            logLevel = SwlLog.SwlLogLevel.INFO;
         }else{
-            logLevel = SWLLog.SxbLogLevel.values()[level];
+            logLevel = SwlLog.SwlLogLevel.values()[level];
         }
-        SWLLog.setLogLevel(logLevel);
-        SWLLog.i(TAG, " getCache id: " + id);
+        SwlLog.setLogLevel(logLevel);
+        SwlLog.i(TAG, " getCache id: " + id);
     }
 
     public int getIdStatus() {

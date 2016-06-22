@@ -1,6 +1,6 @@
 package com.showworld.living.presenters;
 
-import com.showworld.living.utils.SWLLog;
+import com.showworld.living.utils.SwlLog;
 import com.tencent.TIMCallBack;
 import com.tencent.TIMFriendshipManager;
 import com.tencent.TIMUserProfile;
@@ -24,7 +24,7 @@ public class ProfileInfoHelper {
         TIMFriendshipManager.getInstance().getSelfProfile(new TIMValueCallBack<TIMUserProfile>() {
             @Override
             public void onError(int i, String s) {
-                SWLLog.w(TAG, "getMyProfile->error:"+i+","+s);
+                SwlLog.w(TAG, "getMyProfile->error:"+i+","+s);
             }
 
             @Override
@@ -38,7 +38,7 @@ public class ProfileInfoHelper {
         TIMFriendshipManager.getInstance().setNickName(nickName, new TIMCallBack() {
             @Override
             public void onError(int i, String s) {
-                SWLLog.w(TAG, "setNickName->error:" + i + "," + s);
+                SwlLog.w(TAG, "setNickName->error:" + i + "," + s);
             }
 
             @Override
@@ -52,7 +52,7 @@ public class ProfileInfoHelper {
         TIMFriendshipManager.getInstance().setSelfSignature(sign, new TIMCallBack() {
             @Override
             public void onError(int i, String s) {
-                SWLLog.w(TAG, "setSelfSignature->error:" + i + "," + s);
+                SwlLog.w(TAG, "setSelfSignature->error:" + i + "," + s);
             }
 
             @Override
@@ -66,7 +66,7 @@ public class ProfileInfoHelper {
         TIMFriendshipManager.getInstance().setFaceUrl(url, new TIMCallBack() {
             @Override
             public void onError(int i, String s) {
-                SWLLog.w(TAG, "setMyAvator->error:" + i + "," + s);
+                SwlLog.w(TAG, "setMyAvator->error:" + i + "," + s);
             }
 
             @Override
@@ -80,7 +80,7 @@ public class ProfileInfoHelper {
         TIMFriendshipManager.getInstance().getUsersProfile(users, new TIMValueCallBack<List<TIMUserProfile>>() {
             @Override
             public void onError(int i, String s) {
-                SWLLog.w(TAG, "getUsersInfo->error:" + i + "," + s);
+                SwlLog.w(TAG, "getUsersInfo->error:" + i + "," + s);
             }
 
             @Override
