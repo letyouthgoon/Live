@@ -218,8 +218,8 @@ public class LiveActivity extends BaseActivity implements EnterQuiteRoomView, Li
                     mLiveHelper.openCameraAndMic();
                 }
 
-            }if(action.equals(Constants.ACTION_SURFACE_CHANGED)){
-                mLiveHelper.autoFocusCam();
+//            }if(action.equals(Constants.ACTION_SURFACE_CHANGED)) {
+//                mLiveHelper.autoFocusCam();
             }
 
             if (action.equals(Constants.ACTION_CAMERA_OPEN_IN_LIVE)) {//有人打开摄像头
@@ -1028,8 +1028,7 @@ public class LiveActivity extends BaseActivity implements EnterQuiteRoomView, Li
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_back:
-                mLiveHelper.autoFocusCam();
-//                quiteLiveByPurpose();
+                quiteLiveByPurpose();
                 break;
             case R.id.message_input:
                 inputMsgDialog();

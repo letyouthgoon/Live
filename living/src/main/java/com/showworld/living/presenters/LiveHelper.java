@@ -81,6 +81,7 @@ public class LiveHelper extends Presenter {
             SxbLog.d(TAG, "WL_DEBUG mCameraPreviewChangeCallback.onCameraPreviewChangeCallback cameraId = " + cameraId);
 
             QavsdkControl.getInstance().setMirror(FRONT_CAMERA == cameraId);
+            autoFocusCam();
         }
     };
 
@@ -106,17 +107,18 @@ public class LiveHelper extends Presenter {
         if ((cam == null) || (!(cam instanceof Camera))) {
             return;
         }
-        ((Camera) cam).getParameters().setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
-//        ((Camera) cam).autoFocus(new Camera.AutoFocusCallback() {
-//            @Override
-//            public void onAutoFocus(boolean success, Camera camera) {
-//                if (success) {
-////                    initCamera();//实现相机的参数初始化
+//        Camera.Parameters parameters = ((Camera) cam).getParameters();
+//        parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+//        ((Camera) cam).setParameters(parameters);
+        ((Camera) cam).autoFocus(new Camera.AutoFocusCallback() {
+            @Override
+            public void onAutoFocus(boolean success, Camera camera) {
+                if (success) {
 //                    camera.cancelAutoFocus();//只有加上了这一句，才会自动对焦。
-//                }
-//            }
-//
-//        });
+                }
+            }
+
+        });
     }
 
     /**
@@ -190,6 +192,7 @@ public class LiveHelper extends Presenter {
         SxbLog.i(TAG, "createlive enableCamera camera " + camera + "  isEnable " + isEnable);
         AVVideoCtrl avVideoCtrl = QavsdkControl.getInstance().getAVContext().getVideoCtrl();
         //打开摄像头
+
         int ret = avVideoCtrl.enableCamera(camera, isEnable, new AVVideoCtrl.EnableCameraCompleteCallback() {
             protected void onComplete(boolean enable, int result) {//开启摄像头回调
                 super.onComplete(enable, result);
@@ -201,8 +204,6 @@ public class LiveHelper extends Presenter {
                     } else {
                         mIsFrontCamera = false;
                     }
-
-
                     //如果是主播直接本地渲染
 //                    if (MySelfInfo.getInstance().getIdStatus() == Constants.HOST)
 //                        mLiveView.showVideoView(LOCAL, CurLiveInfo.getHostID());
