@@ -14,8 +14,6 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
     //系统默认的异常处理（默认情况下，系统会终止当前的异常程序）
     private Thread.UncaughtExceptionHandler mDefaultCrashHandler;
 
-    private Context mContext;
-
     //构造方法私有，防止外部构造多个实例，即采用单例模式
     private CrashHandler() {
     }
@@ -31,7 +29,6 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         //将当前实例设为系统默认的异常处理器
         Thread.setDefaultUncaughtExceptionHandler(this);
         //获取Context，方便内部使用
-        mContext = context.getApplicationContext();
     }
 
 

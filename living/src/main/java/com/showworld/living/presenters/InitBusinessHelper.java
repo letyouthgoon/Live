@@ -51,26 +51,26 @@ public class InitBusinessHelper {
     /**
      * 初始化App
      */
-    public static void initApp(final  Context context) {
+    public static void initApp(final Context context) {
         //初始化avsdk imsdk
         SwlavsdkControl.initQavsdk(context);
         TIMManager.getInstance().disableBeaconReport();
         MySelfInfo.getInstance().getCache(context);
-        switch(MySelfInfo.getInstance().getLogLevel()){
-        case OFF:
-            TIMManager.getInstance().setLogLevel(TIMLogLevel.OFF);
-            break;
-        case WARN:
-            TIMManager.getInstance().setLogLevel(TIMLogLevel.WARN);
-            break;
-        case DEBUG:
-            TIMManager.getInstance().setLogLevel(TIMLogLevel.DEBUG);
-            break;
-        case INFO:
-            TIMManager.getInstance().setLogLevel(TIMLogLevel.INFO);
-            break;
-        default:
-            break;
+        switch (MySelfInfo.getInstance().getLogLevel()) {
+            case OFF:
+                TIMManager.getInstance().setLogLevel(TIMLogLevel.OFF);
+                break;
+            case WARN:
+                TIMManager.getInstance().setLogLevel(TIMLogLevel.WARN);
+                break;
+            case DEBUG:
+                TIMManager.getInstance().setLogLevel(TIMLogLevel.DEBUG);
+                break;
+            case INFO:
+                TIMManager.getInstance().setLogLevel(TIMLogLevel.INFO);
+                break;
+            default:
+                break;
         }
         TIMManager.getInstance().init(context);
 
@@ -101,10 +101,11 @@ public class InitBusinessHelper {
 
     /**
      * 重新登陆IM
+     *
      * @param identify
      * @param userSig
      */
-    private static void reLoginIM(String identify, String userSig){
+    private static void reLoginIM(String identify, String userSig) {
         TIMUser user = new TIMUser();
         user.setAccountType(String.valueOf(Constants.ACCOUNT_TYPE));
         user.setAppIdAt3rd(String.valueOf(Constants.SDK_APPID));
@@ -130,9 +131,9 @@ public class InitBusinessHelper {
     /**
      * 更新票据
      */
-    private static void refreshSig(){
+    private static void refreshSig() {
         final String userId = MySelfInfo.getInstance().getId();
-        if (TextUtils.isEmpty(userId)){
+        if (TextUtils.isEmpty(userId)) {
             SwlLog.w(TAG, "refreshSig->with empty identifier");
             return;
         }
@@ -146,12 +147,12 @@ public class InitBusinessHelper {
 
             @Override
             public void OnRefreshUserSigFail(TLSErrInfo tlsErrInfo) {
-                SwlLog.w(TAG, "OnRefreshUserSigFail->"+tlsErrInfo.ErrCode+"|"+tlsErrInfo.Msg);
+                SwlLog.w(TAG, "OnRefreshUserSigFail->" + tlsErrInfo.ErrCode + "|" + tlsErrInfo.Msg);
             }
 
             @Override
             public void OnRefreshUserSigTimeout(TLSErrInfo tlsErrInfo) {
-                SwlLog.w(TAG, "OnRefreshUserSigTimeout->"+tlsErrInfo.ErrCode+"|"+tlsErrInfo.Msg);
+                SwlLog.w(TAG, "OnRefreshUserSigTimeout->" + tlsErrInfo.ErrCode + "|" + tlsErrInfo.Msg);
             }
         });
     }
@@ -167,8 +168,6 @@ public class InitBusinessHelper {
         mLoginHelper.setTimeOut(5000);
         mAccountHelper = TLSAccountHelper.getInstance().init(context, Constants.SDK_APPID, Constants.ACCOUNT_TYPE, mAppVer);
         mAccountHelper.setTimeOut(5000);
-//      MySelfInfo.getInstance().setId(id);
-//      MySelfInfo.getInstance().setUserSig(TLSService.getInstance().getUserSig(id));
     }
 
 }
