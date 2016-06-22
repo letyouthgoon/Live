@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.showworld.living.avcontrollers.SwlavsdkControl;
 import com.showworld.living.utils.SwlLog;
 import com.tencent.TIMCallBack;
 import com.tencent.TIMConversation;
@@ -31,7 +32,6 @@ import com.tencent.av.sdk.AVError;
 import com.tencent.av.sdk.AVRoomMulti;
 import com.tencent.av.sdk.AVVideoCtrl;
 import com.tencent.av.sdk.AVView;
-import com.showworld.living.avcontrollers.QavsdkControl;
 import com.showworld.living.model.CurLiveInfo;
 import com.showworld.living.model.MySelfInfo;
 import com.showworld.living.presenters.viewinface.LiveView;
@@ -80,13 +80,13 @@ public class LiveHelper extends Presenter {
         public void onCameraPreviewChangeCallback(int cameraId) {
             SwlLog.d(TAG, "WL_DEBUG mCameraPreviewChangeCallback.onCameraPreviewChangeCallback cameraId = " + cameraId);
 
-            QavsdkControl.getInstance().setMirror(FRONT_CAMERA == cameraId);
+            SwlavsdkControl.getInstance().setMirror(FRONT_CAMERA == cameraId);
             autoFocusCam();
         }
     };
 
     public void setCameraPreviewChangeCallback() {
-        AVVideoCtrl avVideoCtrl = QavsdkControl.getInstance().getAVContext().getVideoCtrl();
+        AVVideoCtrl avVideoCtrl = SwlavsdkControl.getInstance().getAVContext().getVideoCtrl();
         avVideoCtrl.setCameraPreviewChangeCallback(mCameraPreviewChangeCallback);
     }
 
@@ -95,14 +95,14 @@ public class LiveHelper extends Presenter {
      */
     public void openCameraAndMic() {
         openCamera();
-        AVAudioCtrl avAudioCtrl = QavsdkControl.getInstance().getAVContext().getAudioCtrl();//开启Mic
+        AVAudioCtrl avAudioCtrl = SwlavsdkControl.getInstance().getAVContext().getAudioCtrl();//开启Mic
         avAudioCtrl.enableMic(true);
         isMicOpen = true;
 
     }
 
     public void autoFocusCam() {
-        AVVideoCtrl videoCtrl = QavsdkControl.getInstance().getAVContext().getVideoCtrl();
+        AVVideoCtrl videoCtrl = SwlavsdkControl.getInstance().getAVContext().getVideoCtrl();
         final Object cam = videoCtrl.getCamera();
         if ((cam == null) || (!(cam instanceof Camera))) {
             return;
@@ -171,7 +171,7 @@ public class LiveHelper extends Presenter {
     }
 
     public void closeMic() {
-        AVAudioCtrl avAudioCtrl = QavsdkControl.getInstance().getAVContext().getAudioCtrl();//开启Mic
+        AVAudioCtrl avAudioCtrl = SwlavsdkControl.getInstance().getAVContext().getAudioCtrl();//开启Mic
         avAudioCtrl.enableMic(false);
         isMicOpen = false;
     }
@@ -190,7 +190,7 @@ public class LiveHelper extends Presenter {
             isOpenCamera = false;
         }
         SwlLog.i(TAG, "createlive enableCamera camera " + camera + "  isEnable " + isEnable);
-        AVVideoCtrl avVideoCtrl = QavsdkControl.getInstance().getAVContext().getVideoCtrl();
+        AVVideoCtrl avVideoCtrl = SwlavsdkControl.getInstance().getAVContext().getVideoCtrl();
         //打开摄像头
 
         int ret = avVideoCtrl.enableCamera(camera, isEnable, new AVVideoCtrl.EnableCameraCompleteCallback() {
@@ -224,10 +224,10 @@ public class LiveHelper extends Presenter {
     public void requestViewList(ArrayList<String> identifiers) {
         SwlLog.i(TAG, "requestViewList " + identifiers);
         if (identifiers.size() == 0) return;
-        AVEndpoint endpoint = ((AVRoomMulti) QavsdkControl.getInstance().getAVContext().getRoom()).getEndpointById(identifiers.get(0));
+        AVEndpoint endpoint = ((AVRoomMulti) SwlavsdkControl.getInstance().getAVContext().getRoom()).getEndpointById(identifiers.get(0));
         SwlLog.d(TAG, "requestViewList hostIdentifier " + identifiers + " endpoint " + endpoint);
         if (endpoint != null) {
-            ArrayList<String> alreadyIds = QavsdkControl.getInstance().getRemoteVideoIds();//已经存在的IDs
+            ArrayList<String> alreadyIds = SwlavsdkControl.getInstance().getmRemoteVideoIds();//已经存在的IDs
 
             SwlLog.i(TAG, "requestViewList identifiers : " + identifiers.size());
             SwlLog.i(TAG, "requestViewList alreadyIds : " + alreadyIds.size());
@@ -534,7 +534,7 @@ public class LiveHelper extends Presenter {
 
                     }
                     //其他人关闭小窗口
-                    QavsdkControl.getInstance().closeMemberView(closeId);
+                    SwlavsdkControl.getInstance().closeMemberView(closeId);
                     mLiveView.hideInviteDialog();
                     mLiveView.refreshUI(closeId);
                     break;
@@ -571,7 +571,7 @@ public class LiveHelper extends Presenter {
      * @return
      */
     public int switchCamera() {
-        AVVideoCtrl avVideoCtrl = QavsdkControl.getInstance().getAVContext().getVideoCtrl();
+        AVVideoCtrl avVideoCtrl = SwlavsdkControl.getInstance().getAVContext().getVideoCtrl();
         int result = avVideoCtrl.switchCamera(mIsFrontCamera ? BACK_CAMERA : FRONT_CAMERA, mSwitchCameraCompleteCallback);
         return result;
     }
@@ -598,7 +598,7 @@ public class LiveHelper extends Presenter {
      * 开启Mic
      */
     public void openMic() {
-        AVAudioCtrl avAudioCtrl = QavsdkControl.getInstance().getAVContext().getAudioCtrl();//开启Mic
+        AVAudioCtrl avAudioCtrl = SwlavsdkControl.getInstance().getAVContext().getAudioCtrl();//开启Mic
         avAudioCtrl.enableMic(true);
         isMicOpen = true;
     }
@@ -607,7 +607,7 @@ public class LiveHelper extends Presenter {
      * 关闭Mic
      */
     public void muteMic() {
-        AVAudioCtrl avAudioCtrl = QavsdkControl.getInstance().getAVContext().getAudioCtrl();//关闭Mic
+        AVAudioCtrl avAudioCtrl = SwlavsdkControl.getInstance().getAVContext().getAudioCtrl();//关闭Mic
         avAudioCtrl.enableMic(false);
         isMicOpen = false;
     }
@@ -619,7 +619,7 @@ public class LiveHelper extends Presenter {
     private boolean flashLgihtStatus = false;
 
     public void toggleFlashLight() {
-        AVVideoCtrl videoCtrl = QavsdkControl.getInstance().getAVContext().getVideoCtrl();
+        AVVideoCtrl videoCtrl = SwlavsdkControl.getInstance().getAVContext().getVideoCtrl();
         if (null == videoCtrl) {
             return;
         }
@@ -702,7 +702,7 @@ public class LiveHelper extends Presenter {
     private long streamChannelID;
 
     public void pushAction(TIMAvManager.StreamParam mStreamParam) {
-        int roomid = (int) QavsdkControl.getInstance().getAVContext().getRoom().getRoomId();
+        int roomid = (int) SwlavsdkControl.getInstance().getAVContext().getRoom().getRoomId();
         SwlLog.i(TAG, "Push roomid: " + roomid);
         SwlLog.d(TAG, "Push groupid: " + CurLiveInfo.getRoomNum());
         roomInfo = TIMAvManager.getInstance().new RoomInfo();
@@ -829,7 +829,7 @@ public class LiveHelper extends Presenter {
      */
     private boolean changeAuthority(long auth_bits, byte[] auth_buffer, AVRoomMulti.ChangeAuthorityCallback callback) {
         SwlLog.d(TAG, " changeAuthority");
-        QavsdkControl qavsdk = QavsdkControl.getInstance();
+        SwlavsdkControl qavsdk = SwlavsdkControl.getInstance();
         AVContext avContext = qavsdk.getAVContext();
         AVRoomMulti room = (AVRoomMulti) avContext.getRoom();
         if (auth_buffer != null) {
@@ -846,7 +846,7 @@ public class LiveHelper extends Presenter {
      * @param role 角色名
      */
     public void changeRole(String role, final boolean leverupper) {
-        ((AVRoomMulti) (QavsdkControl.getInstance().getRoom())).changeAVControlRole(role, new AVRoomMulti.ChangeAVControlRoleCompleteCallback() {
+        ((AVRoomMulti) (SwlavsdkControl.getInstance().getRoom())).changeAVControlRole(role, new AVRoomMulti.ChangeAVControlRoleCompleteCallback() {
                     @Override
                     public void OnComplete(int arg0) {
                         SwlLog.i(TAG, "changeRole code " + arg0);

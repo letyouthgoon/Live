@@ -18,6 +18,10 @@ public class SwlLog {
 
     static private SwlLogLevel level = SwlLogLevel.INFO;
 
+    /**
+     * enum 2 String[]
+     * @return
+     */
     static public String[] getStringValues() {
         SwlLogLevel[] levels = SwlLogLevel.values();
         String[] stringValuse = new String[levels.length];

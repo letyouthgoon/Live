@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import com.showworld.living.avcontrollers.SwlavsdkControl;
 import com.showworld.living.utils.SwlLog;
 import com.tencent.TIMCallBack;
 import com.tencent.TIMLogLevel;
@@ -12,7 +13,6 @@ import com.tencent.TIMManager;
 import com.tencent.TIMUser;
 import com.tencent.TIMUserStatusListener;
 import com.showworld.living.R;
-import com.showworld.living.avcontrollers.QavsdkControl;
 import com.showworld.living.model.MySelfInfo;
 import com.showworld.living.utils.Constants;
 import com.showworld.living.utils.CrashHandler;
@@ -44,16 +44,16 @@ public class InitBusinessHelper {
 
     private static TLSLoginHelper mLoginHelper;
     private static TLSAccountHelper mAccountHelper;
-    private static String appVer = "1.0";
-    private static QavsdkControl mQavsdkControl = null;
+    private static String mAppVer = "1.0";
+    private static SwlavsdkControl mSwlavsdkControl = null;
 
 
     /**
      * 初始化App
      */
-    public static void initApp(final Context context) {
+    public static void initApp(final  Context context) {
         //初始化avsdk imsdk
-        QavsdkControl.initQavsdk(context);
+        SwlavsdkControl.initQavsdk(context);
         TIMManager.getInstance().disableBeaconReport();
         MySelfInfo.getInstance().getCache(context);
         switch(MySelfInfo.getInstance().getLogLevel()){
@@ -163,9 +163,9 @@ public class InitBusinessHelper {
      * @param context
      */
     public static void initTls(Context context) {
-        mLoginHelper = TLSLoginHelper.getInstance().init(context, Constants.SDK_APPID, Constants.ACCOUNT_TYPE, appVer);
+        mLoginHelper = TLSLoginHelper.getInstance().init(context, Constants.SDK_APPID, Constants.ACCOUNT_TYPE, mAppVer);
         mLoginHelper.setTimeOut(5000);
-        mAccountHelper = TLSAccountHelper.getInstance().init(context, Constants.SDK_APPID, Constants.ACCOUNT_TYPE, appVer);
+        mAccountHelper = TLSAccountHelper.getInstance().init(context, Constants.SDK_APPID, Constants.ACCOUNT_TYPE, mAppVer);
         mAccountHelper.setTimeOut(5000);
 //      MySelfInfo.getInstance().setId(id);
 //      MySelfInfo.getInstance().setUserSig(TLSService.getInstance().getUserSig(id));

@@ -3,11 +3,11 @@ package com.showworld.living.presenters;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.showworld.living.avcontrollers.SwlavsdkControl;
 import com.showworld.living.utils.SwlLog;
 import com.tencent.TIMCallBack;
 import com.tencent.TIMManager;
 import com.tencent.TIMUser;
-import com.showworld.living.avcontrollers.QavsdkControl;
 import com.showworld.living.model.MySelfInfo;
 import com.showworld.living.presenters.viewinface.LoginView;
 import com.showworld.living.presenters.viewinface.LogoutView;
@@ -191,8 +191,8 @@ public class LoginHelper extends Presenter {
      * 初始化AVSDK
      */
     private void startAVSDK() {
-        QavsdkControl.getInstance().setAvConfig(Constants.SDK_APPID, "" + Constants.ACCOUNT_TYPE, MySelfInfo.getInstance().getId(), MySelfInfo.getInstance().getUserSig());
-        QavsdkControl.getInstance().startContext();
+        SwlavsdkControl.getInstance().setAvConfig(Constants.SDK_APPID, "" + Constants.ACCOUNT_TYPE, MySelfInfo.getInstance().getId(), MySelfInfo.getInstance().getUserSig());
+        SwlavsdkControl.getInstance().startContext();
         if (mLoginView != null)
             mLoginView.loginSucc();
     }
@@ -202,7 +202,7 @@ public class LoginHelper extends Presenter {
      * 反初始化AVADK
      */
     public void stopAVSDK() {
-        QavsdkControl.getInstance().stopContext();
+        SwlavsdkControl.getInstance().stopContext();
         mLogoutView.logoutSucc();
     }
 

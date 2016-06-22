@@ -58,7 +58,7 @@ public class AVUIControl extends GLViewGroup {
     GestureDetector mGestureDetector = null;
     MoveGestureDetector mMoveDetector = null;
     ScaleGestureDetector mScaleGestureDetector = null;
-    private QavsdkControl mQavsdkControl;
+    private SwlavsdkControl mSwlavsdkControl;
 
     private int localViewIndex = -1;
     private int remoteViewIndex = -1;
@@ -67,7 +67,7 @@ public class AVUIControl extends GLViewGroup {
     private boolean isSupportMultiVideo = false;
 
     private SurfaceView mSurfaceView = null;
-    private QavsdkControl qavsdk;
+    private SwlavsdkControl qavsdk;
     private HashMap<Integer, String> id_view = new HashMap<Integer, String>();
 
     private SurfaceHolder.Callback mSurfaceHolderListener = new SurfaceHolder.Callback() {
@@ -101,7 +101,7 @@ public class AVUIControl extends GLViewGroup {
         mContext = context;
         mRootView = rootView;
         mGraphicRenderMgr = new GraphicRendererMgr();
-        qavsdk = QavsdkControl.getInstance();
+        qavsdk = SwlavsdkControl.getInstance();
         initQQGlView();
         initCameraPreview();
         initVideoParam();

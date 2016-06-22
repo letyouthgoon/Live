@@ -6,7 +6,7 @@ import com.showworld.living.utils.SwlLog;
 import com.tencent.TIMGroupManager;
 import com.tencent.TIMGroupMemberInfo;
 import com.tencent.TIMValueCallBack;
-import com.showworld.living.avcontrollers.QavsdkControl;
+import com.showworld.living.avcontrollers.SwlavsdkControl;
 import com.showworld.living.model.MemberInfo;
 import com.showworld.living.model.MySelfInfo;
 import com.showworld.living.presenters.viewinface.MembersDialogView;
@@ -58,7 +58,7 @@ public class GetMemberListHelper extends Presenter {
             }
             MemberInfo member = new MemberInfo();
             member.setUserId(item.getUser());
-            if (QavsdkControl.getInstance().containIdView(item.getUser())) {
+            if (SwlavsdkControl.getInstance().containIdView(item.getUser())) {
                 member.setIsOnVideoChat(true);
             }
             mDialogMembers.add(member);

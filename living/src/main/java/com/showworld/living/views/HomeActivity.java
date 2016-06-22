@@ -10,10 +10,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TabHost;
 
+import com.showworld.living.avcontrollers.SwlavsdkControl;
 import com.showworld.living.utils.SwlLog;
 import com.tencent.TIMUserProfile;
 import com.showworld.living.R;
-import com.showworld.living.avcontrollers.QavsdkControl;
 import com.showworld.living.model.MySelfInfo;
 import com.showworld.living.presenters.InitBusinessHelper;
 import com.showworld.living.presenters.LoginHelper;
@@ -78,7 +78,7 @@ public class HomeActivity extends BaseFragmentActivity implements ProfileView {
     protected void onStart() {
         SwlLog.i(TAG, "HomeActivity onStart");
         super.onStart();
-        if (QavsdkControl.getInstance().getAVContext() == null) {//retry
+        if (SwlavsdkControl.getInstance().getAVContext() == null) {//retry
             InitBusinessHelper.initApp(getApplicationContext());
             SwlLog.i(TAG, "HomeActivity retry login");
             mLoginHelper = new LoginHelper(this);
@@ -98,7 +98,7 @@ public class HomeActivity extends BaseFragmentActivity implements ProfileView {
         if (mLoginHelper != null)
             mLoginHelper.onDestory();
         SwlLog.i(TAG, "HomeActivity onDestroy");
-        QavsdkControl.getInstance().stopContext();
+        SwlavsdkControl.getInstance().stopContext();
         super.onDestroy();
     }
 

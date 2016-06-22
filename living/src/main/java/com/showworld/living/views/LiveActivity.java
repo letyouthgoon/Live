@@ -36,6 +36,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
+import com.showworld.living.avcontrollers.SwlavsdkControl;
 import com.showworld.living.utils.SwlLog;
 import com.tencent.TIMUserProfile;
 import com.tencent.av.TIMAvManager;
@@ -43,7 +44,6 @@ import com.tencent.av.sdk.AVView;
 import com.tencent.av.utils.PhoneStatusTools;
 import com.showworld.living.R;
 import com.showworld.living.adapters.ChatMsgListAdapter;
-import com.showworld.living.avcontrollers.QavsdkControl;
 import com.showworld.living.model.ChatEntity;
 import com.showworld.living.model.CurLiveInfo;
 import com.showworld.living.model.LiveInfoJson;
@@ -141,7 +141,7 @@ public class LiveActivity extends BaseActivity implements EnterQuiteRoomView, Li
         //进入房间流程
         mEnterRoomHelper.startEnterRoom();
 
-        //QavsdkControl.getInstance().setCameraPreviewChangeCallback();
+        //SwlavsdkControl.getInstance().setCameraPreviewChangeCallback();
         mLiveHelper.setCameraPreviewChangeCallback();
         registerOrientationListener();
     }
@@ -413,7 +413,7 @@ public class LiveActivity extends BaseActivity implements EnterQuiteRoomView, Li
                                               boolean fromUser) {
                     // TODO Auto-generated method stub
                     mBeautyRate = progress;
-                    QavsdkControl.getInstance().getAVContext().getVideoCtrl().inputBeautyParam(getBeautyProgress(progress));
+                    SwlavsdkControl.getInstance().getAVContext().getVideoCtrl().inputBeautyParam(getBeautyProgress(progress));
 
                 }
             });
@@ -460,13 +460,13 @@ public class LiveActivity extends BaseActivity implements EnterQuiteRoomView, Li
     @Override
     protected void onResume() {
         super.onResume();
-        QavsdkControl.getInstance().onResume();
+        SwlavsdkControl.getInstance().onResume();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        QavsdkControl.getInstance().onPause();
+        SwlavsdkControl.getInstance().onPause();
     }
 
 
@@ -521,8 +521,8 @@ public class LiveActivity extends BaseActivity implements EnterQuiteRoomView, Li
         unregisterReceiver();
         mLiveHelper.onDestory();
         mEnterRoomHelper.onDestory();
-        QavsdkControl.getInstance().clearVideoMembers();
-        QavsdkControl.getInstance().onDestroy();
+        SwlavsdkControl.getInstance().clearVideoMembers();
+        SwlavsdkControl.getInstance().onDestroy();
     }
 
 
@@ -686,7 +686,7 @@ public class LiveActivity extends BaseActivity implements EnterQuiteRoomView, Li
         }
 
         //如果存在视频互动，取消
-        QavsdkControl.getInstance().closeMemberView(id);
+        SwlavsdkControl.getInstance().closeMemberView(id);
     }
 
     /**
@@ -720,10 +720,10 @@ public class LiveActivity extends BaseActivity implements EnterQuiteRoomView, Li
     public void alreadyInLive(String[] list) {
         for (String id : list) {
             if (id.equals(MySelfInfo.getInstance().getId())) {
-                QavsdkControl.getInstance().setSelfId(MySelfInfo.getInstance().getId());
-                QavsdkControl.getInstance().setLocalHasVideo(true, MySelfInfo.getInstance().getId());
+                SwlavsdkControl.getInstance().setSelfId(MySelfInfo.getInstance().getId());
+                SwlavsdkControl.getInstance().setLocalHasVideo(true, MySelfInfo.getInstance().getId());
             } else {
-                QavsdkControl.getInstance().setRemoteHasVideo(true, id, AVView.VIDEO_SRC_TYPE_CAMERA);
+                SwlavsdkControl.getInstance().setRemoteHasVideo(true, id, AVView.VIDEO_SRC_TYPE_CAMERA);
             }
         }
 
@@ -754,8 +754,8 @@ public class LiveActivity extends BaseActivity implements EnterQuiteRoomView, Li
         //渲染本地Camera
         if (isLocal == true) {
             SwlLog.i(TAG, "showVideoView host :" + MySelfInfo.getInstance().getId());
-            QavsdkControl.getInstance().setSelfId(MySelfInfo.getInstance().getId());
-            QavsdkControl.getInstance().setLocalHasVideo(true, MySelfInfo.getInstance().getId());
+            SwlavsdkControl.getInstance().setSelfId(MySelfInfo.getInstance().getId());
+            SwlavsdkControl.getInstance().setLocalHasVideo(true, MySelfInfo.getInstance().getId());
             //主播通知用户服务器
             if (MySelfInfo.getInstance().getIdStatus() == Constants.HOST) {
                 mEnterRoomHelper.notifyServerCreateRoom();
@@ -771,8 +771,8 @@ public class LiveActivity extends BaseActivity implements EnterQuiteRoomView, Li
                 mVideoTimer.schedule(mVideoTimerTask, 1000, 1000);
             }
         } else {
-//            QavsdkControl.getInstance().addRemoteVideoMembers(id);
-            QavsdkControl.getInstance().setRemoteHasVideo(true, id, AVView.VIDEO_SRC_TYPE_CAMERA);
+//            SwlavsdkControl.getInstance().addRemoteVideoMembers(id);
+            SwlavsdkControl.getInstance().setRemoteHasVideo(true, id, AVView.VIDEO_SRC_TYPE_CAMERA);
         }
 
     }
@@ -829,7 +829,7 @@ public class LiveActivity extends BaseActivity implements EnterQuiteRoomView, Li
 
     @Override
     public boolean showInviteView(String id) {
-        int index = QavsdkControl.getInstance().getAvailableViewIndex(1);
+        int index = SwlavsdkControl.getInstance().getAvailableViewIndex(1);
         if (index == -1) {
             Toast.makeText(LiveActivity.this, "the invitation's upper limit is 3", Toast.LENGTH_SHORT).show();
             return false;
@@ -944,7 +944,7 @@ public class LiveActivity extends BaseActivity implements EnterQuiteRoomView, Li
 //            mLiveHelper.closeCameraAndMic();//是自己成员关闭
         }
         mLiveHelper.sendGroupMessage(Constants.AVIMCMD_MULTI_CANCEL_INTERACT, id);
-        QavsdkControl.getInstance().closeMemberView(id);
+        SwlavsdkControl.getInstance().closeMemberView(id);
         backToNormalCtrlView();
     }
 
@@ -1157,7 +1157,7 @@ public class LiveActivity extends BaseActivity implements EnterQuiteRoomView, Li
                 public void run() {
                     if (showTips) {
                         if (tvTipsMsg != null) {
-                            String strTips = QavsdkControl.getInstance().getQualityTips();
+                            String strTips = SwlavsdkControl.getInstance().getQualityTips();
                             strTips = praseString(strTips);
                             if (!TextUtils.isEmpty(strTips)) {
                                 tvTipsMsg.setText(strTips);
@@ -1661,23 +1661,23 @@ public class LiveActivity extends BaseActivity implements EnterQuiteRoomView, Li
             mLastOrientation = orientation;
 
             if (orientation > 314 || orientation < 45) {
-                if (QavsdkControl.getInstance() != null) {
-                    QavsdkControl.getInstance().setRotation(0);
+                if (SwlavsdkControl.getInstance() != null) {
+                    SwlavsdkControl.getInstance().setRotation(0);
                 }
                 mRotationAngle = 0;
             } else if (orientation > 44 && orientation < 135) {
-                if (QavsdkControl.getInstance() != null) {
-                    QavsdkControl.getInstance().setRotation(90);
+                if (SwlavsdkControl.getInstance() != null) {
+                    SwlavsdkControl.getInstance().setRotation(90);
                 }
                 mRotationAngle = 90;
             } else if (orientation > 134 && orientation < 225) {
-                if (QavsdkControl.getInstance() != null) {
-                    QavsdkControl.getInstance().setRotation(180);
+                if (SwlavsdkControl.getInstance() != null) {
+                    SwlavsdkControl.getInstance().setRotation(180);
                 }
                 mRotationAngle = 180;
             } else {
-                if (QavsdkControl.getInstance() != null) {
-                    QavsdkControl.getInstance().setRotation(270);
+                if (SwlavsdkControl.getInstance() != null) {
+                    SwlavsdkControl.getInstance().setRotation(270);
                 }
                 mRotationAngle = 270;
             }

@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
+import com.showworld.living.avcontrollers.SwlavsdkControl;
 import com.showworld.living.utils.SwlLog;
 import com.tencent.TIMCallBack;
 import com.tencent.TIMConversationType;
@@ -17,7 +18,6 @@ import com.tencent.av.sdk.AVContext;
 import com.tencent.av.sdk.AVRoom;
 import com.tencent.av.sdk.AVRoomMulti;
 import com.showworld.living.R;
-import com.showworld.living.avcontrollers.QavsdkControl;
 import com.showworld.living.model.CurLiveInfo;
 import com.showworld.living.model.LiveInfoJson;
 import com.showworld.living.model.MySelfInfo;
@@ -203,8 +203,8 @@ public class EnterLiveHelper extends Presenter {
      */
     public void initAvUILayer(View avView) {
         //初始化AVSurfaceView
-        if (QavsdkControl.getInstance().getAVContext() != null) {
-            QavsdkControl.getInstance().initAvUILayer(mContext.getApplicationContext(), avView);
+        if (SwlavsdkControl.getInstance().getAVContext() != null) {
+            SwlavsdkControl.getInstance().initAvUILayer(mContext.getApplicationContext(), avView);
         }
 
     }
@@ -345,7 +345,7 @@ public class EnterLiveHelper extends Presenter {
     private void quiteAVRoom() {
         SwlLog.d(TAG, "quiteAVRoom ");
         if (isInAVRoom == true) {
-            AVContext avContext = QavsdkControl.getInstance().getAVContext();
+            AVContext avContext = SwlavsdkControl.getInstance().getAVContext();
             int result = avContext.exitRoom();
         } else {
             quiteIMChatRoom();
@@ -404,7 +404,7 @@ public class EnterLiveHelper extends Presenter {
      */
     private void EnterAVRoom(int roomNum) {
         SwlLog.i(TAG, "createlive joinLiveRoom enterAVRoom " + roomNum);
-        AVContext avContext = QavsdkControl.getInstance().getAVContext();
+        AVContext avContext = SwlavsdkControl.getInstance().getAVContext();
         byte[] authBuffer = null;//权限位加密串；TODO：请业务侧填上自己的加密串
 
 
@@ -435,14 +435,14 @@ public class EnterLiveHelper extends Presenter {
 
 
     private void initAudioService() {
-        if ((QavsdkControl.getInstance() != null) && (QavsdkControl.getInstance().getAVContext() != null) && (QavsdkControl.getInstance().getAVContext().getAudioCtrl() != null)) {
-            QavsdkControl.getInstance().getAVContext().getAudioCtrl().startTRAEService();
+        if ((SwlavsdkControl.getInstance() != null) && (SwlavsdkControl.getInstance().getAVContext() != null) && (SwlavsdkControl.getInstance().getAVContext().getAudioCtrl() != null)) {
+            SwlavsdkControl.getInstance().getAVContext().getAudioCtrl().startTRAEService();
         }
     }
 
     private void uninitAudioService() {
-        if ((QavsdkControl.getInstance() != null) && (QavsdkControl.getInstance().getAVContext() != null) && (QavsdkControl.getInstance().getAVContext().getAudioCtrl() != null)) {
-            QavsdkControl.getInstance().getAVContext().getAudioCtrl().startTRAEService();
+        if ((SwlavsdkControl.getInstance() != null) && (SwlavsdkControl.getInstance().getAVContext() != null) && (SwlavsdkControl.getInstance().getAVContext().getAudioCtrl() != null)) {
+            SwlavsdkControl.getInstance().getAVContext().getAudioCtrl().startTRAEService();
         }
     }
 
