@@ -2,6 +2,7 @@ package com.showworld.living.presenters;
 
 import android.content.Context;
 
+import com.showworld.living.utils.SWLLog;
 import com.tencent.TIMGroupManager;
 import com.tencent.TIMGroupMemberInfo;
 import com.tencent.TIMValueCallBack;
@@ -9,7 +10,6 @@ import com.showworld.living.avcontrollers.QavsdkControl;
 import com.showworld.living.model.MemberInfo;
 import com.showworld.living.model.MySelfInfo;
 import com.showworld.living.presenters.viewinface.MembersDialogView;
-import com.showworld.living.utils.SxbLog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,12 +32,12 @@ public class GetMemberListHelper extends Presenter {
         TIMGroupManager.getInstance().getGroupMembers("" + MySelfInfo.getInstance().getMyRoomNum(), new TIMValueCallBack<List<TIMGroupMemberInfo>>() {
             @Override
             public void onError(int i, String s) {
-                SxbLog.i(TAG, "get MemberList ");
+                SWLLog.i(TAG, "get MemberList ");
             }
 
             @Override
             public void onSuccess(List<TIMGroupMemberInfo> timGroupMemberInfos) {
-                SxbLog.i(TAG, "get MemberList ");
+                SWLLog.i(TAG, "get MemberList ");
                 getMemberListInfo(timGroupMemberInfos);
 
             }

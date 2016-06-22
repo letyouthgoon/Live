@@ -30,7 +30,7 @@ import com.showworld.living.presenters.ProfileInfoHelper;
 import com.showworld.living.presenters.viewinface.LogoutView;
 import com.showworld.living.presenters.viewinface.ProfileView;
 import com.showworld.living.utils.GlideCircleTransform;
-import com.showworld.living.utils.SxbLog;
+import com.showworld.living.utils.SWLLog;
 import com.showworld.living.utils.UIUtils;
 import com.showworld.living.views.customviews.LineControllerView;
 
@@ -191,7 +191,7 @@ public class FragmentProfile extends Fragment implements View.OnClickListener, L
             Bitmap cirBitMap = UIUtils.createCircleImage(bitmap, 0);
             mAvatar.setImageBitmap(cirBitMap);
         } else {
-            SxbLog.d(TAG, "profile avator: " + profile.getFaceUrl());
+            SWLLog.d(TAG, "profile avator: " + profile.getFaceUrl());
             MySelfInfo.getInstance().setAvatar(profile.getFaceUrl());
             RequestManager req = Glide.with(getActivity());
             req.load(profile.getFaceUrl()).transform(new GlideCircleTransform(getActivity())).into(mAvatar);

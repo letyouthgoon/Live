@@ -36,6 +36,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
+import com.showworld.living.utils.SWLLog;
 import com.tencent.TIMUserProfile;
 import com.tencent.av.TIMAvManager;
 import com.tencent.av.sdk.AVView;
@@ -56,7 +57,6 @@ import com.showworld.living.presenters.viewinface.LiveView;
 import com.showworld.living.presenters.viewinface.ProfileView;
 import com.showworld.living.utils.Constants;
 import com.showworld.living.utils.GlideCircleTransform;
-import com.showworld.living.utils.SxbLog;
 import com.showworld.living.utils.UIUtils;
 import com.showworld.living.views.customviews.BaseActivity;
 import com.showworld.living.views.customviews.HeartLayout;
@@ -201,7 +201,7 @@ public class LiveActivity extends BaseActivity implements EnterQuiteRoomView, Li
         }
 
         if (Constants.HOST == MySelfInfo.getInstance().getIdStatus() && null != mVideoTime) {
-            SxbLog.i(TAG, " refresh time ");
+            SWLLog.i(TAG, " refresh time ");
             mVideoTime.setText(formatTime);
         }
     }
@@ -309,7 +309,7 @@ public class LiveActivity extends BaseActivity implements EnterQuiteRoomView, Li
             Bitmap cirBitMap = UIUtils.createCircleImage(bitmap, 0);
             view.setImageBitmap(cirBitMap);
         } else {
-            SxbLog.d(TAG, "load icon: " + avatar);
+            SWLLog.d(TAG, "load icon: " + avatar);
             RequestManager req = Glide.with(this);
             req.load(avatar).transform(new GlideCircleTransform(this)).into(view);
         }
@@ -398,14 +398,14 @@ public class LiveActivity extends BaseActivity implements EnterQuiteRoomView, Li
                 @Override
                 public void onStopTrackingTouch(SeekBar seekBar) {
                     // TODO Auto-generated method stub
-                    SxbLog.d("SeekBar", "onStopTrackingTouch");
+                    SWLLog.d("SeekBar", "onStopTrackingTouch");
                     Toast.makeText(LiveActivity.this, "beauty " + mBeautyRate + "%", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void onStartTrackingTouch(SeekBar seekBar) {
                     // TODO Auto-generated method stub
-                    SxbLog.d("SeekBar", "onStartTrackingTouch");
+                    SWLLog.d("SeekBar", "onStartTrackingTouch");
                 }
 
                 @Override
@@ -477,7 +477,7 @@ public class LiveActivity extends BaseActivity implements EnterQuiteRoomView, Li
         @Override
         public void run() {
             String host = CurLiveInfo.getHostID();
-            SxbLog.i(TAG, "HeartBeatTask " + host);
+            SWLLog.i(TAG, "HeartBeatTask " + host);
             OKhttpHelper.getInstance().sendHeartBeat(host, CurLiveInfo.getMembers(), CurLiveInfo.getAdmires(), 0);
         }
     }
@@ -487,7 +487,7 @@ public class LiveActivity extends BaseActivity implements EnterQuiteRoomView, Li
      */
     private class VideoTimerTask extends TimerTask {
         public void run() {
-            SxbLog.i(TAG, "timeTask ");
+            SWLLog.i(TAG, "timeTask ");
             ++mSecond;
             if (MySelfInfo.getInstance().getIdStatus() == Constants.HOST)
                 mHandler.sendEmptyMessage(UPDAT_WALL_TIME_TIMER_TASK);
@@ -614,7 +614,7 @@ public class LiveActivity extends BaseActivity implements EnterQuiteRoomView, Li
 
             if (id_status == Constants.HOST) {//主播方式加入房间成功
                 //开启摄像头渲染画面
-                SxbLog.i(TAG, "createlive enterRoomComplete isSucc" + isSucc);
+                SWLLog.i(TAG, "createlive enterRoomComplete isSucc" + isSucc);
             } else {
                 //发消息通知上线
                 mLiveHelper.sendGroupMessage(Constants.AVIMCMD_EnterLive, "");
@@ -698,7 +698,7 @@ public class LiveActivity extends BaseActivity implements EnterQuiteRoomView, Li
     public void memberQuiteLive(String[] list) {
         if (list == null) return;
         for (String id : list) {
-            SxbLog.i(TAG, "memberQuiteLive id " + id);
+            SWLLog.i(TAG, "memberQuiteLive id " + id);
             if (CurLiveInfo.getHostID().equals(id)) {
                 if (MySelfInfo.getInstance().getIdStatus() == Constants.MEMBER)
                     quiteLivePassively();
@@ -749,11 +749,11 @@ public class LiveActivity extends BaseActivity implements EnterQuiteRoomView, Li
      */
     @Override
     public void showVideoView(boolean isLocal, String id) {
-        SxbLog.i(TAG, "showVideoView " + id);
+        SWLLog.i(TAG, "showVideoView " + id);
 
         //渲染本地Camera
         if (isLocal == true) {
-            SxbLog.i(TAG, "showVideoView host :" + MySelfInfo.getInstance().getId());
+            SWLLog.i(TAG, "showVideoView host :" + MySelfInfo.getInstance().getId());
             QavsdkControl.getInstance().setSelfId(MySelfInfo.getInstance().getId());
             QavsdkControl.getInstance().setLocalHasVideo(true, MySelfInfo.getInstance().getId());
             //主播通知用户服务器
@@ -779,7 +779,7 @@ public class LiveActivity extends BaseActivity implements EnterQuiteRoomView, Li
 
 
     private float getBeautyProgress(int progress) {
-        SxbLog.d("shixu", "progress: " + progress);
+        SWLLog.d("shixu", "progress: " + progress);
         return (9.0f * progress / 100.0f);
     }
 
@@ -1110,7 +1110,7 @@ public class LiveActivity extends BaseActivity implements EnterQuiteRoomView, Li
                         mFullControllerUi.setVisibility(View.VISIBLE);
                     }
                 } else {
-                    SxbLog.i(TAG, "beauty_btn mTopBar  is null ");
+                    SWLLog.i(TAG, "beauty_btn mTopBar  is null ");
                 }
                 break;
             case R.id.qav_beauty_setting_finish:
@@ -1289,7 +1289,7 @@ public class LiveActivity extends BaseActivity implements EnterQuiteRoomView, Li
         //mChatMsgListAdapter.notifyDataSetChanged();
 
         mListViewMsgItems.setVisibility(View.VISIBLE);
-        SxbLog.d(TAG, "refreshTextListView height " + mListViewMsgItems.getHeight());
+        SWLLog.d(TAG, "refreshTextListView height " + mListViewMsgItems.getHeight());
 
         if (mListViewMsgItems.getCount() > 1) {
             if (true)
@@ -1331,7 +1331,7 @@ public class LiveActivity extends BaseActivity implements EnterQuiteRoomView, Li
             mTimerTask = new TimerTask() {
                 @Override
                 public void run() {
-                    SxbLog.v(TAG, "doRefreshListView->task enter with need:" + mBoolNeedRefresh);
+                    SWLLog.v(TAG, "doRefreshListView->task enter with need:" + mBoolNeedRefresh);
                     mHandler.sendEmptyMessage(REFRESH_LISTVIEW);
                 }
             };
@@ -1354,9 +1354,9 @@ public class LiveActivity extends BaseActivity implements EnterQuiteRoomView, Li
                 case GETPROFILE_JOIN:
                     for (TIMUserProfile user : profiles) {
                         tvMembers.setText("" + CurLiveInfo.getMembers());
-                        SxbLog.w(TAG, "get nick name:" + user.getNickName());
-                        SxbLog.w(TAG, "get remark name:" + user.getRemark());
-                        SxbLog.w(TAG, "get avatar:" + user.getFaceUrl());
+                        SWLLog.w(TAG, "get nick name:" + user.getNickName());
+                        SWLLog.w(TAG, "get remark name:" + user.getRemark());
+                        SWLLog.w(TAG, "get avatar:" + user.getFaceUrl());
                         if (!TextUtils.isEmpty(user.getNickName())) {
                             refreshTextListView(user.getNickName(), "join live", Constants.MEMBER_ENTER);
                         } else {
@@ -1465,8 +1465,8 @@ public class LiveActivity extends BaseActivity implements EnterQuiteRoomView, Li
      * @param url2
      */
     private void ClipToBoard(final String url, final String url2) {
-        SxbLog.i(TAG, "ClipToBoard url " + url);
-        SxbLog.i(TAG, "ClipToBoard url2 " + url2);
+        SWLLog.i(TAG, "ClipToBoard url " + url);
+        SWLLog.i(TAG, "ClipToBoard url2 " + url2);
         if (url == null) return;
         final Dialog dialog = new Dialog(this, R.style.dialog);
         dialog.setContentView(R.layout.clip_dialog);

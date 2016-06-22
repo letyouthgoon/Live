@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import com.showworld.living.utils.SWLLog;
 import com.tencent.TIMCallBack;
 import com.tencent.TIMLogLevel;
 import com.tencent.TIMManager;
@@ -15,7 +16,6 @@ import com.showworld.living.avcontrollers.QavsdkControl;
 import com.showworld.living.model.MySelfInfo;
 import com.showworld.living.utils.Constants;
 import com.showworld.living.utils.CrashHandler;
-import com.showworld.living.utils.SxbLog;
 
 import tencent.tls.platform.TLSAccountHelper;
 import tencent.tls.platform.TLSErrInfo;
@@ -77,14 +77,14 @@ public class InitBusinessHelper {
         TIMManager.getInstance().setUserStatusListener(new TIMUserStatusListener() {
             @Override
             public void onForceOffline() {
-                SxbLog.w(TAG, "onForceOffline->entered!");
+                SWLLog.w(TAG, "onForceOffline->entered!");
                 Toast.makeText(context, context.getString(R.string.tip_force_offline), Toast.LENGTH_SHORT).show();
                 context.sendBroadcast(new Intent(Constants.BD_EXIT_APP));
             }
 
             @Override
             public void onUserSigExpired() {
-                SxbLog.w(TAG, "onUserSigExpired->entered!");
+                SWLLog.w(TAG, "onUserSigExpired->entered!");
                 refreshSig();
             }
         });
@@ -117,12 +117,12 @@ public class InitBusinessHelper {
                 new TIMCallBack() {
                     @Override
                     public void onError(int i, String s) {
-                        SxbLog.e(TAG, "reLoginIM fail ：" + i + "|" + s);
+                        SWLLog.e(TAG, "reLoginIM fail ：" + i + "|" + s);
                     }
 
                     @Override
                     public void onSuccess() {
-                        SxbLog.i(TAG, "reLoginIM IMLogin succ !");
+                        SWLLog.i(TAG, "reLoginIM IMLogin succ !");
                     }
                 });
     }
@@ -133,7 +133,7 @@ public class InitBusinessHelper {
     private static void refreshSig(){
         final String userId = MySelfInfo.getInstance().getId();
         if (TextUtils.isEmpty(userId)){
-            SxbLog.w(TAG, "refreshSig->with empty identifier");
+            SWLLog.w(TAG, "refreshSig->with empty identifier");
             return;
         }
 
@@ -146,12 +146,12 @@ public class InitBusinessHelper {
 
             @Override
             public void OnRefreshUserSigFail(TLSErrInfo tlsErrInfo) {
-                SxbLog.w(TAG, "OnRefreshUserSigFail->"+tlsErrInfo.ErrCode+"|"+tlsErrInfo.Msg);
+                SWLLog.w(TAG, "OnRefreshUserSigFail->"+tlsErrInfo.ErrCode+"|"+tlsErrInfo.Msg);
             }
 
             @Override
             public void OnRefreshUserSigTimeout(TLSErrInfo tlsErrInfo) {
-                SxbLog.w(TAG, "OnRefreshUserSigTimeout->"+tlsErrInfo.ErrCode+"|"+tlsErrInfo.Msg);
+                SWLLog.w(TAG, "OnRefreshUserSigTimeout->"+tlsErrInfo.ErrCode+"|"+tlsErrInfo.Msg);
             }
         });
     }

@@ -7,7 +7,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.showworld.living.model.LiveInfoJson;
 import com.showworld.living.model.MySelfInfo;
-import com.showworld.living.utils.SxbLog;
+import com.showworld.living.utils.SWLLog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -78,10 +78,10 @@ public class OKhttpHelper {
         try {
 
             String res = post(NEW_ROOM_INFO, reg.toString());
-            SxbLog.i(TAG, "notifyServer live start  liveinfo: " + res);
+            SWLLog.i(TAG, "notifyServer live start  liveinfo: " + res);
             JSONTokener jsonParser = new JSONTokener(res);
             JSONObject response = (JSONObject) jsonParser.nextValue();
-            SxbLog.i(TAG, "notifyServerNewLiveInfo: " + response);
+            SWLLog.i(TAG, "notifyServerNewLiveInfo: " + response);
             int code = response.getInt("errorCode");
             if (code == 0) {
                 return code;
@@ -108,7 +108,7 @@ public class OKhttpHelper {
             stopLive.put("timeSpan", 200);
             String json = stopLive.toString();
             String res = post(STOP_ROOM, json);
-            SxbLog.i(TAG, "notifyServer live stop  liveinfo: " + res);
+            SWLLog.i(TAG, "notifyServer live stop  liveinfo: " + res);
             JSONTokener jsonParser = new JSONTokener(res);
             JSONObject response = (JSONObject) jsonParser.nextValue();
 
@@ -146,7 +146,7 @@ public class OKhttpHelper {
             if (ret == 0) {
                 JSONObject data = reg_response.getJSONObject("data");
                 int id = data.getInt("avRoomId");
-                SxbLog.i(TAG, "getMyRoomId " + id);
+                SWLLog.i(TAG, "getMyRoomId " + id);
                 MySelfInfo.getInstance().setMyRoomNum(id);
                 MySelfInfo.getInstance().writeToCache(context.getApplicationContext());
             }
@@ -171,7 +171,7 @@ public class OKhttpHelper {
             req.put("pageSize", pagesize);
             String response = OKhttpHelper.getInstance().post(GET_LIVELIST, req.toString());
 
-            SxbLog.i(TAG, "getLiveList " + response.toString());
+            SWLLog.i(TAG, "getLiveList " + response.toString());
             JSONTokener jsonParser = new JSONTokener(response);
             JSONObject reg_response = (JSONObject) jsonParser.nextValue();
             int ret = reg_response.getInt("errorCode");
@@ -203,12 +203,12 @@ public class OKhttpHelper {
             req.put("timeSpan", timeSpan);
             String response = OKhttpHelper.getInstance().post(SEND_HEARTBEAT, req.toString());
 
-            SxbLog.i(TAG, "sendHeartBeat " + response.toString());
+            SWLLog.i(TAG, "sendHeartBeat " + response.toString());
             JSONTokener jsonParser = new JSONTokener(response);
             JSONObject reg_response = (JSONObject) jsonParser.nextValue();
             int ret = reg_response.getInt("errorCode");
             if (ret == 0) {
-                SxbLog.i(TAG, "sendHeartBeat is Ok");
+                SWLLog.i(TAG, "sendHeartBeat is Ok");
             }
 
         } catch (JSONException e) {
@@ -222,7 +222,7 @@ public class OKhttpHelper {
         try {
             String response = OKhttpHelper.getInstance().post(GET_COS_SIG, "");
 
-//            SxbLog.i(TAG, "getCosSig " + response.toString());
+//            SWLLog.i(TAG, "getCosSig " + response.toString());
             JSONTokener jsonParser = new JSONTokener(response);
             JSONObject reg_response = (JSONObject) jsonParser.nextValue();
             int ret = reg_response.getInt("errorCode");

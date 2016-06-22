@@ -3,13 +3,13 @@ package com.showworld.living.avcontrollers;
 import android.content.Context;
 import android.view.View;
 
+import com.showworld.living.utils.SWLLog;
 import com.tencent.av.sdk.AVAudioCtrl;
 import com.tencent.av.sdk.AVContext;
 import com.tencent.av.sdk.AVRoom;
 import com.tencent.av.sdk.AVVideoCtrl;
 import com.tencent.av.sdk.AVView;
 import com.showworld.living.utils.Constants;
-import com.showworld.living.utils.SxbLog;
 
 import java.util.ArrayList;
 
@@ -46,7 +46,7 @@ public class QavsdkControl {
 
     private QavsdkControl(Context context) {
         mAVContextControl = new AVContextControl(context);
-        SxbLog.d(TAG, "WL_DEBUG QavsdkControl");
+        SWLLog.d(TAG, "WL_DEBUG QavsdkControl");
     }
 
 
@@ -176,7 +176,7 @@ public class QavsdkControl {
     }
 
     public void setMirror(boolean isMirror) {
-        SxbLog.d(TAG, "setMirror SelfIdentifier:" + getSelfIdentifier() + "/" + isMirror);
+        SWLLog.d(TAG, "setMirror SelfIdentifier:" + getSelfIdentifier() + "/" + isMirror);
 
         if (null != mAVUIControl) {
             mAVUIControl.setMirror(isMirror, getSelfIdentifier());
@@ -261,7 +261,7 @@ public class QavsdkControl {
     }
 
     public void setRemoteHasVideo(boolean isRemoteHasVideo, String identifier, int videoSrcType) {
-        SxbLog.i(TAG, "setRemoteHasVideo : " + identifier);
+        SWLLog.i(TAG, "setRemoteHasVideo : " + identifier);
         if (null != mAVUIControl) {
             mAVUIControl.setSmallVideoViewLayout(isRemoteHasVideo, identifier, videoSrcType);
         }

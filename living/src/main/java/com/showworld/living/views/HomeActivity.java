@@ -18,7 +18,7 @@ import com.showworld.living.presenters.InitBusinessHelper;
 import com.showworld.living.presenters.LoginHelper;
 import com.showworld.living.presenters.ProfileInfoHelper;
 import com.showworld.living.presenters.viewinface.ProfileView;
-import com.showworld.living.utils.SxbLog;
+import com.showworld.living.utils.SWLLog;
 import com.showworld.living.views.customviews.BaseFragmentActivity;
 
 import java.util.List;
@@ -41,7 +41,7 @@ public class HomeActivity extends BaseFragmentActivity implements ProfileView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_layout);
-        SxbLog.i(TAG, "HomeActivity onStart");
+        SWLLog.i(TAG, "HomeActivity onStart");
         mTabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
         layoutInflater = LayoutInflater.from(this);
         mTabHost.setup(this, getSupportFragmentManager(), R.id.contentPanel);
@@ -76,11 +76,11 @@ public class HomeActivity extends BaseFragmentActivity implements ProfileView {
 
     @Override
     protected void onStart() {
-        SxbLog.i(TAG, "HomeActivity onStart");
+        SWLLog.i(TAG, "HomeActivity onStart");
         super.onStart();
         if (QavsdkControl.getInstance().getAVContext() == null) {//retry
             InitBusinessHelper.initApp(getApplicationContext());
-            SxbLog.i(TAG, "HomeActivity retry login");
+            SWLLog.i(TAG, "HomeActivity retry login");
             mLoginHelper = new LoginHelper(this);
             mLoginHelper.imLogin(MySelfInfo.getInstance().getId(), MySelfInfo.getInstance().getUserSig());
         }
@@ -97,14 +97,14 @@ public class HomeActivity extends BaseFragmentActivity implements ProfileView {
     protected void onDestroy() {
         if (mLoginHelper != null)
             mLoginHelper.onDestory();
-        SxbLog.i(TAG, "HomeActivity onDestroy");
+        SWLLog.i(TAG, "HomeActivity onDestroy");
         QavsdkControl.getInstance().stopContext();
         super.onDestroy();
     }
 
     @Override
     public void updateProfileInfo(TIMUserProfile profile) {
-        SxbLog.i(TAG, "updateProfileInfo");
+        SWLLog.i(TAG, "updateProfileInfo");
         if (null != profile) {
             MySelfInfo.getInstance().setAvatar(profile.getFaceUrl());
             if (!TextUtils.isEmpty(profile.getNickName())) {

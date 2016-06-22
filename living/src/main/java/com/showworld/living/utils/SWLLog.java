@@ -7,7 +7,7 @@ import java.util.Calendar;
 /**
  * 日志输出
  */
-public class SxbLog {
+public class SWLLog {
     public enum SxbLogLevel {
         OFF,
         ERROR,
@@ -35,7 +35,7 @@ public class SxbLog {
     public static void v(String strTag, String strInfo) {
         Log.v(strTag, strInfo);
         if (level.ordinal() >= SxbLogLevel.INFO.ordinal()) {
-            SxbLogImpl.writeLog("I", strTag, strInfo, null);
+            SWLLogImpl.writeLog("I", strTag, strInfo, null);
         }
     }
 
@@ -46,7 +46,7 @@ public class SxbLog {
     public static void d(String strTag, String strInfo) {
         Log.d(strTag, strInfo);
         if (level.ordinal() >= SxbLogLevel.DEBUG.ordinal()) {
-            SxbLogImpl.writeLog("D", strTag, strInfo, null);
+            SWLLogImpl.writeLog("D", strTag, strInfo, null);
         }
     }
 
@@ -54,19 +54,19 @@ public class SxbLog {
     public static void w(String strTag, String strInfo) {
         Log.w(strTag, strInfo);
         if (level.ordinal() >= SxbLogLevel.WARN.ordinal()) {
-            SxbLogImpl.writeLog("W", strTag, strInfo, null);
+            SWLLogImpl.writeLog("W", strTag, strInfo, null);
         }
     }
 
     public static void e(String strTag, String strInfo) {
         Log.e(strTag, strInfo);
         if (level.ordinal() >= SxbLogLevel.ERROR.ordinal()) {
-            SxbLogImpl.writeLog("E", strTag, strInfo, null);
+            SWLLogImpl.writeLog("E", strTag, strInfo, null);
         }
     }
 
     public static void writeException(String strTag, String strInfo, Exception tr) {
-        SxbLogImpl.writeLog("C", strTag, strInfo, tr);
+        SWLLogImpl.writeLog("C", strTag, strInfo, tr);
     }
 
     public static String getTime() {

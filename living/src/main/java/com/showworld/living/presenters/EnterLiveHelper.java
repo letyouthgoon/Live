@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
+import com.showworld.living.utils.SWLLog;
 import com.tencent.TIMCallBack;
 import com.tencent.TIMConversationType;
 import com.tencent.TIMGroupManager;
@@ -22,7 +23,6 @@ import com.showworld.living.model.LiveInfoJson;
 import com.showworld.living.model.MySelfInfo;
 import com.showworld.living.presenters.viewinface.EnterQuiteRoomView;
 import com.showworld.living.utils.Constants;
-import com.showworld.living.utils.SxbLog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -65,7 +65,7 @@ public class EnterLiveHelper extends Presenter {
         if (MySelfInfo.getInstance().getIdStatus() == Constants.HOST) {
             createLive();
         } else {
-            SxbLog.i(TAG, "joinLiveRoom startEnterRoom ");
+            SWLLog.i(TAG, "joinLiveRoom startEnterRoom ");
             joinLive(CurLiveInfo.getRoomNum());
         }
 
@@ -78,7 +78,7 @@ public class EnterLiveHelper extends Presenter {
     private AVRoomMulti.Delegate mRoomDelegate = new AVRoomMulti.Delegate() {
         // 创建房间成功回调
         public void onEnterRoomComplete(int result) {
-            SxbLog.i(TAG, "onEnterRoomComplete  PerformanceTest    " + SxbLog.getTime());
+            SWLLog.i(TAG, "onEnterRoomComplete  PerformanceTest    " + SWLLog.getTime());
             if (result == 0) {
                 //只有进入房间后才能初始化AvView
                 isInAVRoom = true;
@@ -101,17 +101,17 @@ public class EnterLiveHelper extends Presenter {
             notifyServerLiveEnd();
             if (mStepInOutView != null)
                 mStepInOutView.quiteRoomComplete(MySelfInfo.getInstance().getIdStatus(), true, null);
-            SxbLog.d(TAG, "WL_DEBUG mRoomDelegate.onExitRoomComplete result = " + result);
+            SWLLog.d(TAG, "WL_DEBUG mRoomDelegate.onExitRoomComplete result = " + result);
 
         }
 
         //房间成员变化回调
         public void onEndpointsUpdateInfo(int eventid, String[] updateList) {
-            SxbLog.d(TAG, "WL_DEBUG onEndpointsUpdateInfo. eventid = " + eventid);
+            SWLLog.d(TAG, "WL_DEBUG onEndpointsUpdateInfo. eventid = " + eventid);
 
             switch (eventid) {
                 case TYPE_MEMBER_CHANGE_IN:
-                    SxbLog.i(TAG, "stepin id  " + updateList.length);
+                    SWLLog.i(TAG, "stepin id  " + updateList.length);
                     mStepInOutView.memberJoinLive(updateList);
 
                     break;
@@ -119,7 +119,7 @@ public class EnterLiveHelper extends Presenter {
                     video_ids.clear();
                     for (String id : updateList) {
                         video_ids.add(id);
-                        SxbLog.i(TAG, "camera id " + id);
+                        SWLLog.i(TAG, "camera id " + id);
                     }
                     Intent intent = new Intent(Constants.ACTION_CAMERA_OPEN_IN_LIVE);
                     intent.putStringArrayListExtra("ids", video_ids);
@@ -138,7 +138,7 @@ public class EnterLiveHelper extends Presenter {
         }
 
         public void OnPrivilegeDiffNotify(int privilege) {
-            SxbLog.d(TAG, "OnPrivilegeDiffNotify. privilege = " + privilege);
+            SWLLog.d(TAG, "OnPrivilegeDiffNotify. privilege = " + privilege);
         }
 
         @Override
@@ -163,11 +163,11 @@ public class EnterLiveHelper extends Presenter {
     private void createIMChatRoom() {
         final ArrayList<String> list = new ArrayList<String>();
         final String roomName = "this is a  test";
-        SxbLog.i(TAG, "createlive createIMChatRoom " + MySelfInfo.getInstance().getMyRoomNum());
+        SWLLog.i(TAG, "createlive createIMChatRoom " + MySelfInfo.getInstance().getMyRoomNum());
         TIMGroupManager.getInstance().createGroup("AVChatRoom", list, roomName, "" + MySelfInfo.getInstance().getMyRoomNum(), new TIMValueCallBack<String>() {
             @Override
             public void onError(int i, String s) {
-                SxbLog.i(TAG, "onError " + i + "   " + s);
+                SWLLog.i(TAG, "onError " + i + "   " + s);
                 //已在房间中,重复进入房间
                 if (i == 10025) {
                     isInChatRoom = true;
@@ -263,13 +263,13 @@ public class EnterLiveHelper extends Presenter {
      * 2_2加入一个聊天室
      */
     private void joinIMChatRoom(int chatRoomId) {
-        SxbLog.i(TAG, "joinLiveRoom joinIMChatRoom " + chatRoomId);
+        SWLLog.i(TAG, "joinLiveRoom joinIMChatRoom " + chatRoomId);
         TIMGroupManager.getInstance().applyJoinGroup("" + chatRoomId, Constants.APPLY_CHATROOM + chatRoomId, new TIMCallBack() {
             @Override
             public void onError(int i, String s) {
                 //已经在是成员了
                 if (i == Constants.IS_ALREADY_MEMBER) {
-                    SxbLog.i(TAG, "joinLiveRoom joinIMChatRoom callback succ ");
+                    SWLLog.i(TAG, "joinLiveRoom joinIMChatRoom callback succ ");
                     joinAVRoom(CurLiveInfo.getRoomNum());
                     isInChatRoom = true;
                 } else {
@@ -280,7 +280,7 @@ public class EnterLiveHelper extends Presenter {
 
             @Override
             public void onSuccess() {
-                SxbLog.i(TAG, "joinLiveRoom joinIMChatRoom callback succ ");
+                SWLLog.i(TAG, "joinLiveRoom joinIMChatRoom callback succ ");
                 isInChatRoom = true;
                 joinAVRoom(CurLiveInfo.getRoomNum());
             }
@@ -343,7 +343,7 @@ public class EnterLiveHelper extends Presenter {
      * 退出一个AV房间
      */
     private void quiteAVRoom() {
-        SxbLog.d(TAG, "quiteAVRoom ");
+        SWLLog.d(TAG, "quiteAVRoom ");
         if (isInAVRoom == true) {
             AVContext avContext = QavsdkControl.getInstance().getAVContext();
             int result = avContext.exitRoom();
@@ -381,12 +381,12 @@ public class EnterLiveHelper extends Presenter {
                 TIMGroupManager.getInstance().quitGroup("" + CurLiveInfo.getRoomNum(), new TIMCallBack() {
                     @Override
                     public void onError(int i, String s) {
-                        SxbLog.e(TAG, "onError i: " + i + "  " + s);
+                        SWLLog.e(TAG, "onError i: " + i + "  " + s);
                     }
 
                     @Override
                     public void onSuccess() {
-                        SxbLog.i(TAG, "onSuccess ");
+                        SWLLog.i(TAG, "onSuccess ");
                         isInChatRoom = false;
                     }
                 });
@@ -403,7 +403,7 @@ public class EnterLiveHelper extends Presenter {
      * @param roomNum
      */
     private void EnterAVRoom(int roomNum) {
-        SxbLog.i(TAG, "createlive joinLiveRoom enterAVRoom " + roomNum);
+        SWLLog.i(TAG, "createlive joinLiveRoom enterAVRoom " + roomNum);
         AVContext avContext = QavsdkControl.getInstance().getAVContext();
         byte[] authBuffer = null;//权限位加密串；TODO：请业务侧填上自己的加密串
 
@@ -428,7 +428,7 @@ public class EnterLiveHelper extends Presenter {
         if (avContext != null) {
             // create room
             int ret = avContext.enterRoom(AVRoom.AV_ROOM_MULTI, mRoomDelegate, enterRoomParam);
-            SxbLog.i(TAG, "EnterAVRoom " + ret);
+            SWLLog.i(TAG, "EnterAVRoom " + ret);
         }
 
     }

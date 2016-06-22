@@ -9,7 +9,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.showworld.living.QavsdkApplication;
+import com.showworld.living.SWLApplication;
 import com.showworld.living.R;
 import com.showworld.living.presenters.LoginHelper;
 import com.showworld.living.presenters.viewinface.LoginView;
@@ -22,7 +22,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     private EditText mUserName, mPassword, mRepassword;
     private TextView mBtnRegister;
     private ImageButton mBtnBack;
-    QavsdkApplication mMyApplication;
+    SWLApplication mMyApplication;
     LoginHelper mLoginHeloper;
     private static final String TAG = RegisterActivity.class.getSimpleName();
 
@@ -37,7 +37,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         mBtnBack = (ImageButton) findViewById(R.id.back);
         mBtnBack.setOnClickListener(this);
         mBtnRegister.setOnClickListener(this);
-        mMyApplication = (QavsdkApplication) getApplication();
+        mMyApplication = (SWLApplication) getApplication();
         mLoginHeloper = new LoginHelper(this, this);
     }
 

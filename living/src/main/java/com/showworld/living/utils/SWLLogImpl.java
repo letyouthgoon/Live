@@ -18,7 +18,7 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * 日志输出
  */
-public class SxbLogImpl {
+public class SWLLogImpl {
     private static volatile Context sContext;
 
     private static String packageName = "";
@@ -74,7 +74,7 @@ public class SxbLogImpl {
             }
 
             if (null == writer) {
-                System.out.println("can not write SxbLog.");
+                System.out.println("can not write SWLLog.");
                 long now = System.currentTimeMillis();
                 if ( lastWriterErrorTime == 0  ) {
                     lastWriterErrorTime = now;

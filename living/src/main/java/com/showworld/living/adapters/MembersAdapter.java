@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.showworld.living.R;
 import com.showworld.living.model.MemberInfo;
 import com.showworld.living.presenters.viewinface.LiveView;
-import com.showworld.living.utils.SxbLog;
+import com.showworld.living.utils.SWLLog;
 import com.showworld.living.views.customviews.MembersDialog;
 
 import java.util.ArrayList;
@@ -56,7 +56,7 @@ public class MembersAdapter extends ArrayAdapter<MemberInfo> {
         holder.videoCtrl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SxbLog.i(TAG, "select item:  " + selectId);
+                SWLLog.i(TAG, "select item:  " + selectId);
 
                 if (data.isOnVideoChat() == false) {//不在房间中，发起邀请
                     if (mLiveView.showInviteView(selectId)) {
