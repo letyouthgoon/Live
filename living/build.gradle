@@ -4,6 +4,7 @@ android {
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
 
+    //target < 23
     defaultConfig {
         applicationId "com.showworld.living"
         minSdkVersion 16

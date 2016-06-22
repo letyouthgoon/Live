@@ -12,3 +12,6 @@
 /README.md
 /gradlew.bat
 /gradlew
+
+/living/build/
+/living/living.iml
