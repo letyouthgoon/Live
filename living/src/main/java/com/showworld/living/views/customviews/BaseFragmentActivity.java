@@ -9,9 +9,6 @@ import android.support.v4.app.FragmentActivity;
 
 import com.showworld.living.utils.Constants;
 
-/**
- * Created by xkazerzhang on 2016/5/23.
- */
 public class BaseFragmentActivity extends FragmentActivity {
     private BroadcastReceiver recv;
 
@@ -22,7 +19,7 @@ public class BaseFragmentActivity extends FragmentActivity {
         recv = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                if (intent.getAction().equals(Constants.BD_EXIT_APP)){
+                if (intent.getAction().equals(Constants.BD_EXIT_APP)) {
                     finish();
                 }
             }
@@ -38,7 +35,7 @@ public class BaseFragmentActivity extends FragmentActivity {
     protected void onDestroy() {
         try {
             unregisterReceiver(recv);
-        }catch (Exception e){
+        } catch (Exception e) {
         }
         super.onDestroy();
     }

@@ -29,6 +29,9 @@ import java.util.List;
  * 主界面
  */
 public class HomeActivity extends BaseFragmentActivity implements ProfileView {
+
+    private static final String TAG = HomeActivity.class.getSimpleName();
+
     private FragmentTabHost mTabHost;
     private LayoutInflater layoutInflater;
     private ProfileInfoHelper infoHelper;
@@ -36,7 +39,6 @@ public class HomeActivity extends BaseFragmentActivity implements ProfileView {
     private final Class fragmentArray[] = {FragmentLiveList.class, FragmentPublish.class, FragmentProfile.class};
     private int mImageViewArray[] = {R.drawable.tab_live, R.drawable.icon_publish, R.drawable.tab_profile};
     private String mTextviewArray[] = {"live", "publish", "profile"};
-    private static final String TAG = HomeActivity.class.getSimpleName();
 
 
     public static void start(Context context) {
@@ -66,12 +68,7 @@ public class HomeActivity extends BaseFragmentActivity implements ProfileView {
         mTabHost.getTabWidget().getChildTabViewAt(1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-//                DialogFragment newFragment = InputDialog.newInstance();
-//                newFragment.show(ft, "dialog");
-
-                startActivity(new Intent(HomeActivity.this, PublishLiveActivity.class));
-
+                PublishLiveActivity.start(HomeActivity.this);
             }
         });
 
@@ -86,7 +83,8 @@ public class HomeActivity extends BaseFragmentActivity implements ProfileView {
     protected void onStart() {
         SwlLog.i(TAG, "HomeActivity onStart");
         super.onStart();
-        if (SwlavsdkControl.getInstance().getAVContext() == null) {//retry
+        if (SwlavsdkControl.getInstance().getAVContext() == null) {
+            //retry
             InitBusinessHelper.initApp(getApplicationContext());
             SwlLog.i(TAG, "HomeActivity retry login");
             mLoginHelper = new LoginHelper(this);

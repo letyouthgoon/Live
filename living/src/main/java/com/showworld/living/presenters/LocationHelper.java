@@ -76,12 +76,7 @@ public class LocationHelper {
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 60000, 0, new LocationListener() {
                 @Override
                 public void onLocationChanged(Location location) {
-                    String strAddr = getAddressFromLocation(context, location);
-                    if (TextUtils.isEmpty(strAddr)) {
-                        view.onLocationChanged(-1, 0, 0, strAddr);
-                    } else {
-                        view.onLocationChanged(0, location.getLatitude(), location.getLongitude(), strAddr);
-                    }
+                    locationChanged(context, view, location);
                 }
 
                 @Override
@@ -97,15 +92,19 @@ public class LocationHelper {
                 }
             });
         } else {
-            String strAddr = getAddressFromLocation(context, curLoc);
-            if (TextUtils.isEmpty(strAddr)) {
-                view.onLocationChanged(-1, 0, 0, strAddr);
-            } else {
-                view.onLocationChanged(0, curLoc.getLatitude(), curLoc.getLongitude(), strAddr);
-            }
+            locationChanged(context, view, curLoc);
         }
 
         return true;
+    }
+
+    private void locationChanged(final Context context, final LocationView view, Location curLoc) {
+        String strAddr = getAddressFromLocation(context, curLoc);
+        if (TextUtils.isEmpty(strAddr)) {
+            view.onLocationChanged(-1, 0, 0, strAddr);
+        } else {
+            view.onLocationChanged(0, curLoc.getLatitude(), curLoc.getLongitude(), strAddr);
+        }
     }
 
     public void onDestory() {

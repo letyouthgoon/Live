@@ -8,7 +8,7 @@
 
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="50dp"
+        android:layout_height="@dimen/toolbar_h"
         android:background="@color/tencent_tls_ui_titleBackground"
         android:orientation="horizontal">
 

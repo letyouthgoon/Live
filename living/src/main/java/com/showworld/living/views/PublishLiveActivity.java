@@ -2,6 +2,7 @@ package com.showworld.living.views;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.showworld.living.R;
+// TODO: 16/6/24   mvp?
 import com.showworld.living.model.CurLiveInfo;
 import com.showworld.living.model.MySelfInfo;
 import com.showworld.living.presenters.LocationHelper;
@@ -61,6 +63,12 @@ public class PublishLiveActivity extends BaseActivity implements View.OnClickLis
     private boolean bUploading = false;
     private boolean bPermission = false;
     private int uploadPercent = 0;
+
+
+    public static void start(Context context) {
+        context.startActivity(new Intent(context, PublishLiveActivity.class));
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,7 +119,7 @@ public class PublishLiveActivity extends BaseActivity implements View.OnClickLis
                     CurLiveInfo.setHostID(MySelfInfo.getInstance().getId());
                     CurLiveInfo.setRoomNum(MySelfInfo.getInstance().getMyRoomNum());
                     startActivity(intent);
-                    SwlLog.i(TAG, "PerformanceTest  publish Live     " +  SwlLog.getTime());
+                    SwlLog.i(TAG, "PerformanceTest  publish Live     " + SwlLog.getTime());
                     this.finish();
                 }
                 break;
@@ -221,7 +229,7 @@ public class PublishLiveActivity extends BaseActivity implements View.OnClickLis
             }
             if (permissions.size() != 0) {
                 ActivityCompat.requestPermissions(PublishLiveActivity.this,
-                        (String[]) permissions.toArray(new String[0]),
+                        permissions.toArray(new String[0]),
                         Constants.WRITE_PERMISSION_REQ_CODE);
                 return false;
             }

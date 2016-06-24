@@ -3,12 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorLightGray"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
+
     <RelativeLayout
         android:id="@+id/toppanel1"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="@dimen/toolbar_h"
         android:layout_alignParentTop="true"
         android:background="@color/btn_red"
         android:gravity="center_vertical">
@@ -30,9 +30,8 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="12dp"
             android:onClick="onClick"
-            android:textColor="@color/colorTextWhite"
             android:text="@string/btn_cancel"
-            />
+            android:textColor="@color/colorTextWhite" />
 
     </RelativeLayout>
 
@@ -45,45 +44,42 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <ImageView
                 android:id="@+id/cover"
                 android:layout_width="match_parent"
                 android:layout_height="240dp"
-                android:scaleType="fitXY"
                 android:background="@drawable/cover_background"
-                android:onClick="onClick" />
+                android:onClick="onClick"
+                android:scaleType="fitXY" />
+
             <TextView
                 android:id="@+id/tv_pic_tip"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:gravity="center"
-                android:drawableTop="@drawable/image"
                 android:drawablePadding="5dp"
-                android:textColor="@color/colorTextG2"
+                android:drawableTop="@drawable/image"
+                android:gravity="center"
                 android:text="@string/text_live_add_title_tips"
-                android:textSize="16sp"
-                />
+                android:textColor="@color/colorTextG2"
+                android:textSize="16sp" />
         </FrameLayout>
 
-        <FrameLayout
+        <EditText
+            android:id="@+id/live_title"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <EditText
-                android:id="@+id/live_title"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:paddingLeft="10dp"
-                android:paddingTop="10dp"
-                android:background="@color/colorPrimary"
-                android:gravity="top"
-                android:hint="@string/text_live_title_input"
-                android:lines="4"
-                android:maxLength="32"
-                android:textColor="@color/colorTextG4"
-                android:textColorHint="@color/colorTextG2"
-                android:textSize="@dimen/h11" />
-        </FrameLayout>
+            android:layout_height="40dp"
+            android:background="@color/colorPrimary"
+            android:gravity="top"
+            android:hint="@string/text_live_title_input"
+            android:lines="4"
+            android:maxLength="32"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:textColor="@color/colorTextG4"
+            android:textColorHint="@color/colorTextG2"
+            android:textSize="@dimen/h11" />
 
         <TextView
             android:layout_width="fill_parent"
@@ -96,30 +92,19 @@
             android:layout_gravity="center_vertical"
             android:background="@color/colorTextWhite">
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/address"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:onClick="onClick">
-
-                <ImageView
-                    android:id="@+id/img_lbs"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="12dp"
-                    android:src="@drawable/icon_lbs_on" />
-
-                <TextView
-                    android:id="@+id/address"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="5dp"
-                    android:gravity="center"
-                    android:singleLine="true"
-                    android:text="@string/text_live_close_lbs"
-                    android:textSize="@dimen/h6" />
-            </LinearLayout>
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="17dp"
+                android:drawableLeft="@drawable/icon_lbs_on"
+                android:drawablePadding="5dp"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="@string/text_live_close_lbs"
+                android:textSize="@dimen/h6" />
 
             <com.showworld.living.views.customviews.CustomSwitch
                 android:id="@+id/btn_lbs"
@@ -134,59 +119,6 @@
                 android:onClick="onClick"
                 android:src="@drawable/btn_switch_off" />
         </RelativeLayout>
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:background="@color/colorGray2" />
-
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_gravity="center_vertical"
-            android:visibility="invisible"
-            android:background="@color/colorTextWhite">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:onClick="onClick">
-                <TextView
-                    android:id="@+id/push_stream"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="15dp"
-                    android:gravity="center"
-                    android:singleLine="true"
-                    android:text="@string/text_start_push"
-                    android:textSize="@dimen/h6" />
-            </LinearLayout>
-
-            <com.showworld.living.views.customviews.CustomSwitch
-                android:id="@+id/record_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center"
-                android:onClick="onClick"
-                android:src="@drawable/btn_switch_off" />
-        </RelativeLayout>
-
-        <!--<TextView-->
-            <!--android:layout_width="fill_parent"-->
-            <!--android:layout_height="1dp"-->
-            <!--android:background="@color/colorGray2" />-->
-
-        <!--<TextView-->
-            <!--android:layout_width="fill_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginLeft="15dp"-->
-            <!--android:text="@string/text_record_info" />-->
     </LinearLayout>
 
     <TextView

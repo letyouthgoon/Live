@@ -9,9 +9,6 @@ import android.os.Bundle;
 
 import com.showworld.living.utils.Constants;
 
-/**
- * Created by admin on 2016/5/20.
- */
 public class BaseActivity extends Activity{
     private BroadcastReceiver recv;
 
