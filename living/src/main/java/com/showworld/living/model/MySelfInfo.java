@@ -152,4 +152,18 @@ public class MySelfInfo {
     public void setIdStatus(int id_status) {
         this.id_status = id_status;
     }
+
+    /**
+     * 判断是否需要登录
+     *
+     * @return true 代表需要重新登录
+     */
+    public boolean needLogin() {
+        if (getId() != null) {
+            return false;//有账号不需要登录
+        } else {
+            return true;//需要登录
+        }
+
+    }
 }

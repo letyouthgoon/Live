@@ -1,5 +1,6 @@
 package com.showworld.living.views;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,6 +26,12 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     SwlApplication mMyApplication;
     LoginHelper mLoginHeloper;
     private static final String TAG = RegisterActivity.class.getSimpleName();
+
+
+    public static void start(Context context) {
+        Intent intent = new Intent(context, RegisterActivity.class);
+        context.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

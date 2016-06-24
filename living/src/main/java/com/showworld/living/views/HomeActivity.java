@@ -1,6 +1,7 @@
 package com.showworld.living.views;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTabHost;
@@ -12,6 +13,7 @@ import android.widget.TabHost;
 
 import com.showworld.living.avcontrollers.SwlavsdkControl;
 import com.showworld.living.utils.SwlLog;
+import com.showworld.living.views.customviews.BaseActivity;
 import com.tencent.TIMUserProfile;
 import com.showworld.living.R;
 import com.showworld.living.model.MySelfInfo;
@@ -35,6 +37,12 @@ public class HomeActivity extends BaseFragmentActivity implements ProfileView {
     private int mImageViewArray[] = {R.drawable.tab_live, R.drawable.icon_publish, R.drawable.tab_profile};
     private String mTextviewArray[] = {"live", "publish", "profile"};
     private static final String TAG = HomeActivity.class.getSimpleName();
+
+
+    public static void start(Context context) {
+        Intent intent = new Intent(context, HomeActivity.class);
+        context.startActivity(intent);
+    }
 
 
     @Override

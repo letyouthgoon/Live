@@ -26,7 +26,6 @@ public class LoginHelper extends Presenter {
     private static final String TAG = LoginHelper.class.getSimpleName();
     private LoginView mLoginView;
     private LogoutView mLogoutView;
-    private int RoomId = -1;
 
     public LoginHelper(Context context) {
         mContext = context;
@@ -185,7 +184,6 @@ public class LoginHelper extends Presenter {
             }).start();
         }
     }
-
 
     /**
      * 初始化AVSDK
