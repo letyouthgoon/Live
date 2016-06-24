@@ -61,13 +61,11 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             String userPW = mPassword.getText().toString();
             String userPW2 = mRepassword.getText().toString();
 
-
             if (userId.length() < 4 || userId.length() > 24) {
                 Log.i(TAG, "onClick " + userId.length());
                 Toast.makeText(RegisterActivity.this, "用户名不符合格式", Toast.LENGTH_SHORT).show();
                 return;
             }
-
 
             if (userId.length() == 0 || userPW.length() == 0 || userPW2.length() == 0) {
                 Toast.makeText(RegisterActivity.this, "用户名和密码不能为空", Toast.LENGTH_SHORT).show();
@@ -88,6 +86,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             mLoginHeloper.tlsRegister(userId, mPassword.getText().toString());
         }
         if (view.getId() == R.id.back) {
+            // TODO: 16/6/24   eventbus   直接finish loginactivity不好
             Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();
@@ -96,21 +95,12 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     public void loginSucc() {
-        jumpIntoHomeActivity();
+        HomeActivity.start(this);
+        finish();
     }
 
     @Override
     public void loginFail() {
 
     }
-
-    /**
-     * 直接跳转主界面
-     */
-    private void jumpIntoHomeActivity() {
-        Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
-        startActivity(intent);
-        finish();
-    }
-
 }
