@@ -87,7 +87,6 @@ public class AVUIControl extends GLViewGroup {
                 return;
             }
             holder.setFixedSize(width, height);
-//            mContext.sendBroadcast(new Intent(Constants.ACTION_SURFACE_CHANGED));
             SwlLog.e(TAG, "memoryLeak surfaceChanged");
         }
 
@@ -219,11 +218,6 @@ public class AVUIControl extends GLViewGroup {
             if (view != null) {
                 view.setIsPC(false);
                 view.enableLoading(false);
-                // if (isFrontCamera()) {
-                // view.setMirror(true);
-                // } else {
-                // view.setMirror(false);
-                // }
                 view.setVisibility(GLView.VISIBLE);
             }
             if (forceToBigView && index > 0) {
@@ -543,24 +537,12 @@ public class AVUIControl extends GLViewGroup {
                 bottom = top + areaH;
             }
             mGlVideoView[3].layout(left, top, right, bottom);
-//            if (virtical) {
-//                left = mGlVideoView[4].getBounds().left;
-//                right = mGlVideoView[4].getBounds().right;
-//            } else {
-//                top = bottom;
-//                bottom =top+areaH;
-//            }
-//            mGlVideoView[4].layout(0, 0, 0, 0);
-            //
             mGlVideoView[1].setBackgroundColor(Color.WHITE);
             mGlVideoView[2].setBackgroundColor(Color.WHITE);
             mGlVideoView[3].setBackgroundColor(Color.WHITE);
-//            mGlVideoView[4].setBackgroundColor(Color.WHITE);
-            //
             mGlVideoView[1].setPaddings(2, 3, 3, 3);
             mGlVideoView[2].setPaddings(2, 3, 2, 3);
             mGlVideoView[3].setPaddings(2, 3, 2, 3);
-//            mGlVideoView[4].setPaddings(3, 3, 2, 3);
         } else {
             int wRemote = mContext.getResources().getDimensionPixelSize(R.dimen.video_small_view_width);
             int hRemote = mContext.getResources().getDimensionPixelSize(R.dimen.video_small_view_height);
@@ -573,16 +555,7 @@ public class AVUIControl extends GLViewGroup {
 
             mGlVideoView[1].layout(left, top, right, bottom);
 
-            //
             mGlVideoView[1].setBackgroundColor(Color.WHITE);
-            //		mGlVideoView[2].setBackgroundColor(Color.WHITE);
-            //		mGlVideoView[3].setBackgroundColor(Color.WHITE);
-            //		mGlVideoView[4].setBackgroundColor(Color.WHITE);
-            //
-            //		mGlVideoView[1].setPaddings(2, 3, 3, 3);
-            //		mGlVideoView[2].setPaddings(2, 3, 2, 3);
-            //		mGlVideoView[3].setPaddings(2, 3, 2, 3);
-            //		mGlVideoView[4].setPaddings(3, 3, 2, 3);
         }
 
         invalidate();
@@ -602,26 +575,6 @@ public class AVUIControl extends GLViewGroup {
         view.clearRender();
         //请求连接数减一
         CurLiveInfo.setCurrentRequestCount(CurLiveInfo.getCurrentRequestCount() - 1);
-
-//		for (int i = 0; i < mGlVideoView.length - 1; i++) {
-//			GLVideoView view1 = mGlVideoView[i];
-//			for (int j = i + 1; j < mGlVideoView.length; j++) {
-//				GLVideoView view2 = mGlVideoView[j];
-//				if (view1.getVisibility() == GLView.INVISIBLE && view2.getVisibility() == GLView.VISIBLE) {
-//					String openId = view2.getOpenId();
-//					int videoSrcType = view2.getVideoSrcType();
-//					boolean isPC = view2.isPC();
-//					boolean isMirror = view2.isMirror();
-//					boolean isLoading = view2.isLoading();
-//					view1.setRender(openId, videoSrcType);
-//					view1.setIsPC(isPC);
-//					view1.setMirror(isMirror);
-//					view1.enableLoading(isLoading);
-//					view1.setVisibility(GLView.VISIBLE);
-//					view2.setVisibility(GLView.INVISIBLE);
-//				}
-//			}
-//		}
 
         layoutVideoView(false);
     }
@@ -681,11 +634,6 @@ public class AVUIControl extends GLViewGroup {
         }
         mGlRootView = (GLRootView) mRootView.findViewById(R.id.av_video_glview);
         mGlVideoView = new GLVideoView[Constants.VIDEO_VIEW_MAX];
-        // for (int i = 0; i < mGlVideoView.length; i++) {
-        // mGlVideoView[i] = new GLVideoView(mVideoController, mContext.getApplicationContext());
-        // mGlVideoView[i].setVisibility(GLView.INVISIBLE);
-        // addView(mGlVideoView[i]);
-        // }
         mGlVideoView[0] = new GLVideoView(mContext.getApplicationContext(), mGraphicRenderMgr);
         mGlVideoView[0].setVisibility(GLView.INVISIBLE);
         addView(mGlVideoView[0]);
@@ -695,9 +643,6 @@ public class AVUIControl extends GLViewGroup {
             addView(mGlVideoView[i]);
         }
         mGlRootView.setContentPane(this);
-        // set bitmap ,reuse the backgroud BitmapDrawable,mlzhong
-        // setBackground(UITools.getBitmapFromResourceId(mContext, R.drawable.qav_gaudio_bg));
-
         mScaleGestureDetector = new ScaleGestureDetector(mContext, new ScaleGestureListener());
         mGestureDetector = new GestureDetector(mContext, new GestureListener());
         mMoveDetector = new MoveGestureDetector(mContext, new MoveListener());
@@ -708,12 +653,6 @@ public class AVUIControl extends GLViewGroup {
     boolean mCameraSurfaceCreated = false;
 
     void initCameraPreview() {
-
-//		SurfaceView localVideo = (SurfaceView) mRootView.findViewById(R.id.av_video_surfaceView);
-//		SurfaceHolder holder = localVideo.getHolder();
-//		holder.addCallback(mSurfaceHolderListener);
-//		holder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);// 3.0以下必须在初始化时调用，否则不能启动预览
-//		localVideo.setZOrderMediaOverlay(true);
         WindowManager windowManager = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
         WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
         layoutParams.width = 1;
@@ -916,19 +855,6 @@ public class AVUIControl extends GLViewGroup {
             }
         }
 
-
-
-
-//		if (null != mGlVideoView[1].getOpenId()) {
-//			mGlVideoView[1].clearRender();
-//		}
-//		
-//				
-//		mGlVideoView[1].layout(left, top, right, bottom);
-//		mGlVideoView[1].setRender(remoteOpenid, videoSrcType);
-//		mGlVideoView[1].setIsPC(false);
-//		mGlVideoView[1].enableLoading(false);	
-//		mGlVideoView[1].setVisibility(View.VISIBLE);
     }
 
     int mPosition = Position.LEFT_TOP;
@@ -1329,85 +1255,4 @@ public class AVUIControl extends GLViewGroup {
             mGraphicRenderMgr.setSelfId(key + "_" + AVView.VIDEO_SRC_TYPE_CAMERA);
         }
     }
-
-//    void onMemberChange() {
-//        SwlLog.d(TAG, "WL_DEBUG onMemberChange start");
-//
-////		ArrayList<AvMemberInfo> audioAndCameraMemberList = qavsdk.getAudioAndCameraMemberList();
-////
-////		for (AvMemberInfo memberInfo : audioAndCameraMemberList) {
-////			int index = getViewIndexById(memberInfo.identifier, AVView.VIDEO_SRC_TYPE_CAMERA);
-////			if (index >= 0) {
-////				SwlLog.d(TAG, "WL_DEBUG onMemberChange memberInfo.hasCameraVideo = " + memberInfo.hasCameraVideo);
-////
-////				if (!memberInfo.hasCameraVideo && !memberInfo.hasAudio) {
-////					closeVideoView(index);
-////				}
-////			}
-////		}
-//
-//        ArrayList<AvMemberInfo> screenMemberList = qavsdk.getScreenMemberList();
-//
-//        for (AvMemberInfo avMemberInfo : screenMemberList) {
-//            int index = getViewIndexById(avMemberInfo.identifier, AVView.VIDEO_SRC_TYPE_SCREEN);
-//            if (index >= 0) {
-//                SwlLog.d(TAG, "WL_DEBUG onMemberChange avMemberInfo.hasScreenVideo = " + avMemberInfo.hasScreenVideo);
-//
-//                if (!avMemberInfo.hasScreenVideo) {
-//                    closeVideoView(index);
-//                }
-//            }
-//        }
-//
-//        ArrayList<AvMemberInfo> memberList = qavsdk.getMemberList();
-//        // 去掉已经不再memberlist中的view
-//        if (!memberList.isEmpty()) {
-//            for (int i = 0; i < mGlVideoView.length; i++) {
-//                GLVideoView view = mGlVideoView[i];
-//                if (view == null)
-//                    continue;
-//                String viewIdentifier = view.getIdentifier();
-//                int viewVideoSrcType = view.getVideoSrcType();
-//
-//                if (TextUtils.isEmpty(viewIdentifier) || viewVideoSrcType == AVView.VIDEO_SRC_TYPE_NONE)
-//                    continue;
-//
-//
-//                boolean memberExist = false;
-//                for (int j = 0; j < memberList.size(); j++) {
-//                    if (!TextUtils.isEmpty(memberList.get(j).identifier)) {
-//                        int videoSrcType = AVView.VIDEO_SRC_TYPE_NONE;
-//                        if (memberList.get(j).hasCameraVideo)
-//                            videoSrcType = AVView.VIDEO_SRC_TYPE_CAMERA;
-//                        else if (memberList.get(j).hasScreenVideo)
-//                            videoSrcType = AVView.VIDEO_SRC_TYPE_SCREEN;
-//                        else videoSrcType = AVView.VIDEO_SRC_TYPE_NONE;
-//
-//                        if (viewIdentifier.equals(memberList.get(j).identifier) && viewVideoSrcType == videoSrcType) {
-//                            memberExist = true;
-//                            break;
-//                        }
-//                    }
-//                }
-//
-//                if (!memberExist) {
-//                    if (null != qavsdk) {
-//                        String selfIdentifier = qavsdk.getSelfIdentifier();
-//                        SwlLog.d(TAG, "self identifier : " + selfIdentifier);
-//                        if (selfIdentifier != null && selfIdentifier.equals(viewIdentifier)) {
-//                            return;
-//                        }
-//                    }
-//
-//                    closeVideoView(i);
-//                }
-//            }
-//        } else {
-//            for (int i = 0; i < mGlVideoView.length; i++) {
-//                closeVideoView(i);
-//            }
-//        }
-//
-//        SwlLog.d(TAG, "WL_DEBUG onMemberChange end");
-//    }
 }

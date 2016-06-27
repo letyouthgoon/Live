@@ -74,8 +74,8 @@ public class ChatMsgListAdapter extends BaseAdapter implements AbsListView.OnScr
         inflater = LayoutInflater.from(context);
         this.listMessage = objects;
 
-        mAnimatorSetList = new LinkedList<AnimatorSet>();
-        mAnimatorInfoList = new LinkedList<AnimatorInfo>();
+        mAnimatorSetList = new LinkedList<>();
+        mAnimatorInfoList = new LinkedList<>();
 
         mListView.setOnScrollListener(this);
     }
@@ -205,21 +205,6 @@ public class ChatMsgListAdapter extends BaseAdapter implements AbsListView.OnScr
         aniSet.start();
         mAnimatorSetList.add(aniSet);
         itemView.setTag(R.id.tag_second, aniSet);
-    }
-
-    /**
-     * 播放渐消动画
-     *
-     * @param pos
-     * @param view
-     */
-    public void playDisappearAnimator(int pos, View view) {
-        int firstVisable = mListView.getFirstVisiblePosition();
-        if (firstVisable <= pos) {
-            playViewAnimator(view, 1f, ANIMATORDURING);
-        } else {
-            SwlLog.d(TAG, "playDisappearAnimator->unexpect pos: " + pos + "/" + firstVisable);
-        }
     }
 
     /**

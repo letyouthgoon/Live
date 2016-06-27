@@ -387,7 +387,6 @@ public class LiveHelper extends Presenter {
     private TIMMessageListener msgListener = new TIMMessageListener() {
         @Override
         public boolean onNewMessages(List<TIMMessage> list) {
-            //SwlLog.d(TAG, "onNewMessages readMessage " + list.size());
             //解析TIM推送消息
             parseIMMessage(list);
             return false;

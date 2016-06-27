@@ -344,7 +344,7 @@ public class EnterLiveHelper extends Presenter {
      */
     private void quiteAVRoom() {
         SwlLog.d(TAG, "quiteAVRoom ");
-        if (isInAVRoom == true) {
+        if (isInAVRoom) {
             AVContext avContext = SwlavsdkControl.getInstance().getAVContext();
             int result = avContext.exitRoom();
         } else {
@@ -362,7 +362,7 @@ public class EnterLiveHelper extends Presenter {
      * 退出IM房间
      */
     private void quiteIMChatRoom() {
-        if ((isInChatRoom == true)) {
+        if ((isInChatRoom)) {
             //主播解散群
             if (MySelfInfo.getInstance().getIdStatus() == Constants.HOST) {
                 TIMGroupManager.getInstance().deleteGroup("" + CurLiveInfo.getRoomNum(), new TIMCallBack() {

@@ -223,9 +223,6 @@ public class LiveActivity extends BaseActivity implements EnterQuiteRoomView, Li
                 if (MySelfInfo.getInstance().getIdStatus() == Constants.HOST) {
                     mLiveHelper.openCameraAndMic();
                 }
-
-//            }if(action.equals(Constants.ACTION_SURFACE_CHANGED)) {
-//                mLiveHelper.autoFocusCam();
             }
 
             if (action.equals(Constants.ACTION_CAMERA_OPEN_IN_LIVE)) {//有人打开摄像头
@@ -545,13 +542,12 @@ public class LiveActivity extends BaseActivity implements EnterQuiteRoomView, Li
      */
     private void quiteLiveByPurpose() {
         if (MySelfInfo.getInstance().getIdStatus() == Constants.HOST) {
-            if (backDialog.isShowing() == false)
+            if (backDialog.isShowing())
                 backDialog.show();
 
 
         } else {
             mLiveHelper.perpareQuitRoom(true);
-//            mEnterRoomHelper.quiteLive();
         }
     }
 
@@ -591,7 +587,6 @@ public class LiveActivity extends BaseActivity implements EnterQuiteRoomView, Li
     private void quiteLivePassively() {
         Toast.makeText(this, "Host leave Live ", Toast.LENGTH_SHORT);
         mLiveHelper.perpareQuitRoom(false);
-//        mEnterRoomHelper.quiteLive();
     }
 
     @Override
@@ -613,7 +608,7 @@ public class LiveActivity extends BaseActivity implements EnterQuiteRoomView, Li
 
         //设置预览回调，修正摄像头镜像
         mLiveHelper.setCameraPreviewChangeCallback();
-        if (isSucc == true) {
+        if (isSucc) {
             //IM初始化
             mLiveHelper.initTIMListener("" + CurLiveInfo.getRoomNum());
 
@@ -631,7 +626,7 @@ public class LiveActivity extends BaseActivity implements EnterQuiteRoomView, Li
     @Override
     public void quiteRoomComplete(int id_status, boolean succ, LiveInfoJson liveinfo) {
         if (MySelfInfo.getInstance().getIdStatus() == Constants.HOST) {
-            if ((getBaseContext() != null) && (null != mDetailDialog) && (mDetailDialog.isShowing() == false)) {
+            if ((getBaseContext() != null) && (null != mDetailDialog) && (!mDetailDialog.isShowing())) {
                 mDetailTime.setText(formatTime);
                 mDetailAdmires.setText("" + CurLiveInfo.getAdmires());
                 mDetailWatchCount.setText("" + watchCount);
@@ -1536,7 +1531,7 @@ public class LiveActivity extends BaseActivity implements EnterQuiteRoomView, Li
         if (filename.length() > 0) {
             filenameEditText.setText(filename);
         }
-        filenameEditText.setText(""+CurLiveInfo.getRoomNum());
+        filenameEditText.setText("" + CurLiveInfo.getRoomNum());
 
         if (tags.length() > 0) {
             tagEditText.setText(tags);
@@ -1602,7 +1597,7 @@ public class LiveActivity extends BaseActivity implements EnterQuiteRoomView, Li
 
     @Override
     public void stopRecordCallback(boolean isSucc, List<String> files) {
-        if (isSucc == true) {
+        if (isSucc) {
             mRecord = false;
             recordBtn.setBackgroundResource(R.drawable.icon_record);
         }

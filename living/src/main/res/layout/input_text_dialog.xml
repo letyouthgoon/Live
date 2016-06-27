@@ -28,7 +28,7 @@
             android:focusable="true"
             android:maxLength="32"
             android:focusableInTouchMode="true"
-            android:textSize="20sp" />
+            android:textSize="@dimen/font20" />
 
         <TextView
             android:id="@+id/confrim_btn"

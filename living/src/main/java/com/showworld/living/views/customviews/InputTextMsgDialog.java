@@ -121,25 +121,6 @@ public class InputTextMsgDialog extends Dialog {
         });
     }
 
-    /**
-     * add message text
-     */
-    public void setMessageText(String strInfo) {
-        messageTextView.setText(strInfo);
-        messageTextView.setSelection(strInfo.length());
-    }
-
-    @Override
-    public void dismiss() {
-        super.dismiss();
-//        mVideoPlayActivity.refreshViewAfterDialog();
-    }
-
-    @Override
-    public void cancel() {
-        super.cancel();
-    }
-
 
     private void sendText(String msg) {
         if (msg.length() == 0)
