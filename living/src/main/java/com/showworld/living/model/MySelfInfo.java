@@ -116,14 +116,14 @@ public class MySelfInfo {
         editor.putInt(Constants.USER_ROOM_NUM, myRoomNum);
         editor.putBoolean(Constants.LIVE_ANIMATOR, bLiveAnimator);
         editor.putInt(Constants.LOG_LEVEL, logLevel.ordinal());
-        editor.commit();
+        editor.apply();
     }
 
     public void clearCache(Context context) {
         SharedPreferences settings = context.getSharedPreferences(Constants.USER_INFO, 0);
         SharedPreferences.Editor editor = settings.edit();
         editor.clear();
-        editor.commit();
+        editor.apply();
     }
 
     public void getCache(Context context) {
@@ -136,9 +136,9 @@ public class MySelfInfo {
         sign = sharedata.getString(Constants.USER_SIGN, null);
         bLiveAnimator = sharedata.getBoolean(Constants.LIVE_ANIMATOR, false);
         int level = sharedata.getInt(Constants.LOG_LEVEL, SwlLog.SwlLogLevel.INFO.ordinal());
-        if (level < SwlLog.SwlLogLevel.OFF.ordinal() || level > SwlLog.SwlLogLevel.INFO.ordinal()){
+        if (level < SwlLog.SwlLogLevel.OFF.ordinal() || level > SwlLog.SwlLogLevel.INFO.ordinal()) {
             logLevel = SwlLog.SwlLogLevel.INFO;
-        }else{
+        } else {
             logLevel = SwlLog.SwlLogLevel.values()[level];
         }
         SwlLog.setLogLevel(logLevel);

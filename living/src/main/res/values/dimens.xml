@@ -205,4 +205,15 @@
     <!-- diy -->
     <dimen name="toolbar_h">50dp</dimen>
 
+    <!-- 字体 -->
+    <dimen name="font26">26sp</dimen>
+    <dimen name="font24">24sp</dimen>
+    <dimen name="font22">22sp</dimen>
+    <dimen name="font20">20sp</dimen>
+    <dimen name="font18">18sp</dimen>
+    <dimen name="font16">16sp</dimen>
+    <dimen name="font14">14sp</dimen>
+    <dimen name="font12">12sp</dimen>
+
+
 </resources>

@@ -63,8 +63,6 @@ public class FragmentLiveList extends Fragment implements View.OnClickListener, 
                     Toast.makeText(getActivity(), "this room don't exist", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                Intent intent = new Intent(getActivity(), LiveActivity.class);
-                intent.putExtra(Constants.ID_STATUS, Constants.MEMBER);
                 MySelfInfo.getInstance().setIdStatus(Constants.MEMBER);
                 CurLiveInfo.setHostID(item.getHost().getUid());
                 CurLiveInfo.setHostName(item.getHost().getUsername());
@@ -73,7 +71,7 @@ public class FragmentLiveList extends Fragment implements View.OnClickListener, 
                 CurLiveInfo.setMembers(item.getWatchCount() + 1); // 添加自己
                 CurLiveInfo.setAdmires(item.getAdmireCount());
                 CurLiveInfo.setAddress(item.getLbs().getAddress());
-                startActivity(intent);
+                LiveActivity.start(getActivity(), Constants.MEMBER);
                 SwlLog.i(TAG, "PerformanceTest  join Live     " + SwlLog.getTime());
             }
         });

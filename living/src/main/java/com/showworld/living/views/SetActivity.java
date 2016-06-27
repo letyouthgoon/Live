@@ -1,7 +1,9 @@
 package com.showworld.living.views;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -19,12 +21,18 @@ import com.showworld.living.views.customviews.TemplateTitle;
 /**
  * 设置页面
  */
-public class SetActivity extends BaseActivity implements View.OnClickListener{
+public class SetActivity extends BaseActivity implements View.OnClickListener {
     private final static String TAG = "SetActivity";
     private CustomSwitch csAnimator;
     private LineControllerView lcvLog;
     private LineControllerView lcvVersion;
     private TemplateTitle ttHead;
+
+    public static void start(Context context) {
+        Intent intent = new Intent(context, SetActivity.class);
+        context.startActivity(intent);
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,11 +47,11 @@ public class SetActivity extends BaseActivity implements View.OnClickListener{
         super.onDestroy();
     }
 
-    private void initView(){
-        ttHead = (TemplateTitle)findViewById(R.id.tt_head);
-        csAnimator = (CustomSwitch)findViewById(R.id.cs_animator);
-        lcvLog = (LineControllerView)findViewById(R.id.lcv_set_log_level);
-        lcvVersion = (LineControllerView)findViewById(R.id.lcv_set_version);
+    private void initView() {
+        ttHead = (TemplateTitle) findViewById(R.id.tt_head);
+        csAnimator = (CustomSwitch) findViewById(R.id.cs_animator);
+        lcvLog = (LineControllerView) findViewById(R.id.lcv_set_log_level);
+        lcvVersion = (LineControllerView) findViewById(R.id.lcv_set_version);
 
         lcvLog.setContent(MySelfInfo.getInstance().getLogLevel().toString());
 
@@ -57,7 +65,7 @@ public class SetActivity extends BaseActivity implements View.OnClickListener{
         });
     }
 
-    private void changeLogLevel(){
+    private void changeLogLevel() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setItems(SwlLog.getStringValues(), new DialogInterface.OnClickListener() {
             @Override
@@ -71,28 +79,28 @@ public class SetActivity extends BaseActivity implements View.OnClickListener{
         builder.show();
     }
 
-    private void showSDKVersion(){
+    private void showSDKVersion() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("IM SDK: "+ TIMManager.getInstance().getVersion()+"\r\n"
-            +"QAL SDK: "+ QALSDKManager.getInstance().getSdkVersion()+"\r\n"
-            +"AV SDK: "+ AVContext.getVersion());
+        builder.setMessage("IM SDK: " + TIMManager.getInstance().getVersion() + "\r\n"
+                + "QAL SDK: " + QALSDKManager.getInstance().getSdkVersion() + "\r\n"
+                + "AV SDK: " + AVContext.getVersion());
         builder.show();
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-        case R.id.cs_animator:
-            MySelfInfo.getInstance().setbLiveAnimator(!MySelfInfo.getInstance().isbLiveAnimator());
-            MySelfInfo.getInstance().writeToCache(this);
-            csAnimator.setChecked(MySelfInfo.getInstance().isbLiveAnimator(), true);
-            break;
-        case R.id.lcv_set_log_level:
-            changeLogLevel();
-            break;
-        case R.id.lcv_set_version:
-            showSDKVersion();
-            break;
+        switch (v.getId()) {
+            case R.id.cs_animator:
+                MySelfInfo.getInstance().setbLiveAnimator(!MySelfInfo.getInstance().isbLiveAnimator());
+                MySelfInfo.getInstance().writeToCache(this);
+                csAnimator.setChecked(MySelfInfo.getInstance().isbLiveAnimator(), true);
+                break;
+            case R.id.lcv_set_log_level:
+                changeLogLevel();
+                break;
+            case R.id.lcv_set_version:
+                showSDKVersion();
+                break;
         }
     }
 }

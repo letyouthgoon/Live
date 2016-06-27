@@ -2,6 +2,7 @@ package com.showworld.living.views;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -48,9 +49,9 @@ import java.util.List;
 /**
  * 个人编辑页面
  */
-public class EditProfileActivity extends BaseActivity implements View.OnClickListener, ProfileView, UploadView{
+public class EditProfileActivity extends BaseActivity implements View.OnClickListener, ProfileView, UploadView {
     private final static int REQ_EDIT_NICKNAME = 0x100;
-    private final static int REQ_EDIT_SIGN  = 0x200;
+    private final static int REQ_EDIT_SIGN = 0x200;
 
     private static final int CROP_CHOOSE = 10;
     private static final int CAPTURE_IMAGE_CAMERA = 100;
@@ -67,21 +68,28 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
 
     private Uri iconUrl, iconCrop;
 
-    private void updateView(){
+
+    public static void start(Context context) {
+        Intent intent = new Intent(context, EditProfileActivity.class);
+        context.startActivity(intent);
+    }
+
+
+    private void updateView() {
         lcvNickName.setContent(MySelfInfo.getInstance().getNickName());
         lcvSign.setContent(MySelfInfo.getInstance().getSign());
-        if (TextUtils.isEmpty(MySelfInfo.getInstance().getAvatar())){
+        if (TextUtils.isEmpty(MySelfInfo.getInstance().getAvatar())) {
             Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.default_avatar);
             Bitmap cirBitMap = UIUtils.createCircleImage(bitmap, 0);
             ivIcon.setImageBitmap(cirBitMap);
-        }else{
+        } else {
             SwlLog.d(TAG, "profile avator: " + MySelfInfo.getInstance().getAvatar());
             RequestManager req = Glide.with(this);
             req.load(MySelfInfo.getInstance().getAvatar()).transform(new GlideCircleTransform(this)).into(ivIcon);
         }
     }
 
-    private void initView(){
+    private void initView() {
         ttEdit = (TemplateTitle) findViewById(R.id.tt_edit);
         ivIcon = (ImageView) findViewById(R.id.iv_ep_icon);
         lcvNickName = (LineControllerView) findViewById(R.id.lcv_ep_nickname);
@@ -117,10 +125,10 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
     }
 
     private Uri createCoverUri(String type) {
-        String filename = MySelfInfo.getInstance().getId()+ type + ".jpg";
+        String filename = MySelfInfo.getInstance().getId() + type + ".jpg";
         File outputImage = new File(Environment.getExternalStorageDirectory(), filename);
         if (ContextCompat.checkSelfPermission(EditProfileActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED){
+                != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(EditProfileActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, Constants.WRITE_PERMISSION_REQ_CODE);
             return null;
         }
@@ -136,16 +144,16 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
         return Uri.fromFile(outputImage);
     }
 
-    private boolean checkCropPermission(){
+    private boolean checkCropPermission() {
         if (Build.VERSION.SDK_INT >= 23) {
             List<String> permissions = new ArrayList<>();
-            if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(EditProfileActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+            if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(EditProfileActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                 permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
             }
-            if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(EditProfileActivity.this, Manifest.permission.READ_PHONE_STATE)){
+            if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(EditProfileActivity.this, Manifest.permission.READ_PHONE_STATE)) {
                 permissions.add(Manifest.permission.READ_PHONE_STATE);
             }
-            if (permissions.size() != 0){
+            if (permissions.size() != 0) {
                 ActivityCompat.requestPermissions(EditProfileActivity.this,
                         (String[]) permissions.toArray(new String[0]),
                         Constants.WRITE_PERMISSION_REQ_CODE);
@@ -163,7 +171,7 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
      * @param type
      */
     private void getPicFrom(int type) {
-        if (!bPermission){
+        if (!bPermission) {
             Toast.makeText(this, getString(R.string.tip_no_permission), Toast.LENGTH_SHORT).show();
             return;
         }
@@ -196,7 +204,7 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
         Window dlgwin = pickDialog.getWindow();
         WindowManager.LayoutParams lp = dlgwin.getAttributes();
         dlgwin.setGravity(Gravity.BOTTOM);
-        lp.width = (int)(display.getWidth()); //设置宽度
+        lp.width = (int) (display.getWidth()); //设置宽度
 
         pickDialog.getWindow().setAttributes(lp);
 
@@ -230,18 +238,18 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-        case R.id.rl_ep_icon:
-            showPhotoDialog();
-            break;
-        case R.id.lcv_ep_nickname:
-            EditActivity.navToEdit(this, getString(R.string.profile_nickname), MySelfInfo.getInstance().getNickName(), REQ_EDIT_NICKNAME);
-            break;
-        case R.id.lcv_ep_sign:
-            EditActivity.navToEdit(this, getString(R.string.profile_sign), MySelfInfo.getInstance().getSign(), REQ_EDIT_SIGN);
-            break;
-        default:
-            break;
+        switch (v.getId()) {
+            case R.id.rl_ep_icon:
+                showPhotoDialog();
+                break;
+            case R.id.lcv_ep_nickname:
+                EditActivity.navToEdit(this, getString(R.string.profile_nickname), MySelfInfo.getInstance().getNickName(), REQ_EDIT_NICKNAME);
+                break;
+            case R.id.lcv_ep_sign:
+                EditActivity.navToEdit(this, getString(R.string.profile_sign), MySelfInfo.getInstance().getSign(), REQ_EDIT_SIGN);
+                break;
+            default:
+                break;
         }
     }
 
@@ -263,41 +271,41 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode != RESULT_OK){
+        if (resultCode != RESULT_OK) {
             SwlLog.e(TAG, "onActivityResult->failed for request: " + requestCode + "/" + resultCode);
             return;
         }
-        switch (requestCode){
-        case REQ_EDIT_NICKNAME:
-            mProfileInfoHelper.setMyNickName(data.getStringExtra(EditActivity.RETURN_EXTRA));
-            break;
-        case REQ_EDIT_SIGN:
-            mProfileInfoHelper.setMySign(data.getStringExtra(EditActivity.RETURN_EXTRA));
-            break;
-        case CAPTURE_IMAGE_CAMERA:
-            startPhotoZoom(iconUrl);
-            break;
-        case IMAGE_STORE:
-            String path = UIUtils.getPath(this, data.getData());
-            if (null != path){
-                SwlLog.e(TAG, "startPhotoZoom->path:" + path);
-                File file = new File(path);
-                startPhotoZoom(Uri.fromFile(file));
-            }
-            break;
-        case CROP_CHOOSE:
-            mUploadHelper.uploadCover(iconCrop.getPath());
-            break;
+        switch (requestCode) {
+            case REQ_EDIT_NICKNAME:
+                mProfileInfoHelper.setMyNickName(data.getStringExtra(EditActivity.RETURN_EXTRA));
+                break;
+            case REQ_EDIT_SIGN:
+                mProfileInfoHelper.setMySign(data.getStringExtra(EditActivity.RETURN_EXTRA));
+                break;
+            case CAPTURE_IMAGE_CAMERA:
+                startPhotoZoom(iconUrl);
+                break;
+            case IMAGE_STORE:
+                String path = UIUtils.getPath(this, data.getData());
+                if (null != path) {
+                    SwlLog.e(TAG, "startPhotoZoom->path:" + path);
+                    File file = new File(path);
+                    startPhotoZoom(Uri.fromFile(file));
+                }
+                break;
+            case CROP_CHOOSE:
+                mUploadHelper.uploadCover(iconCrop.getPath());
+                break;
         }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode){
+        switch (requestCode) {
             case Constants.WRITE_PERMISSION_REQ_CODE:
-                for (int ret : grantResults){
-                    if (ret != PackageManager.PERMISSION_GRANTED){
+                for (int ret : grantResults) {
+                    if (ret != PackageManager.PERMISSION_GRANTED) {
                         return;
                     }
                 }
@@ -310,9 +318,9 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void updateProfileInfo(TIMUserProfile profile) {
-        if (TextUtils.isEmpty(profile.getNickName())){
+        if (TextUtils.isEmpty(profile.getNickName())) {
             MySelfInfo.getInstance().setNickName(profile.getIdentifier());
-        }else{
+        } else {
             MySelfInfo.getInstance().setNickName(profile.getNickName());
         }
         MySelfInfo.getInstance().setSign(profile.getSelfSignature());
@@ -325,14 +333,15 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
     }
 
     @Override
-    public void onUploadProcess(int percent) {}
+    public void onUploadProcess(int percent) {
+    }
 
     @Override
     public void onUploadResult(int code, String url) {
         if (0 == code) {
             mProfileInfoHelper.setMyAvator(url);
-        }else{
-            SwlLog.w(TAG, "onUploadResult->failed: "+code);
+        } else {
+            SwlLog.w(TAG, "onUploadResult->failed: " + code);
         }
     }
 }

@@ -74,7 +74,8 @@ class AVContextControl {
     }
 
     /**
-     *  设置AVSDK参数
+     * 设置AVSDK参数
+     *
      * @param appid
      * @param accountype
      * @param identifier
@@ -127,6 +128,7 @@ class AVContextControl {
 
     /**
      * 实际初始化AVSDK
+     *
      * @param result
      * @param tinyId
      * @param errorCode
@@ -136,7 +138,7 @@ class AVContextControl {
             mAVContext = AVContext.createInstance(mContext, mConfig);
             mSelfIdentifier = mConfig.identifier;
             int ret = mAVContext.start(mStartContextCompleteCallback);
-            SwlLog.i(TAG, "onAVSDKCreate ret "+ret);
+            SwlLog.i(TAG, "onAVSDKCreate ret " + ret);
             mIsInStartContext = true;
         } else {
             mStartContextCompleteCallback.OnComplete(errorCode);
@@ -146,6 +148,7 @@ class AVContextControl {
 
     /**
      * 销毁AVSDK
+     *
      * @param result
      */
     private void avDestory(boolean result) {
@@ -153,8 +156,6 @@ class AVContextControl {
         mAVContext = null;
         mIsInStopContext = false;
         isStartContext = false;
-        mContext.sendBroadcast(new Intent(
-                Constants.ACTION_CLOSE_CONTEXT_COMPLETE));
     }
 
 

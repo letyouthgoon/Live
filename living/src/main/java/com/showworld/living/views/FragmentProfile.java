@@ -38,7 +38,7 @@ import java.util.List;
 
 
 /**
- * 视频和照片输入页面
+ * 个人页
  */
 public class FragmentProfile extends Fragment implements View.OnClickListener, LogoutView, ProfileView {
     private static final String TAG = "FragmentLiveList";
@@ -54,11 +54,6 @@ public class FragmentProfile extends Fragment implements View.OnClickListener, L
     private LineControllerView mVersion;
 
     public FragmentProfile() {
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -99,33 +94,13 @@ public class FragmentProfile extends Fragment implements View.OnClickListener, L
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-    }
-
-    private void enterSetProfile() {
-        Intent intent = new Intent(getContext(), SetActivity.class);
-        startActivity(intent);
-    }
-
-    private void enterEditProfile() {
-        Intent intent = new Intent(getContext(), EditProfileActivity.class);
-        startActivity(intent);
-    }
-
-    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.profile_set:
-                enterSetProfile();
+                SetActivity.start(getContext());
                 break;
             case R.id.edit_profile:
-                enterEditProfile();
+                EditProfileActivity.start(getContext());
                 break;
             case R.id.logout:
                 mLoginHeloper.imLogout();

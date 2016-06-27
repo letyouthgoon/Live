@@ -26,7 +26,7 @@ public class Constants {
     public static final String LIVE_ANIMATOR = "live_animator";
     public static final String LOG_LEVEL = "log_level";
 
-//    public static final int SDK_APPID = 1400010805;
+    //    public static final int SDK_APPID = 1400010805;
 //
 //    public static final int ACCOUNT_TYPE = 5761;
 //
