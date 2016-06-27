@@ -10,5 +10,5 @@ import java.util.ArrayList;
  */
 public interface LiveListView extends MvpView{
 
-    void showFirstPage(ArrayList<LiveInfoJson> livelist);
+    void showPage(ArrayList<LiveInfoJson> livelist, int mCurPageIndex);
 }

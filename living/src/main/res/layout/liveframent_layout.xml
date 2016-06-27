@@ -12,27 +12,7 @@
         android:background="@color/btn_red_hover"
         android:gravity="center"
         android:text="@string/live_titile"
-        android:textSize="20sp" />
-
-
-    <!--<EditText-->
-    <!--android:id="@+id/testHostId"-->
-    <!--android:layout_width="fill_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:text="willguo" />-->
-
-    <!--<TextView-->
-    <!--android:id="@+id/JoinLive"-->
-    <!--android:layout_width="200dp"-->
-    <!--android:layout_height="50dp"-->
-    <!--android:layout_gravity="bottom|center_horizontal"-->
-    <!--android:layout_marginBottom="20dp"-->
-    <!--android:background="@color/btn_red"-->
-    <!--android:clickable="true"-->
-    <!--android:focusable="true"-->
-    <!--android:gravity="center"-->
-    <!--android:text="Join"-->
-    <!--android:textSize="20sp" />-->
+        android:textSize="@dimen/font20" />
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_layout_list"

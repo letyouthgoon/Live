@@ -1,6 +1,7 @@
 package com.showworld.living.views;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -26,28 +27,12 @@ public class EditActivity extends BaseActivity {
     /**
      * 启动修改文本界面
      *
-     * @param context fragment context
-     * @param title 界面标题
+     * @param context    activity context
+     * @param title      界面标题
      * @param defaultStr 默认文案
-     * @param reqCode 请求码，用于识别返回结果
+     * @param reqCode    请求码，用于识别返回结果
      */
-    public static void navToEdit(Fragment context, String title, String defaultStr, int reqCode){
-        Intent intent = new Intent(context.getActivity(), EditActivity.class);
-        intent.putExtra("title", title);
-        context.startActivityForResult(intent, reqCode);
-        defaultString = defaultStr;
-    }
-
-
-    /**
-     * 启动修改文本界面
-     *
-     * @param context activity context
-     * @param title 界面标题
-     * @param defaultStr 默认文案
-     * @param reqCode 请求码，用于识别返回结果
-     */
-    public static void navToEdit(Activity context, String title, String defaultStr, int reqCode){
+    public static void navToEdit(Activity context, String title, String defaultStr, int reqCode) {
         Intent intent = new Intent(context, EditActivity.class);
         intent.putExtra("title", title);
         context.startActivityForResult(intent, reqCode);
@@ -58,13 +43,13 @@ public class EditActivity extends BaseActivity {
     /**
      * 启动修改文本界面
      *
-     * @param context fragment context
-     * @param title 界面标题
+     * @param context    fragment context
+     * @param title      界面标题
      * @param defaultStr 默认文案
-     * @param reqCode 请求码，用于识别返回结果
-     * @param limit 输入长度限制
+     * @param reqCode    请求码，用于识别返回结果
+     * @param limit      输入长度限制
      */
-    public static void navToEdit(Fragment context, String title, String defaultStr, int reqCode,int limit){
+    public static void navToEdit(Fragment context, String title, String defaultStr, int reqCode, int limit) {
         Intent intent = new Intent(context.getActivity(), EditActivity.class);
         intent.putExtra("title", title);
         context.startActivityForResult(intent, reqCode);
@@ -76,13 +61,13 @@ public class EditActivity extends BaseActivity {
     /**
      * 启动修改文本界面
      *
-     * @param context activity context
-     * @param title 界面标题
+     * @param context    activity context
+     * @param title      界面标题
      * @param defaultStr 默认文案
-     * @param reqCode 请求码，用于识别返回结果
-     * @param limit 输入长度限制
+     * @param reqCode    请求码，用于识别返回结果
+     * @param limit      输入长度限制
      */
-    public static void navToEdit(Activity context, String title, String defaultStr, int reqCode, int limit){
+    public static void navToEdit(Activity context, String title, String defaultStr, int reqCode, int limit) {
         Intent intent = new Intent(context, EditActivity.class);
         intent.putExtra("title", title);
         context.startActivityForResult(intent, reqCode);
@@ -90,7 +75,7 @@ public class EditActivity extends BaseActivity {
         lenLimit = limit;
     }
 
-    private void cancelEdit(){
+    private void cancelEdit() {
         setResult(RESULT_CANCELED);
         finish();
     }
@@ -107,12 +92,12 @@ public class EditActivity extends BaseActivity {
         setContentView(R.layout.activity_edit);
         getIntent().getStringExtra("title");
         input = (EditText) findViewById(R.id.editContent);
-        if (defaultString != null){
+        if (defaultString != null) {
             input.setText(defaultString);
             input.setSelection(defaultString.length());
         }
-        if (lenLimit != 0){
-            input.setFilters( new InputFilter[] { new InputFilter.LengthFilter(lenLimit) } );
+        if (lenLimit != 0) {
+            input.setFilters(new InputFilter[]{new InputFilter.LengthFilter(lenLimit)});
         }
         TemplateTitle title = (TemplateTitle) findViewById(R.id.ttHead);
         title.setTitle(getIntent().getStringExtra("title"));
@@ -134,7 +119,7 @@ public class EditActivity extends BaseActivity {
     }
 
     @Override
-    protected void onStop(){
+    protected void onStop() {
         super.onStop();
         defaultString = null;
         lenLimit = 0;

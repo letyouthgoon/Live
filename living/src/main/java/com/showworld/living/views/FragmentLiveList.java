@@ -1,13 +1,13 @@
 package com.showworld.living.views;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -35,6 +35,7 @@ public class FragmentLiveList extends Fragment implements View.OnClickListener, 
     private LiveShowAdapter adapter;
     private LiveListViewHelper mLiveListViewHelper;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+    private int mCurPageIndex = 0;
 
     public FragmentLiveList() {
     }
@@ -75,13 +76,35 @@ public class FragmentLiveList extends Fragment implements View.OnClickListener, 
                 SwlLog.i(TAG, "PerformanceTest  join Live     " + SwlLog.getTime());
             }
         });
+        mLiveList.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView arg0, int firstVisibleItem,
+                                 int visibleItemCount, int totalItemCount) {
+//                if (adapter.getState() == CmConstant.STATE_IDLE
+//                        && totalItemCount != 0) {
+//
+//                    boolean closeToEnd = (totalItemCount - firstVisibleItem - visibleItemCount) < 3; // threshold
+//                    boolean isEmpty = (adapter.getCount() == 0);
+//
+//                    if (closeToEnd && !isEmpty) {
+//                        mAdapter.setState(CmConstant.STATE_LOADING);
+//                        mLiveListViewHelper.getPageData(mCurPageIndex);
+//                    }
+//                }
+            }
+        });
 
         return view;
     }
 
     @Override
     public void onStart() {
-        mLiveListViewHelper.getPageData();
+        mLiveListViewHelper.getPageData(mCurPageIndex);
         super.onStart();
     }
 
@@ -102,9 +125,13 @@ public class FragmentLiveList extends Fragment implements View.OnClickListener, 
 
 
     @Override
-    public void showFirstPage(ArrayList<LiveInfoJson> result) {
+    public void showPage(ArrayList<LiveInfoJson> result, int pageIndex) {
+
+        mCurPageIndex = pageIndex;
+        if (0 == mCurPageIndex) {
+            liveList.clear();
+        }
         mSwipeRefreshLayout.setRefreshing(false);
-        liveList.clear();
         if (null != result) {
             for (LiveInfoJson item : result) {
                 liveList.add(item);
@@ -115,6 +142,6 @@ public class FragmentLiveList extends Fragment implements View.OnClickListener, 
 
     @Override
     public void onRefresh() {
-        mLiveListViewHelper.getPageData();
+        mLiveListViewHelper.getPageData(mCurPageIndex);
     }
 }

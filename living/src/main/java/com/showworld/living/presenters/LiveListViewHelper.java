@@ -14,19 +14,17 @@ import java.util.ArrayList;
 public class LiveListViewHelper extends Presenter {
     private LiveListView mLiveListView;
     private GetLiveListTask mGetLiveListTask;
+    private int mCurPageIndex = 0;
 
     public LiveListViewHelper(LiveListView view) {
         mLiveListView = view;
     }
 
 
-    public void getPageData() {
+    public void getPageData(int page) {
+        mCurPageIndex = page;
         mGetLiveListTask = new GetLiveListTask();
-        mGetLiveListTask.execute(0, 20);
-    }
-
-    public void getMoreData() {
-
+        mGetLiveListTask.execute(page, 20);
     }
 
     @Override
@@ -45,7 +43,7 @@ public class LiveListViewHelper extends Presenter {
 
         @Override
         protected void onPostExecute(ArrayList<LiveInfoJson> result) {
-            mLiveListView.showFirstPage(result);
+            mLiveListView.showPage(result, mCurPageIndex);
         }
     }
 

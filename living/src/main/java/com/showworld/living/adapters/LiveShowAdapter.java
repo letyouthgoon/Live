@@ -54,7 +54,7 @@ public class LiveShowAdapter extends ArrayAdapter<LiveInfoJson> {
         if (convertView != null) {
             holder = (ViewHolder)convertView.getTag();
         } else {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_liveshow, null);
+            convertView = LayoutInflater.from(getContext()).inflate(resourceId, null);
 
             holder = new ViewHolder();
             holder.ivCover = (ImageView) convertView.findViewById(R.id.cover);
