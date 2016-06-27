@@ -24,7 +24,7 @@ public class UploadHelper extends Presenter {
     private final String TAG = "PublishHelper";
     private final String bucket = "sxbbucket";
     private final String appid = "10022853";
-
+    // TODO: 16/6/27  上传需要单独的服务配置 
     private final static int THREAD_GET_SIG = 1;
     private final static int THREAD_UPLAOD = 2;
     private final static int THREAD_GETSIG_UPLOAD = 3;

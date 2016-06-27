@@ -112,15 +112,13 @@ public class PublishLiveActivity extends BaseActivity implements View.OnClickLis
                 if (bUploading) {
                     Toast.makeText(this, getString(R.string.publish_wait_uploading) + " " + uploadPercent + "%", Toast.LENGTH_SHORT).show();
                 } else {
-                    Intent intent = new Intent(this, LiveActivity.class);
-                    intent.putExtra(Constants.ID_STATUS, Constants.HOST);
                     MySelfInfo.getInstance().setIdStatus(Constants.HOST);
                     CurLiveInfo.setTitle(tvTitle.getText().toString());
                     CurLiveInfo.setHostID(MySelfInfo.getInstance().getId());
                     CurLiveInfo.setRoomNum(MySelfInfo.getInstance().getMyRoomNum());
-                    startActivity(intent);
+                    LiveActivity.start(PublishLiveActivity.this, Constants.HOST);
                     SwlLog.i(TAG, "PerformanceTest  publish Live     " + SwlLog.getTime());
-                    this.finish();
+                    finish();
                 }
                 break;
             case R.id.cover:

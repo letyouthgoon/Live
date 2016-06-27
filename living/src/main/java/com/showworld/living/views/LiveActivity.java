@@ -120,6 +120,12 @@ public class LiveActivity extends BaseActivity implements EnterQuiteRoomView, Li
     private Dialog mDetailDialog;
 
 
+    public static void start(Context context, int idStatus) {
+        Intent intent = new Intent(context, LiveActivity.class);
+        intent.putExtra(Constants.ID_STATUS, idStatus);
+        context.startActivity(intent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -468,7 +474,6 @@ public class LiveActivity extends BaseActivity implements EnterQuiteRoomView, Li
         super.onPause();
         SwlavsdkControl.getInstance().onPause();
     }
-
 
     /**
      * 直播心跳
